@@ -127,12 +127,24 @@ class CustomTimePicker extends StatelessWidget {
 
           // Time slots
           GetBuilder<ScheduleController>(builder: (controller) {
-            final now = DateTime.now();
+            // Assuming controller.selectedDate is like "2025-10-27"
+            String dateString = controller.selectedDate;
+            print("Selected Date: $dateString");
+
+// Parse the string into a DateTime object
+            DateTime selectedDate = DateTime.parse(dateString);
+
+// Define the list of time slots
             final List<DateTime> timeSlots = [];
 
-            // Define time range (9 AM – 6 PM)
-            final start = DateTime(now.year, now.month, now.day, 9, 0);
-            final end = DateTime(now.year, now.month, now.day, 18, 0);
+// Define time range (9 AM – 6 PM)
+            final start = DateTime(
+                selectedDate.year, selectedDate.month, selectedDate.day, 9, 0);
+            final end = DateTime(
+                selectedDate.year, selectedDate.month, selectedDate.day, 18, 0);
+
+            print("Start time: $start");
+            print("End time: $end");
 
             DateTime slot = start;
             while (slot.isBefore(end) || slot.isAtSameMomentAs(end)) {
@@ -157,8 +169,11 @@ class CustomTimePicker extends StatelessWidget {
                 final isSelected = controller.selectedTime
                     .startsWith(DateFormat('HH:mm').format(time));
 
-                // Disable past time slots
-                final isPast = time.isBefore(now);
+                // Current time (for comparison)
+                final currentTime = DateTime.now();
+
+// Disable past time slots
+                final isPast = time.isBefore(currentTime);
 
                 return ElevatedButton(
                   style: ElevatedButton.styleFrom(

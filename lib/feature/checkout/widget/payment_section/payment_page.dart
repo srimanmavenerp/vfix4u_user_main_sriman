@@ -273,7 +273,7 @@ class _PaymentPageState extends State<PaymentPage> {
                                       color: Colors.white,
                                     ),
                                     child: const CircleAvatar(
-                                      radius: 25,
+                                      radius: 20,
                                       backgroundImage: AssetImage(
                                           'assets/images/phone_pay.jpeg'),
                                     ),
