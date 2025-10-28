@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <base href="/" />
+
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+  <meta name="description" content="A multi-vendor service providing app." />
+  <meta name="robots" content="nofollow, noindex, max-snippet:1, max-video-preview:1, max-image-preview:standard" />
+
+  <!-- iOS/Android PWA meta -->
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <meta name="apple-mobile-web-app-title" content="VFix4U" />
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon" href="icons/Icon-192.png" />
+  <link rel="icon" type="image/png" href="favicon.png" />
+
+  <title>VFix4U</title>
+
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="canonical" href="https://web.vfix4u.com/" />
+
+  <style>
+    .grecaptcha-badge { visibility: hidden; }
+    html, body {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+  </style>
+
+  <!-- Flutter inappwebview support -->
+  <script src="/assets/packages/flutter_inappwebview_web/assets/web/web_support.js" defer></script>
+
+  <!-- Flutter loader config -->
+  <script>
+    window._flutter = {
+      buildConfig: {
+        baseUrl: "/"
+      }
+    };
+    var serviceWorkerVersion = "1.0.0"; // set dynamically at build
+  </script>
+
+
+  <script>
+    window.addEventListener('load', function () {
+      _flutter.loader.load({
+        serviceWorker: {
+          serviceWorkerVersion: typeof serviceWorkerVersion !== "undefined" ? serviceWorkerVersion : "1.0.0",
+        },
+        onEntrypointLoaded: function (engineInitializer) {
+          engineInitializer.initializeEngine().then(appRunner => {
+            const splash = document.getElementById('splash');
+            if (splash) splash.remove();
+            appRunner.runApp();
+          });
+        }
+      });
+    });
+  </script>
+
+  <!-- Register Service Worker -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service_worker.js')
+          .then(reg => console.log('ServiceWorker registered:', reg.scope))
+          .catch(err => console.error('ServiceWorker registration failed:', err));
+      });
+    }
+  </script>
+
+  <!-- Firebase (modular) -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-analytics.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC2mUsQqp94796LvzJlKSyyBxEmAIpsZlU",
+      authDomain: "vfix4u-42216.firebaseapp.com",
+      projectId: "vfix4u-42216",
+      storageBucket: "vfix4u-42216.appspot.com",
+      messagingSenderId: "125949822411",
+      appId: "1:125949822411:web:6f69a97dfb8e2137dea24e",
+      measurementId: "G-5CWKM48VHF"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    getAnalytics(app);
+  </script>
+
+  <!-- Flutter engine -->
+  <script src="flutter.js?version=3.1.0" defer></script>
+</head>
+
+<body>
+
+<!-- Google Maps -->
+<script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBjOIZCC6Afzl7_HyHnEoewg0KCMn3ecdQ&callback=Function.prototype"></script>
+
+<!-- Preloader -->
+<div class="preloader">
+  <div class="preloader-container">
+    <img width="60" class="preloader-img" src="logo.png" alt="Loading logo" />
+    <div class="loader"></div>
+  </div>
+</div>
+
+<!-- Header -->
+<header class="header">
+  <div class="header-container d-flex align-items-center justify-content-between">
+    <div class="header-start d-flex gap-5 align-items-center">
+      <img class="logo" src="assets/images/webAppbarLogo.png" alt="Logo" />
+      <div class="placeholder placeholder-wide"></div>
+      <div class="placeholder"></div>
+      <div class="placeholder"></div>
+      <div class="placeholder"></div>
+    </div>
+    <div class="header-end d-flex gap-5">
+      <div class="placeholder"></div>
+      <div class="placeholder"></div>
+      <div class="placeholder"></div>
+    </div>
+  </div>
+</header>
+
+<!-- Convert .svg <img> tags to inline SVG -->
+<script>
+  document.querySelectorAll("img.svg").forEach(img => {
+    const imgURL = img.getAttribute("src");
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", imgURL, true);
+    xhr.responseType = "document";
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        const svg = xhr.response.querySelector("svg");
+        if (!svg) return;
+
+        if (img.id) svg.setAttribute("id", img.id);
+        if (img.className) svg.setAttribute("class", img.className + " replaced-svg");
+        svg.removeAttribute("xmlns:a");
+
+        if (!svg.getAttribute("viewBox") && svg.getAttribute("height") && svg.getAttribute("width")) {
+          svg.setAttribute("viewBox", `0 0 ${svg.getAttribute("width")} ${svg.getAttribute("height")}`);
+        }
+
+        img.parentNode.replaceChild(svg, img);
+      }
+    };
+    xhr.send();
+  });
+</script>
+
+
+
+
+<!-- Theme from localStorage -->
+<script>
+  if (typeof(Storage) !== "undefined") {
+    const theme = localStorage.getItem("flutter.demand_theme");
+    console.log("flutter.theme", theme);
+
+    if (theme === "true") {
+      document.body.classList.add("theme-dark");
+    } else {
+      document.body.classList.remove("theme-dark");
+    }
+  } else {
+    console.log("localStorage is not supported");
+  }
+</script>
+
+<!-- Fix for Safari WebGL2 -->
+<script>
+  if (navigator.userAgent.includes("Safari") && !navigator.userAgent.includes("Chrome")) {
+    const originalGetContext = HTMLCanvasElement.prototype.getContext;
+    HTMLCanvasElement.prototype.getContext = function (...args) {
+      if (args[0] === "webgl2") return;
+      return originalGetContext.apply(this, args);
+    };
+  }
+</script>
+
+</body>
+</html>

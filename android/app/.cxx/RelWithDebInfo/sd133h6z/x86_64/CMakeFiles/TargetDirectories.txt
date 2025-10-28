@@ -1,0 +1,2 @@
+D:/Rani_projects/Vfix4u-User-main/Vfix4u-User-main/android/app/.cxx/RelWithDebInfo/sd133h6z/x86_64/CMakeFiles/edit_cache.dir
+D:/Rani_projects/Vfix4u-User-main/Vfix4u-User-main/android/app/.cxx/RelWithDebInfo/sd133h6z/x86_64/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,2 @@
+F:/04232025vfixuser/android/app/.cxx/RelWithDebInfo/5q505604/x86_64/CMakeFiles/edit_cache.dir
+F:/04232025vfixuser/android/app/.cxx/RelWithDebInfo/5q505604/x86_64/CMakeFiles/rebuild_cache.dir

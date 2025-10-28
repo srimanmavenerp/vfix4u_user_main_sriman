@@ -1,0 +1,2 @@
+C:/Users/saifu/Vfix4u-User/android/app/.cxx/RelWithDebInfo/222a4r6q/x86/CMakeFiles/edit_cache.dir
+C:/Users/saifu/Vfix4u-User/android/app/.cxx/RelWithDebInfo/222a4r6q/x86/CMakeFiles/rebuild_cache.dir

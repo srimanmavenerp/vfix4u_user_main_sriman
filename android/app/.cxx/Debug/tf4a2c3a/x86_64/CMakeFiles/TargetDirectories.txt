@@ -1,0 +1,2 @@
+F:/vfixuserapp/android/app/.cxx/Debug/tf4a2c3a/x86_64/CMakeFiles/edit_cache.dir
+F:/vfixuserapp/android/app/.cxx/Debug/tf4a2c3a/x86_64/CMakeFiles/rebuild_cache.dir

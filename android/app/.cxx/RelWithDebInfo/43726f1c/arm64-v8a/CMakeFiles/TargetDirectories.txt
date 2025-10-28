@@ -1,0 +1,2 @@
+C:/maven/vfixuser/vfix/android/app/.cxx/RelWithDebInfo/43726f1c/arm64-v8a/CMakeFiles/edit_cache.dir
+C:/maven/vfixuser/vfix/android/app/.cxx/RelWithDebInfo/43726f1c/arm64-v8a/CMakeFiles/rebuild_cache.dir

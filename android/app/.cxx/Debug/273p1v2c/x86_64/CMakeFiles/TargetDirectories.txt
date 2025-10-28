@@ -1,0 +1,2 @@
+C:/maven/vfixuser/vfix/android/app/.cxx/Debug/273p1v2c/x86_64/CMakeFiles/edit_cache.dir
+C:/maven/vfixuser/vfix/android/app/.cxx/Debug/273p1v2c/x86_64/CMakeFiles/rebuild_cache.dir
