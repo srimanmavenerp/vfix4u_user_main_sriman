@@ -37,8 +37,8 @@ class LanguageWidget extends StatelessWidget {
           color: isSelected
               ? Theme.of(context).primaryColor.withOpacity(0.1)
               : Get.isDarkMode
-              ? Colors.grey.withOpacity(0.2)
-              : Theme.of(context).cardColor,
+                  ? Colors.grey.withOpacity(0.2)
+                  : Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
           boxShadow: Get.find<ThemeController>().darkTheme ? null : shadow,
           border: isSelected

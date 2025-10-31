@@ -7,12 +7,7 @@ class CartController extends GetxController implements GetxService {
   final CartRepo cartRepo;
   CartController({required this.cartRepo});
 
-
-
   List<CartModel> _guestCartBackup = []; // backup guest cart
-
-
-
 
   List<CartModel> _cartList = [];
   List<CartModel> _initialCartList = [];
@@ -55,11 +50,51 @@ class CartController extends GetxController implements GetxService {
   String subcategoryId = '';
 
   int selectedProviderIndex = -1;
+// Add this inside CartController (after backupGuestCart)
+  Future<void> addGuestCartAfterLogin() async {
+    if (_guestCartBackup.isEmpty) {
+      print("No guest cart items to merge after login");
+      return;
+    }
+
+    _isLoading = true;
+    update();
+
+    try {
+      print(
+          "Merging ${_guestCartBackup.length} guest cart items to logged-in user cart...");
+      // Use a copy so if addToCartApi modifies _guestCartBackup we are safe.
+      for (final guestItem in List.from(_guestCartBackup)) {
+        try {
+          await addToCartApi(
+            guestItem,
+            providerId: guestItem.provider?.id ?? "",
+          );
+        } catch (e) {
+          print("Failed to add guest item: $e");
+          // continue adding other items
+        }
+      }
+
+      // Clear backup so we don't re-send later
+      _guestCartBackup.clear();
+
+      // Refresh cart from server to reflect merged items
+      await getCartListFromServer();
+    } catch (e) {
+      print("Error while merging guest cart after login: $e");
+    } finally {
+      _isLoading = false;
+      update();
+    }
+  }
 
   Future<void> getCartListFromServer({bool shouldUpdate = true}) async {
     DataSyncHelper.fetchAndSyncData(
-      fetchFromLocal: () => cartRepo.getCartListFromServer<CacheResponseData>(source: DataSourceEnum.local),
-      fetchFromClient: () => cartRepo.getCartListFromServer(source: DataSourceEnum.client),
+      fetchFromLocal: () => cartRepo.getCartListFromServer<CacheResponseData>(
+          source: DataSourceEnum.local),
+      fetchFromClient: () =>
+          cartRepo.getCartListFromServer(source: DataSourceEnum.client),
       onResponse: (data, source) {
         _cartList = [];
         data['content']['cart']['data'].forEach((cart) {
@@ -67,13 +102,16 @@ class CartController extends GetxController implements GetxService {
         });
 
         if (data['content']['wallet_balance'] != null) {
-          _walletBalance = double.tryParse(data['content']['wallet_balance'].toString())!;
+          _walletBalance =
+              double.tryParse(data['content']['wallet_balance'].toString())!;
         }
         if (data['content']['total_cost'] != null) {
-          _totalPrice = double.tryParse(data['content']['total_cost'].toString())!;
+          _totalPrice =
+              double.tryParse(data['content']['total_cost'].toString())!;
         }
         if (data['content']['referral_amount'] != null) {
-          _referralAmount = double.tryParse(data['content']['referral_amount'].toString())!;
+          _referralAmount =
+              double.tryParse(data['content']['referral_amount'].toString())!;
         }
 
         if (_cartList.isNotEmpty) {
@@ -90,26 +128,9 @@ class CartController extends GetxController implements GetxService {
     );
   }
 
-
-  // void backupGuestCart() {
-  //   _guestCartBackup = List.from(_cartList);
-  // }
-
-  // Future<void> removeCartFromServer(CartModel cart) async {
-  //   _isLoading = true;
-  //   Response response = await cartRepo.removeCartFromServer(cart.id);
-  //   if (response.statusCode == 200) {
-  //     _cartList.remove(cart);
-  //   }
-  //
-  //   await getCartListFromServer(shouldUpdate: false);
-  //   _isLoading = false;
-  //   update();
-  // }
-
-
-
-
+  void backupGuestCart() {
+    _guestCartBackup = List.from(_cartList);
+  }
 
   Future<void> removeCartFromServer(CartModel cart) async {
     // _isLoading = true;
@@ -123,7 +144,6 @@ class CartController extends GetxController implements GetxService {
       } else {
         print("Failed to remove item: ${response.statusCode}");
       }
-
     } catch (e) {
       print("Error removing item from server: $e");
     } finally {
@@ -132,6 +152,10 @@ class CartController extends GetxController implements GetxService {
     }
   }
 
+  void clearCart() {
+    cartList.clear();
+    update();
+  }
 
   Future<void> removeAllCartItem() async {
     Response response = await cartRepo.removeAllCartFromServer();
@@ -141,42 +165,8 @@ class CartController extends GetxController implements GetxService {
     }
   }
 
-  // Future<void> updateCartQuantityToApi(String cartID, int quantity) async {
-  //   _isCartLoading = true;
-  //   update();
-  //
-  //   Response response = await cartRepo.updateCartQuantity(cartID, quantity);
-  //   if (response.statusCode == 200) {
-  //     _cartList = [];
-  //     response.body['content']['cart']['data'].forEach((cart) {
-  //       _cartList.add(CartModel.fromJson(cart));
-  //     });
-  //
-  //     if (response.body['content']['wallet_balance'] != null) {
-  //       _walletBalance = double.tryParse(response.body['content']['wallet_balance'].toString())!;
-  //     }
-  //
-  //     if (response.body['content']['total_cost'] != null) {
-  //       _totalPrice = double.tryParse(response.body['content']['total_cost'].toString())!;
-  //     }
-  //
-  //     if (response.body['content']['referral_amount'] != null) {
-  //       _referralAmount = double.tryParse(response.body['content']['referral_amount'].toString())!;
-  //     }
-  //
-  //     if (_cartList.isNotEmpty) {
-  //       if (_cartList[0].provider != null) {
-  //         _selectedProvider = _cartList[0].provider;
-  //         subcategoryId = _cartList[0].subCategoryId;
-  //       }
-  //     }
-  //   }
-  //
-  //   _isCartLoading = false;
-  //   update();
-  // }
-
-  Future<void> updateCartQuantityToApi(String cartID, int quantity, {required bool isIncrement}) async {
+  Future<void> updateCartQuantityToApi(String cartID, int quantity,
+      {required bool isIncrement}) async {
     _isCartLoading = true;
     update();
 
@@ -197,7 +187,9 @@ class CartController extends GetxController implements GetxService {
 
       // Parse wallet balance safely
       if (response.body['content']['wallet_balance'] != null) {
-        _walletBalance = double.tryParse(response.body['content']['wallet_balance'].toString()) ?? 0.0;
+        _walletBalance = double.tryParse(
+                response.body['content']['wallet_balance'].toString()) ??
+            0.0;
       } else {
         _walletBalance = 0.0;
         print('Wallet balance not found in response');
@@ -205,7 +197,9 @@ class CartController extends GetxController implements GetxService {
 
       // Parse total cost safely
       if (response.body['content']['total_cost'] != null) {
-        _totalPrice = double.tryParse(response.body['content']['total_cost'].toString()) ?? 0.0;
+        _totalPrice = double.tryParse(
+                response.body['content']['total_cost'].toString()) ??
+            0.0;
       } else {
         _totalPrice = 0.0;
         print('Total cost not found in response');
@@ -213,7 +207,9 @@ class CartController extends GetxController implements GetxService {
 
       // Parse referral amount safely
       if (response.body['content']['referral_amount'] != null) {
-        _referralAmount = double.tryParse(response.body['content']['referral_amount'].toString()) ?? 0.0;
+        _referralAmount = double.tryParse(
+                response.body['content']['referral_amount'].toString()) ??
+            0.0;
       } else {
         _referralAmount = 0.0;
         print('Referral amount not found in response');
@@ -236,7 +232,6 @@ class CartController extends GetxController implements GetxService {
     update();
   }
 
-
   Future<void> updateProvider(ProviderData? providerData) async {
     _isCartLoading = true;
     update();
@@ -245,7 +240,8 @@ class CartController extends GetxController implements GetxService {
     Response response = await cartRepo.updateProvider(providerData?.id ?? "");
     if (response.statusCode == 200) {
       await getCartListFromServer();
-      Get.find<ScheduleController>().buildSchedule(scheduleType: ScheduleType.asap);
+      Get.find<ScheduleController>()
+          .buildSchedule(scheduleType: ScheduleType.asap);
     }
     _isCartLoading = false;
     update();
@@ -296,7 +292,8 @@ class CartController extends GetxController implements GetxService {
     Get.back();
   }
 
-  Future<void> addMultipleCartToServer({bool fromServiceCenterDialog = true, required String providerId}) async {
+  Future<void> addMultipleCartToServer(
+      {bool fromServiceCenterDialog = true, required String providerId}) async {
     _isLoading = true;
     update();
     _replaceCartList();
@@ -310,37 +307,50 @@ class CartController extends GetxController implements GetxService {
 
     if (fromServiceCenterDialog) {
       Get.back();
-      customSnackBar("successfully_added_to_cart".tr, type: ToasterMessageType.success);
+      customSnackBar("successfully_added_to_cart".tr,
+          type: ToasterMessageType.success);
     }
 
     _isLoading = false;
     update();
   }
 
+  Future<void> addToCartApi(CartModel cartModel,
+      {required String providerId}) async {
+    try {
+      // call server endpoint to add item
+      if (providerId != "") {
+        await cartRepo.addToCartListToServer(CartModelBody(
+          serviceId: cartModel.service!.id,
+          categoryId: cartModel.categoryId,
+          variantKey: cartModel.variantKey,
+          quantity: cartModel.quantity.toString(),
+          subCategoryId: cartModel.subCategoryId,
+          providerId: providerId,
+          guestId: Get.find<SplashController>().getGuestId(),
+          lowestamount: cartModel.lowestAmount,
+        ));
+      } else {
+        await cartRepo.addToCartListToServer(CartModelBody(
+          serviceId: cartModel.service!.id,
+          categoryId: cartModel.categoryId,
+          variantKey: cartModel.variantKey,
+          quantity: cartModel.quantity.toString(),
+          subCategoryId: cartModel.subCategoryId,
+          guestId: Get.find<SplashController>().getGuestId(),
+          lowestamount: cartModel.lowestAmount,
+        ));
+      }
 
-
-
-  Future<void> addToCartApi(CartModel cartModel, {required String providerId}) async {
-    if (providerId != "") {
-      await cartRepo.addToCartListToServer(CartModelBody(
-        serviceId: cartModel.service!.id,
-        categoryId: cartModel.categoryId,
-        variantKey: cartModel.variantKey,
-        quantity: cartModel.quantity.toString(),
-        subCategoryId: cartModel.subCategoryId,
-        providerId: providerId,
-        guestId: Get.find<SplashController>().getGuestId(), lowestamount: cartModel.lowestAmount,
-      ));
-    } else {
-      await cartRepo.addToCartListToServer(CartModelBody(
-        serviceId: cartModel.service!.id,
-        categoryId: cartModel.categoryId,
-        variantKey: cartModel.variantKey,
-        quantity: cartModel.quantity.toString(),
-        subCategoryId: cartModel.subCategoryId,
-        guestId: Get.find<SplashController>().getGuestId(), lowestamount: cartModel.lowestAmount,
-      ));
+      // Backup guest cart after adding (so we can merge on login)
+      backupGuestCart();
+    } catch (e) {
+      print('addToCartApi error: $e');
     }
+  }
+
+  void clearGuestCartBackup() {
+    _guestCartBackup.clear();
   }
 
   void removeAllAndAddToCart(CartModel cartModel) {
@@ -350,17 +360,14 @@ class CartController extends GetxController implements GetxService {
     update();
   }
 
-
-
-
-
   int isAvailableInCart(CartModel cartModel, Service service) {
     int index = -1;
     for (var cart in _cartList) {
       if (cart.service != null) {
         if (cart.service!.id!.contains(service.id!)) {
           service.variationsAppFormat?.zoneWiseVariations?.forEach((variation) {
-            if (variation.variantKey == cart.variantKey && variation.price == cart.serviceCost) {
+            if (variation.variantKey == cart.variantKey &&
+                variation.price == cart.serviceCost) {
               if (cart.variantKey == cartModel.variantKey) {
                 index = _cartList.indexOf(cart);
               }
@@ -392,11 +399,13 @@ class CartController extends GetxController implements GetxService {
         0,
         service.tax ?? 0,
         variation.price ?? 0,
-        service, "",
+        service,
+        "",
       );
       int index = isAvailableInCart(cartModel, service);
       if (index != -1) {
-        cartModel.copyWith(id: _cartList[index].id, quantity: _cartList[index].quantity);
+        cartModel.copyWith(
+            id: _cartList[index].id, quantity: _cartList[index].quantity);
       }
       _initialCartList.add(cartModel);
     });
@@ -407,7 +416,9 @@ class CartController extends GetxController implements GetxService {
     _initialCartList.removeWhere((cart) => cart.quantity < 0);
 
     for (var initCart in _initialCartList) {
-      _cartList.removeWhere((cart) => cart.id.contains(initCart.id) && cart.variantKey.contains(initCart.variantKey));
+      _cartList.removeWhere((cart) =>
+          cart.id.contains(initCart.id) &&
+          cart.variantKey.contains(initCart.variantKey));
     }
     _cartList.addAll(_initialCartList);
     _cartList.removeWhere((element) => element.quantity == 0);
@@ -415,11 +426,13 @@ class CartController extends GetxController implements GetxService {
     return _cartList;
   }
 
-  Future<void> getProviderBasedOnSubcategory(String subcategoryId, bool reload) async {
+  Future<void> getProviderBasedOnSubcategory(
+      String subcategoryId, bool reload) async {
     if (reload || _providerList == null) {
       _providerList = null;
     }
-    Response response = await cartRepo.getProviderBasedOnSubcategory(subcategoryId);
+    Response response =
+        await cartRepo.getProviderBasedOnSubcategory(subcategoryId);
     if (response.statusCode == 200) {
       _providerList = [];
       List<dynamic> list = response.body['content'];
@@ -428,7 +441,9 @@ class CartController extends GetxController implements GetxService {
         providerList!.add(ProviderData.fromJson(element));
       }
 
-      if (_selectedProvider != null && _providerList != null && _providerList!.isNotEmpty) {
+      if (_selectedProvider != null &&
+          _providerList != null &&
+          _providerList!.isNotEmpty) {
         for (int i = 0; i < _providerList!.length; i++) {
           if (_selectedProvider?.id == _providerList![i].id) {
             selectedProviderIndex = i;
@@ -448,7 +463,8 @@ class CartController extends GetxController implements GetxService {
     update();
   }
 
-  void updatePreselectedProvider(ProviderData? providerData, {bool shouldUpdate = true}) {
+  void updatePreselectedProvider(ProviderData? providerData,
+      {bool shouldUpdate = true}) {
     _selectedProvider = providerData;
 
     if (shouldUpdate) {
@@ -470,8 +486,10 @@ class CartController extends GetxController implements GetxService {
   }
 
   updateBookingAmountWithoutCoupon() {
-    _couponAmount = CheckoutHelper.calculateDiscount(cartList: _cartList, discountType: DiscountType.coupon);
-    _bookingAmountWithoutCoupon = CheckoutHelper.calculateTotalAmountWithoutCoupon(cartList: _cartList);
+    _couponAmount = CheckoutHelper.calculateDiscount(
+        cartList: _cartList, discountType: DiscountType.coupon);
+    _bookingAmountWithoutCoupon =
+        CheckoutHelper.calculateTotalAmountWithoutCoupon(cartList: _cartList);
   }
 
   bool isOpenPartialPaymentPopup = true;
@@ -491,7 +509,9 @@ class CartController extends GetxController implements GetxService {
       checkAfterUsingCoupon = false;
     }
 
-    if (initialCheck != checkAfterUsingCoupon && walletPaymentStatus && isOpenPartialPaymentPopup) {
+    if (initialCheck != checkAfterUsingCoupon &&
+        walletPaymentStatus &&
+        isOpenPartialPaymentPopup) {
       showGeneralDialog(
         barrierColor: Colors.black.withValues(alpha: 0.5),
         transitionBuilder: (context, a1, a2, widget) {
@@ -504,7 +524,8 @@ class CartController extends GetxController implements GetxService {
                   padding: const EdgeInsets.all(Dimensions.paddingSizeLarge),
                   child: Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+                      borderRadius:
+                          BorderRadius.circular(Dimensions.radiusDefault),
                       color: Theme.of(context).cardColor,
                     ),
                     child: Stack(
@@ -519,7 +540,11 @@ class CartController extends GetxController implements GetxService {
                             updateWalletPaymentStatus(false);
                           },
                           icon: const Icon(Icons.cancel),
-                          color: Theme.of(context).textTheme.bodyMedium?.color?.withValues(alpha: 0.6),
+                          color: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.color
+                              ?.withValues(alpha: 0.6),
                         ),
                       ],
                     ),
@@ -552,7 +577,8 @@ class CartController extends GetxController implements GetxService {
         "message",
         customWidget: Row(
           children: [
-            Icon(Icons.circle, color: Colors.white.withValues(alpha: 0.8), size: 16),
+            Icon(Icons.circle,
+                color: Colors.white.withValues(alpha: 0.8), size: 16),
             Text(
               "  ${'minimum_booking_amount'.tr} ${PriceConverter.convertPrice(Get.find<SplashController>().configModel.content!.minBookingAmount!)}",
               style: robotoRegular.copyWith(color: Colors.white),
@@ -572,14 +598,18 @@ class CartController extends GetxController implements GetxService {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(Icons.warning_outlined, color: Theme.of(Get.context!).cardColor.withValues(alpha: 0.6), size: 16),
+                  Icon(Icons.warning_outlined,
+                      color: Theme.of(Get.context!)
+                          .cardColor
+                          .withValues(alpha: 0.6),
+                      size: 16),
                   const SizedBox(width: Dimensions.paddingSizeExtraSmall),
                   Flexible(
                     child: Text(
                       " ${'maximum_order_amount_exceed'.tr} ("
-                          "${'maximum_order_amount'.tr} "
-                          "${PriceConverter.convertPrice(Get.find<SplashController>().configModel.content!.maxBookingAmount!)})"
-                          " ${"admin_will_verify_this_order".tr}",
+                      "${'maximum_order_amount'.tr} "
+                      "${PriceConverter.convertPrice(Get.find<SplashController>().configModel.content!.maxBookingAmount!)})"
+                      " ${"admin_will_verify_this_order".tr}",
                       style: robotoRegular.copyWith(color: Colors.white),
                     ),
                   ),
@@ -615,7 +645,8 @@ class CartController extends GetxController implements GetxService {
   }
 
   String? checkScheduleBookingAvailability() {
-    if (Get.find<SplashController>().configModel.content?.scheduleBooking == 0) {
+    if (Get.find<SplashController>().configModel.content?.scheduleBooking ==
+        0) {
       return 'schedule_booking_currently_unavailable'.tr;
     } else if (_cartList.isNotEmpty &&
         _cartList[0].provider != null &&
@@ -626,672 +657,3 @@ class CartController extends GetxController implements GetxService {
     }
   }
 }
-
-
-//////30th may code below acheving cart functionality but not loading properly
-
-// import 'dart:convert';
-//
-// import 'package:demandium/api/local/cache_response.dart';
-// import 'package:demandium/helper/data_sync_helper.dart';
-// import 'package:get/get.dart';
-// import 'package:demandium/utils/core_export.dart';
-//
-// class CartController extends GetxController implements GetxService {
-//   final CartRepo cartRepo;
-//   CartController({required this.cartRepo});
-//
-//   List<CartModel> _guestCartBackup = []; // Backup for guest cart
-//   List<CartModel> _userCartBackup = [];  // Backup for logged-in user cart
-//
-//   List<CartModel> _cartList = [];
-//   List<CartModel> _initialCartList = [];
-//   bool _isLoading = false;
-//   bool _isCartLoading = false;
-//   double _amount = 0.0;
-//   final bool _isOthersInfoValid = false;
-//   bool _isButton = true;
-//
-//   List<CartModel> get cartList => _cartList;
-//   List<CartModel> get initialCartList => _initialCartList;
-//   double get amount => _amount;
-//   bool get isLoading => _isLoading;
-//   bool get isCartLoading => _isCartLoading;
-//   bool get isOthersInfoValid => _isOthersInfoValid;
-//   bool get isButton => _isButton;
-//
-//   List<ProviderData>? _providerList;
-//   List<ProviderData>? get providerList => _providerList;
-//
-//   double _totalPrice = 0;
-//   double get totalPrice => _totalPrice;
-//   set updateTotalPrice(double price) => _totalPrice = price;
-//
-//   double _walletBalance = 0.0;
-//   double get walletBalance => _walletBalance;
-//
-//   double _referralAmount = 0.0;
-//   double get referralAmount => _referralAmount;
-//
-//   double _bookingAmountWithoutCoupon = 0.0;
-//   double _couponAmount = 0.0;
-//
-//   bool _walletPaymentStatus = false;
-//   bool get walletPaymentStatus => _walletPaymentStatus;
-//
-//   ProviderData? _selectedProvider;
-//   ProviderData? get selectedProvider => _selectedProvider;
-//
-//   String subcategoryId = '';
-//
-//   int selectedProviderIndex = -1;
-//
-//   Future<void> getCartListFromServer({bool shouldUpdate = true}) async {
-//     DataSyncHelper.fetchAndSyncData(
-//       fetchFromLocal: () => cartRepo.getCartListFromServer<CacheResponseData>(source: DataSourceEnum.local),
-//       fetchFromClient: () => cartRepo.getCartListFromServer(source: DataSourceEnum.client),
-//       onResponse: (data, source) {
-//         _cartList = [];
-//         data['content']['cart']['data'].forEach((cart) {
-//           _cartList.add(CartModel.fromJson(cart));
-//         });
-//
-//         if (data['content']['wallet_balance'] != null) {
-//           _walletBalance = double.tryParse(data['content']['wallet_balance'].toString())!;
-//         }
-//         if (data['content']['total_cost'] != null) {
-//           _totalPrice = double.tryParse(data['content']['total_cost'].toString())!;
-//         }
-//         if (data['content']['referral_amount'] != null) {
-//           _referralAmount = double.tryParse(data['content']['referral_amount'].toString())!;
-//         }
-//
-//         if (_cartList.isNotEmpty) {
-//           if (_cartList[0].provider != null) {
-//             _selectedProvider = _cartList[0].provider;
-//             subcategoryId = _cartList[0].subCategoryId;
-//           }
-//         }
-//
-//         // Merge with guest cart if user is logged in
-//         if (Get.find<AuthController>().isLoggedIn() && _guestCartBackup.isNotEmpty) {
-//           _mergeGuestCartWithUserCart();
-//         }
-//
-//         if (shouldUpdate) {
-//           update();
-//         }
-//       },
-//     );
-//   }
-//
-//   // Backup the current cart before logout
-//   void backupUserCartBeforeLogout() {
-//     if (Get.find<AuthController>().isLoggedIn()) {
-//       _userCartBackup = List.from(_cartList);
-//     }
-//   }
-//
-//   // Backup guest cart when adding items in guest mode
-//   void backupGuestCart() {
-//     if (!Get.find<AuthController>().isLoggedIn()) {
-//       _guestCartBackup = List.from(_cartList);
-//     }
-//   }
-//
-//   // Merge guest cart with user cart upon login
-//   void _mergeGuestCartWithUserCart() {
-//     // Add guest cart items to the current cart list
-//     for (var guestCart in _guestCartBackup) {
-//       int index = _cartList.indexWhere((cart) =>
-//       cart.service?.id == guestCart.service?.id &&
-//           cart.variantKey == guestCart.variantKey);
-//       if (index != -1) {
-//         // If item exists, update quantity
-//         _cartList[index].quantity += guestCart.quantity;
-//       } else {
-//         // If item doesn't exist, add it
-//         _cartList.add(guestCart);
-//       }
-//     }
-//
-//     // Add backed-up user cart items
-//     for (var userCart in _userCartBackup) {
-//       int index = _cartList.indexWhere((cart) =>
-//       cart.service?.id == userCart.service?.id &&
-//           cart.variantKey == userCart.variantKey);
-//       if (index != -1) {
-//         // If item exists, update quantity
-//         _cartList[index].quantity += userCart.quantity;
-//       } else {
-//         // If item doesn't exist, add it
-//         _cartList.add(userCart);
-//       }
-//     }
-//
-//     // Clear backups after merging
-//     _guestCartBackup = [];
-//     _userCartBackup = [];
-//
-//     // Update server with merged cart
-//     _syncCartWithServer();
-//   }
-//
-//   // Sync merged cart with server
-//   Future<void> _syncCartWithServer() async {
-//     _isLoading = true;
-//     update();
-//
-//     // Remove all existing cart items from server
-//     await cartRepo.removeAllCartFromServer();
-//
-//     // Add merged cart items to server
-//     for (var cart in _cartList) {
-//       await addToCartApi(cart, providerId: cart.provider?.id ?? "");
-//     }
-//
-//     // Refresh cart list from server
-//     await getCartListFromServer(shouldUpdate: false);
-//
-//     _isLoading = false;
-//     update();
-//   }
-//
-//   Future<void> removeCartFromServer(CartModel cart) async {
-//     _isLoading = true;
-//     update();
-//
-//     try {
-//       final response = await cartRepo.removeCartFromServer(cart.id);
-//
-//       if (response.statusCode == 200) {
-//         _cartList.removeWhere((item) => item.id == cart.id);
-//         // Update backups
-//         _guestCartBackup.removeWhere((item) => item.id == cart.id);
-//         _userCartBackup.removeWhere((item) => item.id == cart.id);
-//       } else {
-//         print("Failed to remove item: ${response.statusCode}");
-//       }
-//     } catch (e) {
-//       print("Error removing item from server: $e");
-//     } finally {
-//       _isLoading = false;
-//       update();
-//     }
-//   }
-//
-//   Future<void> removeAllCartItem() async {
-//     Response response = await cartRepo.removeAllCartFromServer();
-//     if (response.statusCode == 200) {
-//       _cartList = [];
-//       _guestCartBackup = [];
-//       _userCartBackup = [];
-//       _isLoading = false;
-//       getCartListFromServer(shouldUpdate: false);
-//     }
-//   }
-//
-//   Future<void> updateCartQuantityToApi(String cartID, int quantity, {required bool isIncrement}) async {
-//     _isCartLoading = true;
-//     update();
-//
-//     Response response = await cartRepo.updateCartQuantity(cartID, quantity);
-//     if (response.statusCode == 200) {
-//       _cartList = [];
-//       if (response.body['content']?['cart']?['data'] != null) {
-//         for (var cart in response.body['content']['cart']['data']) {
-//           print('Cart JSON: $cart');
-//           final cartModel = CartModel.fromJson(cart);
-//           print('Parsed itemPrice: ${cartModel.itemPrice}');
-//           _cartList.add(cartModel);
-//         }
-//       } else {
-//         print('No cart data found in response');
-//       }
-//
-//       if (response.body['content']['wallet_balance'] != null) {
-//         _walletBalance = double.tryParse(response.body['content']['wallet_balance'].toString()) ?? 0.0;
-//       } else {
-//         _walletBalance = 0.0;
-//         print('Wallet balance not found in response');
-//       }
-//
-//       if (response.body['content']['total_cost'] != null) {
-//         _totalPrice = double.tryParse(response.body['content']['total_cost'].toString()) ?? 0.0;
-//       } else {
-//         _totalPrice = 0.0;
-//         print('Total cost not found in response');
-//       }
-//
-//       if (response.body['content']['referral_amount'] != null) {
-//         _referralAmount = double.tryParse(response.body['content']['referral_amount'].toString()) ?? 0.0;
-//       } else {
-//         _referralAmount = 0.0;
-//         print('Referral amount not found in response');
-//       }
-//
-//       if (_cartList.isNotEmpty && _cartList[0].provider != null) {
-//         _selectedProvider = _cartList[0].provider;
-//         subcategoryId = _cartList[0].subCategoryId;
-//       } else {
-//         _selectedProvider = null;
-//         subcategoryId = '';
-//         print('No provider or empty cart list');
-//       }
-//
-//       // Update backups
-//       backupGuestCart();
-//       if (Get.find<AuthController>().isLoggedIn()) {
-//         _userCartBackup = List.from(_cartList);
-//       }
-//     } else {
-//       print('API error: ${response.statusCode} - ${response.body}');
-//     }
-//
-//     _isCartLoading = false;
-//     update();
-//   }
-//
-//   Future<void> updateProvider(ProviderData? providerData) async {
-//     _isCartLoading = true;
-//     update();
-//     _selectedProvider = providerData;
-//
-//     Response response = await cartRepo.updateProvider(providerData?.id ?? "");
-//     if (response.statusCode == 200) {
-//       await getCartListFromServer();
-//       Get.find<ScheduleController>().buildSchedule(scheduleType: ScheduleType.asap);
-//     }
-//     _isCartLoading = false;
-//     update();
-//   }
-//
-//   void removeFromCartVariation(CartModel? cartModel) {
-//     if (cartModel == null) {
-//       _initialCartList = [];
-//     } else {
-//       _initialCartList.remove(cartModel);
-//       update();
-//     }
-//   }
-//
-//   void removeFromCartList(int cartIndex) {
-//     _cartList[cartIndex].quantity = _cartList[cartIndex].quantity - 1;
-//     update();
-//   }
-//
-//   void updateQuantity(int index, bool isIncrement) {
-//     if (index < 0 || index >= _initialCartList.length) return;
-//
-//     final item = _initialCartList[index];
-//
-//     if (isIncrement) {
-//       item.quantity++;
-//     } else {
-//       if (item.quantity > 1) {
-//         item.quantity--;
-//       }
-//     }
-//
-//     _isButton = _isQuantity();
-//     update();
-//   }
-//
-//   bool _isQuantity() {
-//     int count = 0;
-//     for (var cart in _initialCartList) {
-//       count += cart.quantity;
-//     }
-//     return count > 0;
-//   }
-//
-//   void addDataToCart() {
-//     update();
-//     onDemandToast("successfully_added_to_cart".tr, Colors.green);
-//     Get.back();
-//   }
-//
-//   Future addMultipleCartToServer({bool fromServiceCenterDialog = true, required String providerId}) async {
-//     _isLoading = true;
-//     update();
-//     _replaceCartList();
-//
-//     await cartRepo.removeAllCartFromServer();
-//     if (_cartList.isNotEmpty) {
-//       for (int index = 0; index < _cartList.length; index++) {
-//         await addToCartApi(_cartList[index], providerId: providerId);
-//       }
-//     }
-//
-//     if (fromServiceCenterDialog) {
-//       Get.back();
-//       customSnackBar("successfully_added_to_cart".tr, type: ToasterMessageType.success);
-//     }
-//
-//     _isLoading = false;
-//     update();
-//   }
-//
-//   Future<void> addToCartApi(CartModel cartModel, {required String providerId}) async {
-//     if (providerId != "") {
-//       await cartRepo.addToCartListToServer(CartModelBody(
-//         serviceId: cartModel.service!.id,
-//         categoryId: cartModel.categoryId,
-//         variantKey: cartModel.variantKey,
-//         quantity: cartModel.quantity.toString(),
-//         subCategoryId: cartModel.subCategoryId,
-//         providerId: providerId,
-//         guestId: Get.find<SplashController>().getGuestId(),
-//         lowestamount: cartModel.lowestAmount,
-//       ));
-//     } else {
-//       await cartRepo.addToCartListToServer(CartModelBody(
-//         serviceId: cartModel.service!.id,
-//         categoryId: cartModel.categoryId,
-//         variantKey: cartModel.variantKey,
-//         quantity: cartModel.quantity.toString(),
-//         subCategoryId: cartModel.subCategoryId,
-//         guestId: Get.find<SplashController>().getGuestId(),
-//         lowestamount: cartModel.lowestAmount,
-//       ));
-//     }
-//     // Update backups after adding to cart
-//     backupGuestCart();
-//     if (Get.find<AuthController>().isLoggedIn()) {
-//       _userCartBackup = List.from(_cartList);
-//       update();
-//     }
-//   }
-//
-//   void removeAllAndAddToCart(CartModel cartModel) {
-//     _cartList = [];
-//     _cartList.add(cartModel);
-//     _amount = cartModel.discountedPrice.toDouble() * cartModel.quantity;
-//     // Update backups
-//     backupGuestCart();
-//     if (Get.find<AuthController>().isLoggedIn()) {
-//       _userCartBackup = List.from(_cartList);
-//     }
-//     update();
-//   }
-//
-//   int isAvailableInCart(CartModel cartModel, Service service) {
-//     int index = -1;
-//     for (var cart in _cartList) {
-//       if (cart.service != null) {
-//         if (cart.service!.id!.contains(service.id!)) {
-//           service.variationsAppFormat?.zoneWiseVariations?.forEach((variation) {
-//             if (variation.variantKey == cart.variantKey && variation.price == cart.serviceCost) {
-//               if (cart.variantKey == cartModel.variantKey) {
-//                 index = _cartList.indexOf(cart);
-//               }
-//             }
-//           });
-//         }
-//       }
-//     }
-//     return index;
-//   }
-//
-//   setInitialCartList(Service service, {required int defaultQuantity}) {
-//     _totalPrice = 0;
-//     _initialCartList = [];
-//     service.variationsAppFormat?.zoneWiseVariations?.forEach((variation) {
-//       CartModel cartModel = CartModel(
-//         service.id!,
-//         service.id!,
-//         service.categoryId!,
-//         service.subCategoryId!,
-//         variation.variantKey!,
-//         variation.price!,
-//         0,
-//         0,
-//         0,
-//         0,
-//         0,
-//         "",
-//         0,
-//         service.tax ?? 0,
-//         variation.price ?? 0,
-//         service,
-//         "",
-//       );
-//       int index = isAvailableInCart(cartModel, service);
-//       if (index != -1) {
-//         cartModel.copyWith(id: _cartList[index].id, quantity: _cartList[index].quantity);
-//       }
-//       _initialCartList.add(cartModel);
-//     });
-//     _isButton = true;
-//   }
-//
-//   List<CartModel> _replaceCartList() {
-//     _initialCartList.removeWhere((cart) => cart.quantity < 0);
-//
-//     for (var initCart in _initialCartList) {
-//       _cartList.removeWhere((cart) => cart.id.contains(initCart.id) && cart.variantKey.contains(initCart.variantKey));
-//     }
-//     _cartList.addAll(_initialCartList);
-//     _cartList.removeWhere((element) => element.quantity == 0);
-//
-//     // Update backups
-//     backupGuestCart();
-//     if (Get.find<AuthController>().isLoggedIn()) {
-//       _userCartBackup = List.from(_cartList);
-//     }
-//
-//     return _cartList;
-//   }
-//
-//   Future<void> getProviderBasedOnSubcategory(String subcategoryId, bool reload) async {
-//     if (reload || _providerList == null) {
-//       _providerList = null;
-//     }
-//     Response response = await cartRepo.getProviderBasedOnSubcategory(subcategoryId);
-//     if (response.statusCode == 200) {
-//       _providerList = [];
-//       List<dynamic> list = response.body['content'];
-//
-//       for (var element in list) {
-//         providerList!.add(ProviderData.fromJson(element));
-//       }
-//
-//       if (_selectedProvider != null && _providerList != null && _providerList!.isNotEmpty) {
-//         for (int i = 0; i < _providerList!.length; i++) {
-//           if (_selectedProvider?.id == _providerList![i].id) {
-//             selectedProviderIndex = i;
-//           }
-//         }
-//       } else {
-//         selectedProviderIndex = -1;
-//       }
-//     } else {
-//       _providerList = [];
-//     }
-//     update();
-//   }
-//
-//   void updateProviderSelectedIndex(int index) {
-//     selectedProviderIndex = index;
-//     update();
-//   }
-//
-//   void updatePreselectedProvider(ProviderData? providerData, {bool shouldUpdate = true}) {
-//     _selectedProvider = providerData;
-//
-//     if (shouldUpdate) {
-//       update();
-//     }
-//   }
-//
-//   void setSubCategoryId(String subcategoryId) {
-//     this.subcategoryId = subcategoryId;
-//     update();
-//   }
-//
-//   void updateWalletPaymentStatus(bool status, {bool shouldUpdate = true}) {
-//     _walletPaymentStatus = status;
-//
-//     if (shouldUpdate) {
-//       update();
-//     }
-//   }
-//
-//   updateBookingAmountWithoutCoupon() {
-//     _couponAmount = CheckoutHelper.calculateDiscount(cartList: _cartList, discountType: DiscountType.coupon);
-//     _bookingAmountWithoutCoupon = CheckoutHelper.calculateTotalAmountWithoutCoupon(cartList: _cartList);
-//   }
-//
-//   bool isOpenPartialPaymentPopup = true;
-//
-//   Future<void> openWalletPaymentConfirmDialog() async {
-//     bool initialCheck;
-//     bool checkAfterUsingCoupon;
-//
-//     if (_bookingAmountWithoutCoupon > walletBalance) {
-//       initialCheck = true;
-//     } else {
-//       initialCheck = false;
-//     }
-//     if (_bookingAmountWithoutCoupon > (walletBalance + _couponAmount)) {
-//       checkAfterUsingCoupon = true;
-//     } else {
-//       checkAfterUsingCoupon = false;
-//     }
-//
-//     if (initialCheck != checkAfterUsingCoupon && walletPaymentStatus && isOpenPartialPaymentPopup) {
-//       showGeneralDialog(
-//         barrierColor: Colors.black.withValues(alpha: 0.5),
-//         transitionBuilder: (context, a1, a2, widget) {
-//           return Transform.scale(
-//             scale: a1.value,
-//             child: Opacity(
-//               opacity: a1.value,
-//               child: Center(
-//                 child: Padding(
-//                   padding: const EdgeInsets.all(Dimensions.paddingSizeLarge),
-//                   child: Container(
-//                     decoration: BoxDecoration(
-//                       borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-//                       color: Theme.of(context).cardColor,
-//                     ),
-//                     child: Stack(
-//                       alignment: Alignment.topRight,
-//                       clipBehavior: Clip.none,
-//                       children: [
-//                         const WalletPaymentConfirmDialog(),
-//                         IconButton(
-//                           padding: const EdgeInsets.all(0),
-//                           onPressed: () {
-//                             Get.back();
-//                             updateWalletPaymentStatus(false);
-//                           },
-//                           icon: const Icon(Icons.cancel),
-//                           color: Theme.of(context).textTheme.bodyMedium?.color?.withValues(alpha: 0.6),
-//                         ),
-//                       ],
-//                     ),
-//                   ),
-//                 ),
-//               ),
-//             ),
-//           );
-//         },
-//         transitionDuration: const Duration(milliseconds: 200),
-//         barrierDismissible: false,
-//         barrierLabel: '',
-//         context: Get.context!,
-//         pageBuilder: (context, animation1, animation2) {
-//           return Container();
-//         },
-//       );
-//     }
-//   }
-//
-//   void showMinimumAndMaximumOrderValueToaster() {
-//     ConfigModel configModel = Get.find<SplashController>().configModel;
-//
-//     Get.closeAllSnackbars();
-//
-//     if (configModel.content!.minBookingAmount != 0 &&
-//         configModel.content!.minBookingAmount! > _totalPrice &&
-//         _cartList.isNotEmpty) {
-//       customSnackBar(
-//         "message",
-//         customWidget: Row(
-//           children: [
-//             Icon(Icons.circle, color: Colors.white.withValues(alpha: 0.8), size: 16),
-//             Text(
-//               "  ${'minimum_booking_amount'.tr} ${PriceConverter.convertPrice(Get.find<SplashController>().configModel.content!.minBookingAmount!)}",
-//               style: robotoRegular.copyWith(color: Colors.white),
-//             ),
-//           ],
-//         ),
-//       );
-//     } else {
-//       if (configModel.content!.maxBookingAmount != 0 &&
-//           configModel.content!.maxBookingAmount! < _totalPrice &&
-//           _cartList.isNotEmpty) {
-//         customSnackBar(
-//           "message",
-//           customWidget: Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: [
-//               Row(
-//                 crossAxisAlignment: CrossAxisAlignment.start,
-//                 children: [
-//                   Icon(Icons.warning_outlined, color: Theme.of(Get.context!).cardColor.withValues(alpha: 0.6), size: 16),
-//                   const SizedBox(width: Dimensions.paddingSizeExtraSmall),
-//                   Flexible(
-//                     child: Text(
-//                       " ${'maximum_order_amount_exceed'.tr} ("
-//                           "${'maximum_order_amount'.tr} "
-//                           "${PriceConverter.convertPrice(Get.find<SplashController>().configModel.content!.maxBookingAmount!)})"
-//                           " ${"admin_will_verify_this_order".tr}",
-//                       style: robotoRegular.copyWith(color: Colors.white),
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             ],
-//           ),
-//         );
-//       }
-//     }
-//   }
-//
-//   Future<void> rebook(String bookingId) async {
-//     cartRepo.addRebookToServer(bookingId);
-//   }
-//
-//   String maskNumberWithoutCountryCode(String phoneNumber) {
-//     if (phoneNumber.length <= 6) {
-//       return phoneNumber;
-//     }
-//     String maskedNumber = phoneNumber.substring(0, phoneNumber.length - 6);
-//     maskedNumber += '***';
-//     maskedNumber += phoneNumber.substring(phoneNumber.length - 3);
-//     return maskedNumber;
-//   }
-//
-//   bool checkProviderUnavailability() {
-//     return _cartList.isNotEmpty &&
-//         _cartList[0].provider != null &&
-//         (_cartList[0].provider?.serviceAvailability == 0 ||
-//             _cartList[0].provider?.isActive == 0 ||
-//             _cartList[0].provider?.nextBookingEligibility == false);
-//   }
-//
-//   String? checkScheduleBookingAvailability() {
-//     if (Get.find<SplashController>().configModel.content?.scheduleBooking == 0) {
-//       return 'schedule_booking_currently_unavailable'.tr;
-//     } else if (_cartList.isNotEmpty &&
-//         _cartList[0].provider != null &&
-//         (_cartList[0].provider?.scheduleBookingEligibility == false)) {
-//       return 'schedule_booking_currently_unavailable_for_this_provider'.tr;
-//     } else {
-//       return null;
-//     }
-//   }
-// }
-

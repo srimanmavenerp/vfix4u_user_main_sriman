@@ -44,65 +44,82 @@ class _LanguageScreenState extends State<LanguageScreen> {
                         padding: EdgeInsets.symmetric(
                           horizontal: Dimensions.paddingSizeDefault,
                         ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            if (widget.fromPage != "fromSettingsPage")
-                              Image.asset(
-                                Images.newlogo,
-                                width: Dimensions.logoSize,
-                              ),
-                            const SizedBox(
-                                height: Dimensions.paddingSizeExtraMoreLarge),
-                            Text(
-                              'select_language'.tr,
-                              style: robotoMedium,
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(
-                                height: Dimensions.paddingSizeDefault),
-                            SingleChildScrollView(
-                              child: GridView.builder(
-                                padding: const EdgeInsets.only(left: 100),
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount:
-                                      ResponsiveHelper.isDesktop(context)
-                                          ? 4
-                                          : ResponsiveHelper.isTab(context)
-                                              ? 4
-                                              : 2,
-                                  childAspectRatio: 1,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              if (widget.fromPage != "fromSettingsPage")
+                                Image.asset(
+                                  Images.newlogo,
+                                  width: Dimensions.logoSize,
                                 ),
-                                itemCount:
-                                    localizationController.languages.length,
-                                physics: const NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemBuilder: (context, index) => FittedBox(
-                                  child: LanguageWidget(
-                                    languageModel:
-                                        localizationController.languages[index],
-                                    localizationController:
-                                        localizationController,
-                                    index: index,
+                              const SizedBox(
+                                  height: Dimensions.paddingSizeExtraMoreLarge),
+                              Text(
+                                'select_language'.tr,
+                                style: robotoMedium,
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(
+                                  height: Dimensions.paddingSizeDefault),
+                              SingleChildScrollView(
+                                child: Center(
+                                  child: ConstrainedBox(
+                                    constraints: BoxConstraints(
+                                      maxWidth:
+                                          ResponsiveHelper.isDesktop(context)
+                                              ? 600 // Limit width for desktop
+                                              : 400,
+                                    ),
+                                    child: ListView.builder(
+                                      itemCount: localizationController
+                                          .languages.length,
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: Dimensions.paddingSizeLarge,
+                                        horizontal:
+                                            Dimensions.paddingSizeDefault,
+                                      ),
+                                      itemBuilder: (context, index) {
+                                        return Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            vertical:
+                                                Dimensions.paddingSizeSmall,
+                                          ),
+                                          child: Center(
+                                            child: LanguageWidget(
+                                              languageModel:
+                                                  localizationController
+                                                      .languages[index],
+                                              localizationController:
+                                                  localizationController,
+                                              index: index,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(height: Dimensions.paddingSizeSmall),
-                            Text(
-                              'you_can_change_language'.tr,
-                              style: robotoRegular.copyWith(
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .bodyLarge!
-                                    .color!
-                                    .withOpacity(0.5),
+                              const SizedBox(
+                                  height: Dimensions.paddingSizeSmall),
+                              Text(
+                                'you_can_change_language'.tr,
+                                style: robotoRegular.copyWith(
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge!
+                                      .color!
+                                      .withOpacity(0.5),
+                                ),
+                                textAlign: TextAlign.center,
                               ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),

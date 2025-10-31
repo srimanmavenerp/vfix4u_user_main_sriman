@@ -1,19 +1,16 @@
 import 'package:get/get.dart';
 import 'package:demandium/utils/core_export.dart';
 
-
-
 class SignInScreen extends StatefulWidget {
   final bool exitFromApp;
   final String? fromPage;
-  const SignInScreen({super.key,required this.exitFromApp,  this.fromPage}) ;
+  const SignInScreen({super.key, required this.exitFromApp, this.fromPage});
 
   @override
   State<SignInScreen> createState() => _SignInScreenState();
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-
   var signInPhoneController = TextEditingController();
   var signInPasswordController = TextEditingController();
 
@@ -22,7 +19,6 @@ class _SignInScreenState extends State<SignInScreen> {
 
   bool _canExit = GetPlatform.isWeb ? true : false;
   final GlobalKey<FormState> customerSignInKey = GlobalKey<FormState>();
-
 
   @override
   void initState() {
@@ -33,31 +29,37 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return CustomPopScopeWidget(
-      onPopInvoked: ()=> _existFromApp(),
+      onPopInvoked: () => _existFromApp(),
       child: Scaffold(
-
-        appBar: ResponsiveHelper.isDesktop(context) ? const WebMenuBar() : !widget.exitFromApp ? AppBar(
-          elevation: 0, backgroundColor: Colors.transparent,
-          leading:  IconButton(
-            hoverColor:Colors.transparent,
-            icon: Icon(Icons.arrow_back_ios, color: Theme.of(context).colorScheme.primary),
-            color: Theme.of(context).textTheme.bodyLarge!.color,
-            onPressed: () => Navigator.pop(context),
-          ),
-        ) : null,
-
-        endDrawer: ResponsiveHelper.isDesktop(context) ? const MenuDrawer() : null,
-
-        body: SafeArea(child: FooterBaseView(
+        appBar: ResponsiveHelper.isDesktop(context)
+            ? const WebMenuBar()
+            : !widget.exitFromApp
+                ? AppBar(
+                    elevation: 0,
+                    backgroundColor: Colors.transparent,
+                    leading: IconButton(
+                      hoverColor: Colors.transparent,
+                      icon: Icon(Icons.arrow_back_ios,
+                          color: Theme.of(context).colorScheme.primary),
+                      color: Theme.of(context).textTheme.bodyLarge!.color,
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  )
+                : null,
+        endDrawer:
+            ResponsiveHelper.isDesktop(context) ? const MenuDrawer() : null,
+        body: SafeArea(
+            child: FooterBaseView(
           isCenter: true,
           child: WebShadowWrap(
             child: Center(
               child: GetBuilder<AuthController>(builder: (authController) {
-
                 var config = Get.find<SplashController>().configModel.content;
                 var otpLogin = config?.customerLogin?.loginOption?.otpLogin;
-                var manualLogin = config?.customerLogin?.loginOption?.manualLogin ?? 1;
-                var socialLogin = config?.customerLogin?.loginOption?.socialMediaLogin;
+                var manualLogin =
+                    config?.customerLogin?.loginOption?.manualLogin ?? 1;
+                var socialLogin =
+                    config?.customerLogin?.loginOption?.socialMediaLogin;
 
                 return Form(
                   autovalidateMode: ResponsiveHelper.isDesktop(context)
@@ -69,15 +71,16 @@ class _SignInScreenState extends State<SignInScreen> {
                       horizontal: ResponsiveHelper.isDesktop(context)
                           ? Dimensions.webMaxWidth / 3.5
                           : ResponsiveHelper.isTab(context)
-                          ? Dimensions.webMaxWidth / 5.5
-                          : Dimensions.paddingSizeLarge,
+                              ? Dimensions.webMaxWidth / 5.5
+                              : Dimensions.paddingSizeLarge,
                     ),
                     child: Column(
                       children: [
                         // Logo
                         Hero(
                           tag: Images.newlogo,
-                          child: Image.asset(Images.newlogo, width: Dimensions.logoSize),
+                          child: Image.asset(Images.newlogo,
+                              width: Dimensions.logoSize),
                         ),
                         SizedBox(
                           height: (manualLogin == 1 || otpLogin == 1)
@@ -88,15 +91,16 @@ class _SignInScreenState extends State<SignInScreen> {
                         // Email or Phone Field
                         if (manualLogin == 1 || otpLogin == 1)
                           CustomTextField(
-                            onCountryChanged: (countryCode) =>
-                            authController.countryDialCode = countryCode.dialCode!,
+                            onCountryChanged: (countryCode) => authController
+                                .countryDialCode = countryCode.dialCode!,
                             countryDialCode: authController.isNumberLogin ||
-                                (manualLogin == 0 && otpLogin == 1)
+                                    (manualLogin == 0 && otpLogin == 1)
                                 ? authController.countryDialCode
                                 : null,
                             title: 'email_phone'.tr,
-                            hintText: authController.selectedLoginMedium == LoginMedium.otp ||
-                                (manualLogin == 0 && otpLogin == 1)
+                            hintText: authController.selectedLoginMedium ==
+                                        LoginMedium.otp ||
+                                    (manualLogin == 0 && otpLogin == 1)
                                 ? "please_enter_phone_number".tr
                                 : 'enter_email_or_phone'.tr,
                             controller: signInPhoneController,
@@ -106,13 +110,15 @@ class _SignInScreenState extends State<SignInScreen> {
                             onChanged: (String text) {
                               final numberRegExp = RegExp(r'^[+]?[0-9]+$');
                               final emailRegExp = RegExp(r'@');
-                              if (text.isEmpty && authController.isNumberLogin) {
+                              if (text.isEmpty &&
+                                  authController.isNumberLogin) {
                                 authController.toggleIsNumberLogin();
                               } else if (text.startsWith(numberRegExp) &&
                                   !authController.isNumberLogin &&
                                   manualLogin == 1) {
                                 authController.toggleIsNumberLogin();
-                                signInPhoneController.text = text.replaceAll("+", "");
+                                signInPhoneController.text =
+                                    text.replaceAll("+", "");
                               } else if (text.contains(emailRegExp) &&
                                   authController.isNumberLogin &&
                                   manualLogin == 1) {
@@ -123,22 +129,22 @@ class _SignInScreenState extends State<SignInScreen> {
                               if (otpLogin == 1 &&
                                   manualLogin == 0 &&
                                   PhoneVerificationHelper.getValidPhoneNumber(
-                                      authController.countryDialCode +
-                                          signInPhoneController.text.trim(),
-                                      withCountryCode: true) ==
+                                          authController.countryDialCode +
+                                              signInPhoneController.text.trim(),
+                                          withCountryCode: true) ==
                                       "") {
                                 return "enter_valid_phone_number".tr;
                               }
                               if (authController.isNumberLogin &&
                                   PhoneVerificationHelper.getValidPhoneNumber(
-                                      authController.countryDialCode +
-                                          signInPhoneController.text.trim(),
-                                      withCountryCode: true) ==
+                                          authController.countryDialCode +
+                                              signInPhoneController.text.trim(),
+                                          withCountryCode: true) ==
                                       "") {
                                 return "enter_valid_phone_number".tr;
                               }
                               return (GetUtils.isPhoneNumber(value!) ||
-                                  GetUtils.isEmail(value))
+                                      GetUtils.isEmail(value))
                                   ? null
                                   : 'enter_email_or_phone'.tr;
                             },
@@ -146,9 +152,11 @@ class _SignInScreenState extends State<SignInScreen> {
 
                         // Password Field
                         if (manualLogin == 1 &&
-                            authController.selectedLoginMedium == LoginMedium.manual)
+                            authController.selectedLoginMedium ==
+                                LoginMedium.manual)
                           Padding(
-                            padding: const EdgeInsets.only(top: Dimensions.paddingSizeTextFieldGap),
+                            padding: const EdgeInsets.only(
+                                top: Dimensions.paddingSizeTextFieldGap),
                             child: CustomTextField(
                               title: 'password'.tr,
                               hintText: '************'.tr,
@@ -165,48 +173,59 @@ class _SignInScreenState extends State<SignInScreen> {
                         // Remember Me and Forgot Password
                         if (manualLogin == 1 || otpLogin == 1)
                           Padding(
-                            padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeDefault),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: Dimensions.paddingSizeDefault),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 // Remember Me Checkbox
                                 InkWell(
-                                  onTap: () => authController.toggleRememberMe(),
+                                  onTap: () =>
+                                      authController.toggleRememberMe(),
                                   child: Row(
                                     children: [
                                       SizedBox(
                                         width: 20.0,
                                         child: Checkbox(
-                                          activeColor: Theme.of(context).colorScheme.primary,
-                                          value: authController.isActiveRememberMe,
+                                          activeColor: Theme.of(context)
+                                              .colorScheme
+                                              .primary,
+                                          value:
+                                              authController.isActiveRememberMe,
                                           onChanged: (bool? isChecked) =>
                                               authController.toggleRememberMe(),
                                         ),
                                       ),
-                                      const SizedBox(width: Dimensions.paddingSizeExtraSmall),
+                                      const SizedBox(
+                                          width:
+                                              Dimensions.paddingSizeExtraSmall),
                                       Text('remember_me'.tr,
                                           style: robotoRegular.copyWith(
-                                              fontSize: Dimensions.fontSizeSmall)),
+                                              fontSize:
+                                                  Dimensions.fontSizeSmall)),
                                     ],
                                   ),
                                 ),
 
                                 // Forgot Password Button
                                 if (manualLogin == 1 &&
-                                    authController.selectedLoginMedium == LoginMedium.manual)
+                                    authController.selectedLoginMedium ==
+                                        LoginMedium.manual)
                                   TextButton(
-                                    onPressed: () => Get.toNamed(RouteHelper.getSendOtpScreen()),
+                                    onPressed: () => Get.toNamed(
+                                        RouteHelper.getSendOtpScreen()),
                                     child: Text('forgot_password'.tr,
                                         style: robotoRegular.copyWith(
                                           fontSize: Dimensions.fontSizeSmall,
-                                          color: Theme.of(context).colorScheme.tertiary,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .tertiary,
                                         )),
                                   ),
                               ],
                             ),
-
                           ),
-             // Terms and Conditions Checkbox
+                        // Terms and Conditions Checkbox
                         ConditionCheckBox(
                           checkBoxValue: authController.acceptTerms,
                           onTap: (bool? value) {
@@ -214,21 +233,164 @@ class _SignInScreenState extends State<SignInScreen> {
                           },
                         ),
 
-                         // Sign In Button
+                        // Sign In Button
                         if (manualLogin == 1 || otpLogin == 1)
                           CustomButton(
-                            buttonText: (authController.selectedLoginMedium == LoginMedium.otp) ||
-                                (manualLogin == 0 && otpLogin == 1)
+                            buttonText: (authController.selectedLoginMedium ==
+                                        LoginMedium.otp) ||
+                                    (manualLogin == 0 && otpLogin == 1)
                                 ? "get_otp".tr
                                 : 'sign_in'.tr,
                             onPressed: authController.acceptTerms &&
-                                customerSignInKey.currentState?.validate() == true
+                                    customerSignInKey.currentState
+                                            ?.validate() ==
+                                        true
                                 ? () {
-                              _login(authController, manualLogin, otpLogin);
-                            }
+                                    _login(
+                                        authController, manualLogin, otpLogin);
+                                  }
                                 : null,
                             isLoading: authController.isLoading,
                           ),
+                        (manualLogin == 1 || otpLogin == 1) && socialLogin == 1
+                            ? Center(
+                                child: Text('or'.tr,
+                                    style: robotoRegular.copyWith(
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge!
+                                          .color!
+                                          .withValues(alpha: 0.6),
+                                      fontSize: Dimensions.fontSizeSmall,
+                                    )))
+                            : const SizedBox(),
+
+                        manualLogin == 1 && (otpLogin == 1 || socialLogin == 1)
+                            ? Center(
+                                child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text('sign_in_with'.tr,
+                                      style: robotoRegular.copyWith(
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge!
+                                            .color!
+                                            .withValues(alpha: 0.6),
+                                        fontSize: Dimensions.fontSizeSmall,
+                                      )),
+                                  otpLogin == 1 && manualLogin == 1
+                                      ? TextButton(
+                                          onPressed: () {
+                                            String phoneWithoutCountryCode =
+                                                PhoneVerificationHelper
+                                                    .getValidPhoneNumber(
+                                                        Get.find<
+                                                                AuthController>()
+                                                            .getUserNumber());
+                                            String countryCode =
+                                                PhoneVerificationHelper
+                                                    .getCountryCode(Get.find<
+                                                            AuthController>()
+                                                        .getUserNumber());
+
+                                            if (authController
+                                                    .selectedLoginMedium ==
+                                                LoginMedium.otp) {
+                                              authController
+                                                  .toggleSelectedLoginMedium(
+                                                      loginMedium:
+                                                          LoginMedium.manual);
+                                              signInPhoneController.text =
+                                                  phoneWithoutCountryCode != ""
+                                                      ? phoneWithoutCountryCode
+                                                      : authController
+                                                          .getUserNumber();
+                                              if (countryCode != "") {
+                                                authController
+                                                    .toggleIsNumberLogin(
+                                                        value: true);
+                                              } else {
+                                                authController
+                                                    .toggleIsNumberLogin(
+                                                        value: false);
+                                              }
+                                              authController.initCountryCode(
+                                                  countryCode: countryCode != ""
+                                                      ? countryCode
+                                                      : null);
+                                              signInPasswordController.text =
+                                                  authController
+                                                      .getUserPassword();
+
+                                              if (signInPasswordController
+                                                  .text.isEmpty) {
+                                                signInPhoneController.text = "";
+                                                authController
+                                                    .toggleIsNumberLogin(
+                                                        value: false);
+                                              }
+                                            } else {
+                                              authController
+                                                  .toggleSelectedLoginMedium(
+                                                      loginMedium:
+                                                          LoginMedium.otp);
+                                              authController
+                                                  .toggleIsNumberLogin(
+                                                      value: true);
+                                              signInPasswordController.clear();
+
+                                              signInPhoneController.text =
+                                                  phoneWithoutCountryCode;
+                                              authController.initCountryCode(
+                                                  countryCode: countryCode != ""
+                                                      ? countryCode
+                                                      : null);
+                                            }
+                                          },
+                                          style: TextButton.styleFrom(
+                                            padding: EdgeInsets.zero,
+                                            minimumSize: const Size(30, 30),
+                                            tapTargetSize: MaterialTapTargetSize
+                                                .shrinkWrap,
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 5),
+                                            child: Text(
+                                                authController
+                                                            .selectedLoginMedium ==
+                                                        LoginMedium.manual
+                                                    ? 'OTP'.tr
+                                                    : "email_phone".tr,
+                                                style: robotoRegular.copyWith(
+                                                  decoration:
+                                                      TextDecoration.underline,
+                                                  decorationColor:
+                                                      Theme.of(context)
+                                                          .colorScheme
+                                                          .primary,
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .primary,
+                                                  fontSize:
+                                                      Dimensions.fontSizeSmall,
+                                                )),
+                                          ),
+                                        )
+                                      : const SizedBox()
+                                ],
+                              ))
+                            : const SizedBox.shrink(),
+
+                        socialLogin == 1
+                            ? SocialLoginWidget(
+                                fromPage: widget.fromPage,
+                              )
+                            : const SizedBox(),
+                        const SizedBox(
+                          height: Dimensions.paddingSizeDefault,
+                        ),
 
                         // Sign Up Section
                         if (manualLogin == 1)
@@ -239,7 +401,10 @@ class _SignInScreenState extends State<SignInScreen> {
                                 '${'do_not_have_an_account'.tr} ',
                                 style: robotoRegular.copyWith(
                                   fontSize: Dimensions.fontSizeSmall,
-                                  color: Theme.of(context).textTheme.bodyLarge!.color,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge!
+                                      .color,
                                 ),
                               ),
                               TextButton(
@@ -252,7 +417,8 @@ class _SignInScreenState extends State<SignInScreen> {
                                   'sign_up_here'.tr,
                                   style: robotoRegular.copyWith(
                                     decoration: TextDecoration.underline,
-                                    color: Theme.of(context).colorScheme.tertiary,
+                                    color:
+                                        Theme.of(context).colorScheme.tertiary,
                                     fontSize: Dimensions.fontSizeSmall,
                                   ),
                                 ),
@@ -263,7 +429,6 @@ class _SignInScreenState extends State<SignInScreen> {
                     ),
                   ),
                 );
-
               }),
             ),
           ),
@@ -272,28 +437,37 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
-  _initializeController(){
-    var authController  = Get.find<AuthController>();
+  _initializeController() {
+    var authController = Get.find<AuthController>();
 
-    String phoneWithoutCountryCode = PhoneVerificationHelper.getValidPhoneNumber(Get.find<AuthController>().getUserNumber());
-    String countryCode = PhoneVerificationHelper.getCountryCode(Get.find<AuthController>().getUserNumber());
+    String phoneWithoutCountryCode =
+        PhoneVerificationHelper.getValidPhoneNumber(
+            Get.find<AuthController>().getUserNumber());
+    String countryCode = PhoneVerificationHelper.getCountryCode(
+        Get.find<AuthController>().getUserNumber());
 
     var config = Get.find<SplashController>().configModel.content;
     var manualLogin = config?.customerLogin?.loginOption?.manualLogin ?? 1;
 
-    WidgetsBinding.instance.addPostFrameCallback((_){
-      if(countryCode != "" && phoneWithoutCountryCode !=""){
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (countryCode != "" && phoneWithoutCountryCode != "") {
         authController.toggleIsNumberLogin(value: true);
-      }else{
+      } else {
         authController.toggleIsNumberLogin(value: false);
       }
       authController.toggleSelectedLoginMedium(loginMedium: LoginMedium.manual);
-      authController.initCountryCode(countryCode: countryCode !="" ? countryCode : null);
+      authController.initCountryCode(
+          countryCode: countryCode != "" ? countryCode : null);
 
-      signInPhoneController.text = phoneWithoutCountryCode != "" ? phoneWithoutCountryCode : authController.isNumberLogin ? "" : Get.find<AuthController>().getUserNumber();
-      signInPasswordController.text = Get.find<AuthController>().getUserPassword();
+      signInPhoneController.text = phoneWithoutCountryCode != ""
+          ? phoneWithoutCountryCode
+          : authController.isNumberLogin
+              ? ""
+              : Get.find<AuthController>().getUserNumber();
+      signInPasswordController.text =
+          Get.find<AuthController>().getUserPassword();
 
-      if(manualLogin == 1 && signInPasswordController.text.isEmpty){
+      if (manualLogin == 1 && signInPasswordController.text.isEmpty) {
         signInPhoneController.text = "";
         authController.initCountryCode();
         authController.toggleIsNumberLogin(value: false);
@@ -302,8 +476,8 @@ class _SignInScreenState extends State<SignInScreen> {
     authController.toggleRememberMe(value: false, shouldUpdate: false);
   }
 
-  Future<bool> _existFromApp() async{
-    if(widget.exitFromApp) {
+  Future<bool> _existFromApp() async {
+    if (widget.exitFromApp) {
       if (_canExit) {
         if (GetPlatform.isAndroid) {
           SystemNavigator.pop();
@@ -315,7 +489,8 @@ class _SignInScreenState extends State<SignInScreen> {
         return Future.value(false);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('back_press_again_to_exit'.tr, style: const TextStyle(color: Colors.white)),
+          content: Text('back_press_again_to_exit'.tr,
+              style: const TextStyle(color: Colors.white)),
           behavior: SnackBarBehavior.floating,
           backgroundColor: Colors.green,
           duration: const Duration(seconds: 2),
@@ -327,45 +502,59 @@ class _SignInScreenState extends State<SignInScreen> {
         });
         return Future.value(false);
       }
-    }else {
+    } else {
       return true;
     }
   }
 
-
-
-  void _login(AuthController authController, var manualLogin, var otpLogin) async {
-    if(customerSignInKey.currentState!.validate()){
-
-
-
+  void _login(
+      AuthController authController, var manualLogin, var otpLogin) async {
+    if (customerSignInKey.currentState!.validate()) {
       var config = Get.find<SplashController>().configModel.content;
-     // Get.find<CartController>().getCartListFromServer();
+      // Get.find<CartController>().getCartListFromServer();
 
-      SendOtpType type = config?.firebaseOtpVerification == 1 ? SendOtpType.firebase : SendOtpType.verification;
+      SendOtpType type = config?.firebaseOtpVerification == 1
+          ? SendOtpType.firebase
+          : SendOtpType.verification;
 
-      String phone = PhoneVerificationHelper.getValidPhoneNumber(authController.countryDialCode+signInPhoneController.text.trim(), withCountryCode: true);
+      String phone = PhoneVerificationHelper.getValidPhoneNumber(
+          authController.countryDialCode + signInPhoneController.text.trim(),
+          withCountryCode: true);
 
-      if((authController.selectedLoginMedium == LoginMedium.otp) || (manualLogin == 0 && otpLogin == 1) ){
-        authController.sendVerificationCode(identity: phone, identityType : "phone", type: type, checkUser: 0).then((status) async {
-          if(status != null){
-            if(status.isSuccess!){
+      if ((authController.selectedLoginMedium == LoginMedium.otp) ||
+          (manualLogin == 0 && otpLogin == 1)) {
+        authController
+            .sendVerificationCode(
+                identity: phone,
+                identityType: "phone",
+                type: type,
+                checkUser: 0)
+            .then((status) async {
+          if (status != null) {
+            if (status.isSuccess!) {
               Get.toNamed(RouteHelper.getVerificationRoute(
-                identity: phone,identityType: "phone",
-                fromPage: config?.firebaseOtpVerification == 1 ? "firebase-otp" : "otp-login",
-                firebaseSession: type == SendOtpType.firebase ? status.message : null,
+                identity: phone,
+                identityType: "phone",
+                fromPage: config?.firebaseOtpVerification == 1
+                    ? "firebase-otp"
+                    : "otp-login",
+                firebaseSession:
+                    type == SendOtpType.firebase ? status.message : null,
               ));
 
               await Get.find<CartController>().getCartListFromServer();
-
-            }else{
+            } else {
               customSnackBar(status.message.toString().capitalizeFirst);
             }
             //await Get.find<CartController>().getCartListFromServer();
           }
         });
-      }else{
-        authController.login(fromPage : widget.fromPage, emailPhone :phone !="" ? phone : signInPhoneController.text.trim(), password : signInPasswordController.text.trim(), type : phone !="" ? "phone" : "email");
+      } else {
+        authController.login(
+            fromPage: widget.fromPage,
+            emailPhone: phone != "" ? phone : signInPhoneController.text.trim(),
+            password: signInPasswordController.text.trim(),
+            type: phone != "" ? "phone" : "email");
       }
     }
   }

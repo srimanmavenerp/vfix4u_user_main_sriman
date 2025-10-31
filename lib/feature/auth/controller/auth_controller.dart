@@ -80,6 +80,7 @@ class AuthController extends GetxController implements GetxService {
                 firebaseSession:
                     type == SendOtpType.firebase ? status.message : null,
               ));
+
               //await Get.find<CartController>().getCartListFromServer();
             } else {
               customSnackBar(status.message.toString().capitalizeFirst);
@@ -163,31 +164,48 @@ class AuthController extends GetxController implements GetxService {
   Future<void> logOut() async {
     Response? response = await authRepo.logOut();
     if (response?.statusCode == 200) {
-      if (kDebugMode) {
-        print("Logout successfully with ${response?.body}");
-      }
+      print("Logout successfully");
+
+      final cartController = Get.find<CartController>();
+
+      // Clear everything properly
+      cartController.clearCart(); // Clears live cart
+      cartController.clearGuestCartBackup(); // Clears guest backup storage
+
+      await authRepo.clearSharedData(); // Clears tokens etc.
+      Get.offAllNamed(RouteHelper.getSignInRoute());
     } else {
-      if (kDebugMode) {
-        print("Logout Failed");
-      }
+      print("Logout failed");
     }
   }
 
-  _saveTokenAndNavigate(
-      {String? fromPage,
-      required String token,
-      String? emailPhone,
-      String? password}) async {
+  _saveTokenAndNavigate({
+    String? fromPage,
+    required String token,
+    String? emailPhone,
+    String? password,
+  }) async {
     authRepo.saveUserToken(token);
-    authRepo
-        .updateToken(); // ✅ CRITICAL: sets Authorization header in apiClient
+    authRepo.updateToken(); // sets Authorization header for apiClient
 
-    // Now this will correctly use the authenticated token
-    await Get.find<CartController>().getCartListFromServer();
+    // Merge guest cart into the logged-in user's cart (one-time)
+    try {
+      final cartController = Get.find<CartController>();
+
+      // 1. Fetch current user cart
+      await cartController.getCartListFromServer();
+
+      // 2. Merge guest items into user cart (client + server)
+      await cartController.addGuestCartAfterLogin();
+
+      // 3. Refresh after merge to ensure accurate total
+      await cartController.getCartListFromServer();
+    } catch (e) {
+      print("Error merging guest cart after login: $e");
+    }
 
     Get.find<SplashController>().updateLanguage(true);
     Get.find<LocationController>().getAddressList();
-    // await Get.find<CartController>().getCartListFromServer();
 
     if (_isActiveRememberMe) {
       saveUserNumberAndPassword(
@@ -197,6 +215,7 @@ class AuthController extends GetxController implements GetxService {
     } else {
       clearUserNumberAndPassword();
     }
+
     if (fromPage == null || fromPage == "null") {
       if (Get.find<LocationController>().getUserAddress() != null) {
         updateSavedLocalAddress();
@@ -299,16 +318,23 @@ class AuthController extends GetxController implements GetxService {
           }
         }
       }
-
       if (token != null) {
-        saveUserNumberAndPassword(
-          number: "",
-          password: "",
-        );
-        await authRepo.saveUserToken(token);
+        saveUserNumberAndPassword(number: "", password: "");
         await authRepo.saveUserToken(token);
         await Get.find<UserController>().getUserInfo(reload: true);
         authRepo.updateToken();
+
+        // ✅ Merge guest cart into user cart (just like manual login)
+        try {
+          final cartController = Get.find<CartController>();
+          await cartController.getCartListFromServer();
+          await cartController.addGuestCartAfterLogin();
+          await cartController.getCartListFromServer();
+          print("✅ Guest cart merged into user cart after social login");
+        } catch (e) {
+          print("⚠️ Error merging guest cart after social login: $e");
+        }
+
         callback(true, token, message, null, null, null,
             socialLogInBody.userName, socialLogInBody.email);
       }
@@ -584,11 +610,16 @@ class AuthController extends GetxController implements GetxService {
       {String? firstName,
       String? lastName,
       String? phone,
-      String? email}) async {
+      String? email,
+      String? refcode}) async {
     _isLoading = true;
     update();
     Response response = await authRepo.registerWithSocialMedia(
-        firstName: firstName, lastName: lastName, phone: phone, email: email);
+        firstName: firstName,
+        lastName: lastName,
+        phone: phone,
+        email: email,
+        refcode: refcode);
 
     if (response.statusCode == 200) {
       if (response.body['content']['token'] != null) {
@@ -789,17 +820,42 @@ class AuthController extends GetxController implements GetxService {
 
   Future<void> googleLogout() async {
     try {
-      googleAccount = (await _googleSignIn.disconnect())!;
-      auth = await googleAccount!.authentication;
+      await _googleSignIn.disconnect();
+
+      final cartController = Get.find<CartController>();
+
+      cartController.clearCart(); // Clear live cart
+
+      cartController.clearGuestCartBackup(); // Clear guest backup
+
+      authRepo.clearSharedData(); // Clear user token and local auth
+
+      Get.offAllNamed(RouteHelper.getSignInRoute());
+
+      print("✅ Google logout completed successfully");
     } catch (e) {
-      if (kDebugMode) {
-        print("");
-      }
+      print("⚠️ Google logout error: $e");
     }
   }
 
   Future<void> signOutWithFacebook() async {
-    await FacebookAuth.instance.logOut();
+    try {
+      await FacebookAuth.instance.logOut();
+
+      final cartController = Get.find<CartController>();
+
+      cartController.clearCart();
+
+      cartController.clearGuestCartBackup();
+
+      authRepo.clearSharedData();
+
+      Get.offAllNamed(RouteHelper.getSignInRoute());
+
+      print("✅ Facebook logout completed successfully");
+    } catch (e) {
+      print("⚠️ Facebook logout error: $e");
+    }
   }
 
   Future<void> updateToken() async {
