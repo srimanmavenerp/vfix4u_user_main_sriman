@@ -30,9 +30,15 @@
         android:usesCleartextTraffic="true"
         android:extractNativeLibs="true"
         android:icon="@mipmap/user_logo">
-        android:requestLegacyExternalStorage="true"
+        
 
-
+  <meta-data
+        android:name="com.google.firebase.messaging.default_notification_icon"
+        android:resource="@drawable/notification_icon" />
+        <!-- Optional: notification color -->
+<!-- <meta-data
+    android:name="com.google.firebase.messaging.default_notification_color"
+    android:resource="@color/colorPrimary" /> -->
         <meta-data android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBjOIZCC6Afzl7_HyHnEoewg0KCMn3ecdQ"/>
 

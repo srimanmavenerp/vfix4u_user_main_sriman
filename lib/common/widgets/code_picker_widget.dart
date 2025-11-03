@@ -40,7 +40,8 @@ class CodePickerWidget extends StatefulWidget {
     this.onChanged,
     this.onInit,
     this.initialSelection = "IN", // Default to India
-    this.favorite = const ["IN"],
+    this.favorite,
+    //  = const ["IN"],
     this.textStyle,
     this.padding = const EdgeInsets.all(8.0),
     this.showCountryOnly = false,
@@ -63,8 +64,10 @@ class CodePickerWidget extends StatefulWidget {
     this.backgroundColor,
     this.boxDecoration,
     this.comparator,
-    this.countryFilter = const ["IN"], // Only India shown
-    this.hideSearch = true, // Hide search bar if only India is available
+    this.countryFilter,
+    // = const ["IN"], // Only India shown
+    this.hideSearch = false,
+    // = true, // Hide search bar if only India is available
     this.showDropDownButton = false,
     this.dialogSize,
     this.dialogBackgroundColor,
@@ -84,18 +87,22 @@ class _CodePickerWidgetState extends State<CodePickerWidget> {
 
   List<CountryCode> getCountryList() {
     List<Map<String, String>> jsonList = widget.countryList ?? [];
-    List<CountryCode> elements = jsonList.map((json) => CountryCode.fromJson(json)).toList();
+    List<CountryCode> elements =
+        jsonList.map((json) => CountryCode.fromJson(json)).toList();
 
     if (widget.comparator != null) {
       elements.sort(widget.comparator);
     }
 
     if (widget.countryFilter != null && widget.countryFilter!.isNotEmpty) {
-      final uppercaseCustomList = widget.countryFilter!.map((c) => c.toUpperCase()).toList();
-      elements = elements.where((c) =>
-          uppercaseCustomList.contains(c.code) ||
-          uppercaseCustomList.contains(c.name) ||
-          uppercaseCustomList.contains(c.dialCode)).toList();
+      final uppercaseCustomList =
+          widget.countryFilter!.map((c) => c.toUpperCase()).toList();
+      elements = elements
+          .where((c) =>
+              uppercaseCustomList.contains(c.code) ||
+              uppercaseCustomList.contains(c.name) ||
+              uppercaseCustomList.contains(c.dialCode))
+          .toList();
     }
 
     return elements;
@@ -109,7 +116,8 @@ class _CodePickerWidgetState extends State<CodePickerWidget> {
     if (widget.initialSelection != null) {
       selectedItem = elements!.firstWhere(
           (e) =>
-              (e.code!.toUpperCase() == widget.initialSelection!.toUpperCase()) ||
+              (e.code!.toUpperCase() ==
+                  widget.initialSelection!.toUpperCase()) ||
               (e.dialCode == widget.initialSelection) ||
               (e.name!.toUpperCase() == widget.initialSelection!.toUpperCase()),
           orElse: () => elements![0]);
@@ -117,12 +125,14 @@ class _CodePickerWidgetState extends State<CodePickerWidget> {
       selectedItem = elements![0];
     }
 
-    favoriteElements = elements!.where((e) =>
-        widget.favorite!.firstWhereOrNull((f) =>
-            e.code!.toUpperCase() == f.toUpperCase() ||
-            e.dialCode == f ||
-            e.name!.toUpperCase() == f.toUpperCase()) !=
-        null).toList();
+    favoriteElements = elements!
+        .where((e) =>
+            widget.favorite!.firstWhereOrNull((f) =>
+                e.code!.toUpperCase() == f.toUpperCase() ||
+                e.dialCode == f ||
+                e.name!.toUpperCase() == f.toUpperCase()) !=
+            null)
+        .toList();
   }
 
   @override
@@ -138,7 +148,8 @@ class _CodePickerWidgetState extends State<CodePickerWidget> {
     if (oldWidget.initialSelection != widget.initialSelection) {
       selectedItem = elements!.firstWhere(
           (e) =>
-              (e.code!.toUpperCase() == widget.initialSelection!.toUpperCase()) ||
+              (e.code!.toUpperCase() ==
+                  widget.initialSelection!.toUpperCase()) ||
               (e.dialCode == widget.initialSelection) ||
               (e.name!.toUpperCase() == widget.initialSelection!.toUpperCase()),
           orElse: () => elements![0]);
@@ -174,7 +185,8 @@ class _CodePickerWidgetState extends State<CodePickerWidget> {
                 flagDecoration: widget.flagDecoration,
                 hideHeaderText: false,
                 headerAlignment: MainAxisAlignment.center,
-                headerTextStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                headerTextStyle:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 topBarPadding: const EdgeInsets.all(16),
               ),
             ),
@@ -189,7 +201,8 @@ class _CodePickerWidgetState extends State<CodePickerWidget> {
     } else {
       Get.bottomSheet(
         ConstrainedBox(
-          constraints: BoxConstraints(maxHeight: MediaQuery.of(Get.context!).size.height * 0.45),
+          constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(Get.context!).size.height * 0.45),
           child: SelectionDialog(
             elements!,
             favoriteElements!,
@@ -209,7 +222,8 @@ class _CodePickerWidgetState extends State<CodePickerWidget> {
             closeIcon: widget.closeIcon,
             hideHeaderText: false,
             headerAlignment: MainAxisAlignment.center,
-            headerTextStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            headerTextStyle:
+                const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             topBarPadding: const EdgeInsets.all(16),
           ),
         ),
@@ -259,12 +273,15 @@ class _CodePickerWidgetState extends State<CodePickerWidget> {
           direction: Axis.horizontal,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            if (widget.showFlagMain != null ? widget.showFlagMain! : widget.showFlag!)
+            if (widget.showFlagMain != null
+                ? widget.showFlagMain!
+                : widget.showFlag!)
               Flexible(
                 flex: 0,
                 fit: widget.alignLeft! ? FlexFit.tight : FlexFit.loose,
                 child: Container(
-                  clipBehavior: widget.flagDecoration == null ? Clip.none : Clip.hardEdge,
+                  clipBehavior:
+                      widget.flagDecoration == null ? Clip.none : Clip.hardEdge,
                   decoration: widget.flagDecoration,
                   margin: const EdgeInsets.only(right: 7.0, left: 0),
                   child: Image.asset(
@@ -281,7 +298,8 @@ class _CodePickerWidgetState extends State<CodePickerWidget> {
                   widget.showOnlyCountryWhenClosed!
                       ? selectedItem!.toCountryStringOnly()
                       : selectedItem.toString(),
-                  style: widget.textStyle ?? Theme.of(context).textTheme.labelLarge,
+                  style: widget.textStyle ??
+                      Theme.of(context).textTheme.labelLarge,
                   overflow: widget.textOverflow,
                 ),
               ),
