@@ -180,27 +180,11 @@ class BookingDetailsSection extends StatelessWidget {
                               },
                             )
                           : const SizedBox(),
-
                       Get.find<AuthController>().isLoggedIn()
                           ? const SizedBox(
                               width: 15,
                             )
                           : const SizedBox(),
-
-                      // GetBuilder<ServiceBookingController>(
-                      //   builder: (serviceBookingController) {
-                      //     return Expanded(
-                      //       child: CustomButton(
-                      //         radius: 5,
-                      //         isLoading: serviceBookingController.isLoading,
-                      //         buttonText: "rebook".tr,
-                      //         onPressed: () {
-                      //           serviceBookingController.checkCartSubcategory(bookingDetailsController.bookingDetailsContent!.id!, bookingDetailsController.bookingDetailsContent!.subCategoryId!);
-                      //         },
-                      //       ),
-                      //     );
-                      //   }
-                      // ),
                     ],
                   )
                 : const SizedBox()
@@ -216,24 +200,28 @@ class BookingDetailsSection extends StatelessWidget {
 class PickupDetailsCard extends StatelessWidget {
   final Map<String, dynamic> laptopDetails;
   final dynamic bookingOtp;
-
   final dynamic status;
-
   final dynamic date;
 
-  const PickupDetailsCard(
-      {super.key,
-      required this.laptopDetails,
-      this.bookingOtp,
-      this.status,
-      this.date});
+  const PickupDetailsCard({
+    super.key,
+    required this.laptopDetails,
+    this.bookingOtp,
+    this.status,
+    this.date,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Get.isDarkMode;
+    final textColor = isDarkMode ? Colors.white : Colors.black87;
+
     final List<String> imageUrls = (laptopDetails['images'] as List<dynamic>?)
             ?.map((e) => e.toString())
             .toList() ??
         [];
+
+    final statusString = status?.toString().toLowerCase();
 
     return Card(
       elevation: 1,
@@ -248,46 +236,36 @@ class PickupDetailsCard extends StatelessWidget {
               "Pickup Details",
               style: robotoMedium.copyWith(
                 fontSize: 16,
-                color: Theme.of(context).primaryColor,
+                color: textColor,
               ),
             ),
             const SizedBox(height: 8),
-            _buildRow("Status", status?.toString()),
+            _buildRow("Status", status?.toString(), textColor),
             const SizedBox(height: 8),
-            if (status != null &&
-                status.toString().toLowerCase() == "reschedule")
+            if (statusString == "reschedule")
               _buildRow(
-                  "Date",
-                  date != null
-                      ? DateFormat("yyyy-MM-dd HH:mm:ss")
-                          .format(DateTime.parse(date.toString()))
-                      : "-"),
-            if (status != null && status.toString().toLowerCase() == "pickup")
+                "Date",
+                date != null
+                    ? DateFormat("yyyy-MM-dd HH:mm:ss")
+                        .format(DateTime.parse(date.toString()))
+                    : "-",
+                textColor,
+              ),
+            if (statusString == "pickup") ...[
               const SizedBox(height: 8),
-            if (status != null && status.toString().toLowerCase() == "pickup")
-              _buildRow("OTP", bookingOtp?.toString()),
-            if (status != null && status.toString().toLowerCase() == "pickup")
+              _buildRow("OTP", bookingOtp?.toString(), textColor),
               const SizedBox(height: 8),
-            if (status != null && status.toString().toLowerCase() == "pickup")
-              _buildRow("RAM", laptopDetails['ram']),
-            if (status != null && status.toString().toLowerCase() == "pickup")
+              _buildRow("RAM", laptopDetails['ram'], textColor),
               const SizedBox(height: 8),
-            if (status != null && status.toString().toLowerCase() == "pickup")
-              _buildRow("Storage", laptopDetails['storage']),
-            if (status != null && status.toString().toLowerCase() == "pickup")
+              _buildRow("Storage", laptopDetails['storage'], textColor),
               const SizedBox(height: 8),
-            if (status != null && status.toString().toLowerCase() == "pickup")
-              _buildRow("Processor", laptopDetails['processor']),
-            if (status != null && status.toString().toLowerCase() == "pickup")
+              _buildRow("Processor", laptopDetails['processor'], textColor),
               const SizedBox(height: 8),
-            if (status != null && status.toString().toLowerCase() == "pickup")
-              _buildRow("Model", laptopDetails['model']),
-            if (status != null && status.toString().toLowerCase() == "pickup")
+              _buildRow("Model", laptopDetails['model'], textColor),
               const SizedBox(height: 8),
-            if (status != null && status.toString().toLowerCase() == "pickup")
-              _buildRow("Note", laptopDetails['note']),
-            if (status != null && status.toString().toLowerCase() == "pickup")
+              _buildRow("Note", laptopDetails['note'], textColor),
               const SizedBox(height: 12),
+            ],
             if (imageUrls.isNotEmpty) _buildImageGrid(context, imageUrls),
           ],
         ),
@@ -295,22 +273,22 @@ class PickupDetailsCard extends StatelessWidget {
     );
   }
 
-  Widget _buildRow(String label, String? value) {
+  Widget _buildRow(String label, String? value, Color textColor) {
     return RichText(
       text: TextSpan(
         children: [
           TextSpan(
             text: "$label: ",
-            style: const TextStyle(
+            style: TextStyle(
               fontWeight: FontWeight.bold,
-              color: Colors.black87,
+              color: textColor,
             ),
           ),
           TextSpan(
             text: value ?? "-",
-            style: const TextStyle(
+            style: TextStyle(
               fontWeight: FontWeight.normal,
-              color: Colors.black87,
+              color: textColor,
             ),
           ),
         ],

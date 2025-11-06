@@ -35,6 +35,7 @@ if (keystorePropertiesFile.exists()) {
 android {
     namespace "com.vfix4u.com.vfix4u"
     compileSdk 35
+    ndkVersion "27.0.12077973"
 
     compileOptions {
         coreLibraryDesugaringEnabled true
@@ -57,7 +58,7 @@ android {
         applicationId "com.vfix4u.com.vfix4u"
         minSdkVersion 23
         targetSdkVersion 35
-        versionCode 19
+        versionCode 20
         versionName '1.1.9'
         multiDexEnabled true
         ndk {

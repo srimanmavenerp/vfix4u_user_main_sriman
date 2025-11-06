@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 class WebMidSectionContentItem extends StatelessWidget {
   final String title;
   final String subTitle;
-  const WebMidSectionContentItem({super.key, required this.title,required this.subTitle}) ;
+  const WebMidSectionContentItem(
+      {super.key, required this.title, required this.subTitle});
 
   @override
   Widget build(BuildContext context) {
@@ -14,23 +15,25 @@ class WebMidSectionContentItem extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          title, textAlign: TextAlign.start,
+          title,
+          textAlign: TextAlign.start,
           style: robotoBold.copyWith(fontSize: Dimensions.fontSizeLarge),
-          maxLines: 2, overflow: TextOverflow.ellipsis,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
         ),
         const SizedBox(height: Dimensions.paddingSizeSmall),
         Text(
-          subTitle, textAlign: TextAlign.start,
+          subTitle,
+          textAlign: TextAlign.start,
           style: robotoRegular.copyWith(
               color: Theme.of(context).disabledColor,
               fontSize: Dimensions.fontSizeSmall,
-            height: 1.5
-          ),
-          maxLines: 5, overflow: TextOverflow.ellipsis,
+              height: 1.5),
+          maxLines: 5,
+          overflow: TextOverflow.ellipsis,
         ),
         const SizedBox(height: Dimensions.paddingSizeLarge),
       ],
     );
   }
 }
-

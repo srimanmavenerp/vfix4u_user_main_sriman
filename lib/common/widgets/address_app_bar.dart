@@ -5,7 +5,8 @@ class AddressAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool? backButton;
   final UserInfoModel? userInfoModel;
 
-  const AddressAppBar({super.key, this.backButton = true, required this.userInfoModel});
+  const AddressAppBar(
+      {super.key, this.backButton = true, required this.userInfoModel});
 
   @override
   Widget build(BuildContext context) {
@@ -23,17 +24,18 @@ class AddressAppBar extends StatelessWidget implements PreferredSizeWidget {
       leadingWidth: backButton! ? Dimensions.paddingSizeLarge : 0,
       leading: backButton!
           ? IconButton(
-        icon: const Icon(Icons.arrow_back_ios),
-        color: Theme.of(context).cardColor,
-        onPressed: () => Navigator.pop(context),
-      )
+              icon: const Icon(Icons.arrow_back_ios),
+              color: Theme.of(context).cardColor,
+              onPressed: () => Navigator.pop(context),
+            )
           : const SizedBox(),
       title: Row(
         children: [
           Expanded(
             child: InkWell(
               hoverColor: Colors.transparent,
-              onTap: () => Get.toNamed(RouteHelper.getAccessLocationRoute('address')),
+              onTap: () =>
+                  Get.toNamed(RouteHelper.getAccessLocationRoute('address')),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -53,7 +55,8 @@ class AddressAppBar extends StatelessWidget implements PreferredSizeWidget {
                         if (locationController.getUserAddress() != null)
                           Flexible(
                             child: Text(
-                              locationController.getUserAddress()!.address ?? '',
+                              locationController.getUserAddress()!.address ??
+                                  '',
                               style: robotoMedium.copyWith(
                                 color: Colors.white,
                                 fontSize: Dimensions.fontSizeSmall,
@@ -97,8 +100,10 @@ class AddressAppBar extends StatelessWidget implements PreferredSizeWidget {
                     WidgetsBinding.instance.addPostFrameCallback((_) {
                       if (userController.userInfoModel != null &&
                           userController.userInfoModel!.imageFullPath != null &&
-                          userController.userInfoModel!.imageFullPath!.isNotEmpty) {
-                        debugPrint("Profile Image: ${userController.userInfoModel!.imageFullPath}");
+                          userController
+                              .userInfoModel!.imageFullPath!.isNotEmpty) {
+                        debugPrint(
+                            "Profile Image: ${userController.userInfoModel!.imageFullPath}");
                         debugPrint("IIIIIIIIIIIIIIIIIIIIIIIII");
                       }
                     });
@@ -106,10 +111,14 @@ class AddressAppBar extends StatelessWidget implements PreferredSizeWidget {
                     return CircleAvatar(
                       radius: 18,
                       backgroundImage: (userController.userInfoModel != null &&
-                          userController.userInfoModel!.imageFullPath != null &&
-                          userController.userInfoModel!.imageFullPath!.isNotEmpty)
-                          ? NetworkImage(userController.userInfoModel!.imageFullPath!)
-                          : const AssetImage('assets/images/profile_icon.png') as ImageProvider,
+                              userController.userInfoModel!.imageFullPath !=
+                                  null &&
+                              userController
+                                  .userInfoModel!.imageFullPath!.isNotEmpty)
+                          ? NetworkImage(
+                              userController.userInfoModel!.imageFullPath!)
+                          : const AssetImage('assets/images/profile_icon.png')
+                              as ImageProvider,
                       backgroundColor: Colors.transparent,
                     );
                   },
