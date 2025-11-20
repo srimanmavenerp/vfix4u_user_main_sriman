@@ -8,12 +8,16 @@ class BookingStatusButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeTine, horizontal: Dimensions.paddingSizeEight),
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(3),
+      padding: const EdgeInsets.symmetric(
+          vertical: Dimensions.paddingSizeTine,
+          horizontal: Dimensions.paddingSizeEight),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(3),
         color: ColorResources.buttonBackgroundColorMap[bookingStatus],
       ),
-      child: Text(bookingStatus?.tr ?? "",
-        style:robotoMedium.copyWith(
+      child: Text(
+        bookingStatus?.tr ?? "",
+        style: robotoMedium.copyWith(
           fontWeight: FontWeight.w500,
           fontSize: Dimensions.fontSizeSmall,
           color: ColorResources.buttonTextColorMap[bookingStatus],

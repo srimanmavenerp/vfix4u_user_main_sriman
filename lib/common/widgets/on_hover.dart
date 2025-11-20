@@ -5,7 +5,8 @@ class OnHover extends StatefulWidget {
   final Widget? child;
   final bool isItem;
   final double borderRadius;
-  const OnHover({super.key, this.child, this.isItem = false, this.borderRadius = 5});
+  const OnHover(
+      {super.key, this.child, this.isItem = false, this.borderRadius = 5});
 
   @override
   State<OnHover> createState() => _OnHoverState();
@@ -21,13 +22,14 @@ class _OnHoverState extends State<OnHover> {
       borderRadius: BorderRadius.circular(widget.borderRadius),
       boxShadow: [
         BoxShadow(
-          color: Get.isDarkMode ? Colors.grey.shade500.withValues(alpha: 0.4) :  Theme.of(context).colorScheme.primary.withValues(alpha: 0.13),
+          color: Get.isDarkMode
+              ? Colors.grey.shade500.withValues(alpha: 0.4)
+              : const Color(0xffFEFEFE).withValues(alpha: 0.13),
           blurRadius: 10,
           spreadRadius: 5,
           offset: const Offset(0, 1),
         )
       ],
-
     );
     final shedow2 = BoxDecoration(
       borderRadius: BorderRadius.circular(widget.borderRadius),
@@ -44,8 +46,12 @@ class _OnHoverState extends State<OnHover> {
       onExit: (event) => onEntered(false),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        decoration: widget.isItem ? isHovered ? shedow1 : shedow2 : shedow2,
-        transform: widget.isItem ? Matrix4.identity() : transform  ,
+        decoration: widget.isItem
+            ? isHovered
+                ? shedow1
+                : shedow2
+            : shedow2,
+        transform: widget.isItem ? Matrix4.identity() : transform,
         child: widget.child,
       ),
     );

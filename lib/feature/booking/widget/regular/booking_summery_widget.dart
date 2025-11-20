@@ -29,21 +29,24 @@ class BookingSummeryWidget extends StatelessWidget {
     double additionalCharge = isPartialPayment
         ? totalBookingAmount - paidAmount
         : bookingDetails.additionalCharge ?? 0;
-final totalSavings = (bookingDetails.totalDiscountAmount ?? 0) +
-                     (bookingDetails.totalReferralDiscountAmount ?? 0) +
-                     (bookingDetails.totalCampaignDiscountAmount ?? 0) +
-                     (bookingDetails.totalCouponDiscountAmount ?? 0);
+    final totalSavings = (bookingDetails.totalDiscountAmount ?? 0) +
+        (bookingDetails.totalReferralDiscountAmount ?? 0) +
+        (bookingDetails.totalCampaignDiscountAmount ?? 0) +
+        (bookingDetails.totalCouponDiscountAmount ?? 0);
 
     final double total = subTotal ?? 0;
-final double discount = bookingDetails.totalDiscountAmount ?? 0;
-final double couponDiscount = bookingDetails.totalCouponDiscountAmount ?? 0;
-final double campaignDiscount = bookingDetails.totalCampaignDiscountAmount ?? 0;
-final double referralDiscount = bookingDetails.totalReferralDiscountAmount ?? 0;
-final double extraFee = bookingDetails.extraFee ?? 0;
-final double tax = bookingDetails.totalTaxAmount?.toDouble() ?? 0;
+    final double discount = bookingDetails.totalDiscountAmount ?? 0;
+    final double couponDiscount = bookingDetails.totalCouponDiscountAmount ?? 0;
+    final double campaignDiscount =
+        bookingDetails.totalCampaignDiscountAmount ?? 0;
+    final double referralDiscount =
+        bookingDetails.totalReferralDiscountAmount ?? 0;
+    final double extraFee = bookingDetails.extraFee ?? 0;
+    final double tax = bookingDetails.totalTaxAmount?.toDouble() ?? 0;
 
-final double totalDiscounts = discount + couponDiscount + campaignDiscount + referralDiscount;
-final double sub_Total = total - totalDiscounts + extraFee;
+    final double totalDiscounts =
+        discount + couponDiscount + campaignDiscount + referralDiscount;
+    final double sub_Total = total - totalDiscounts + extraFee;
 
     return Container(
       decoration: BoxDecoration(
@@ -151,10 +154,7 @@ final double sub_Total = total - totalDiscounts + extraFee;
                           ),
                         ),
                       ]),
-
-
                 ),
-
 
                 if (bookingDetails.extraFee != null &&
                     bookingDetails.extraFee! > 0)
@@ -168,14 +168,14 @@ final double sub_Total = total - totalDiscounts + extraFee;
                       children: [
                         Text(
                           Get.find<SplashController>()
-                              .configModel
-                              .content
-                              ?.additionalChargeLabelName ??
+                                  .configModel
+                                  .content
+                                  ?.additionalChargeLabelName ??
                               "",
                           style: robotoRegular.copyWith(
                               fontSize: Dimensions.fontSizeSmall,
                               color:
-                              Theme.of(context).textTheme.bodyLarge?.color),
+                                  Theme.of(context).textTheme.bodyLarge?.color),
                           overflow: TextOverflow.ellipsis,
                         ),
                         Text(
@@ -183,7 +183,7 @@ final double sub_Total = total - totalDiscounts + extraFee;
                           style: robotoRegular.copyWith(
                               fontSize: Dimensions.fontSizeSmall,
                               color:
-                              Theme.of(context).textTheme.bodyLarge!.color),
+                                  Theme.of(context).textTheme.bodyLarge!.color),
                         ),
                       ],
                     ),
@@ -340,31 +340,35 @@ final double sub_Total = total - totalDiscounts + extraFee;
                 //     ),
                 //   ),
 
-              Gaps.verticalGapOf(Dimensions.paddingSizeSmall),
-                                Padding(
-                padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Sub total'.tr,
-                      style: robotoRegular.copyWith(
-                          fontSize: Dimensions.fontSizeSmall,
-                          color: Theme.of(context).textTheme.bodyLarge!.color!),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    Directionality(
-                      textDirection: TextDirection.ltr,
-                      child: Text(
-                        PriceConverter.convertPrice(sub_Total, isShowLongPrice: true),
+                Gaps.verticalGapOf(Dimensions.paddingSizeSmall),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: Dimensions.paddingSizeDefault),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Sub total'.tr,
                         style: robotoRegular.copyWith(
                             fontSize: Dimensions.fontSizeSmall,
-                            color: Theme.of(context).textTheme.bodyLarge!.color),
+                            color:
+                                Theme.of(context).textTheme.bodyLarge!.color!),
+                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                  ],
+                      Directionality(
+                        textDirection: TextDirection.ltr,
+                        child: Text(
+                          PriceConverter.convertPrice(sub_Total,
+                              isShowLongPrice: true),
+                          style: robotoRegular.copyWith(
+                              fontSize: Dimensions.fontSizeSmall,
+                              color:
+                                  Theme.of(context).textTheme.bodyLarge!.color),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
                 Gaps.verticalGapOf(Dimensions.paddingSizeSmall),
 
                 Padding(
@@ -396,11 +400,8 @@ final double sub_Total = total - totalDiscounts + extraFee;
                   ),
                 ),
                 Gaps.verticalGapOf(Dimensions.paddingSizeSmall),
-                
-                
 
-
-                 if (bookingDetails.additionalCharge != null &&
+                if (bookingDetails.additionalCharge != null &&
                     additionalCharge < 0 &&
                     (bookingDetails.paymentMethod != "cash_after_service" ||
                         bookingDetails.partialPayments!.isNotEmpty))
@@ -485,17 +486,18 @@ final double sub_Total = total - totalDiscounts + extraFee;
                                 const SizedBox(
                                     height: Dimensions.paddingSizeSmall),
                                 if (totalSavings > 0)
-  Padding(
-    padding: const EdgeInsets.symmetric(vertical: 4.0),
-    child: Text(
-      '🎉 Wola! You saved ₹${totalSavings.toStringAsFixed(2)}/- on this service!',
-      style: const TextStyle(
-        color: Colors.red,
-        fontWeight: FontWeight.bold,
-        fontSize: 14,
-      ),
-    ),
-  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 4.0),
+                                    child: Text(
+                                      '🎉 Wola! You saved ₹${totalSavings.toStringAsFixed(2)}/- on this service!',
+                                      style: const TextStyle(
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ),
                               ],
                             ),
                           )

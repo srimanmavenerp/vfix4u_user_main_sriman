@@ -119,6 +119,13 @@ class CategoryView extends StatelessWidget {
                             Positioned.fill(
                               child: RippleButton(
                                 onTap: () {
+                                  print("""
+object:
+  id: ${category.id},
+  name: ${category.name},
+  index: $index
+""");
+
                                   Get.toNamed(
                                     RouteHelper.getCategoryProductRoute(
                                       category.id!,

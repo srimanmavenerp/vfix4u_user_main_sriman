@@ -5,20 +5,26 @@ import 'package:demandium/feature/checkout/model/payment_response_model.dart';
 import 'package:get/get.dart';
 import 'package:demandium/utils/core_export.dart';
 
-
 class BookingDetailsScreen extends StatefulWidget {
   final String? bookingID;
   final String? subBookingId;
   final String? phone;
   final String? fromPage;
   final String? token;
-  const BookingDetailsScreen({super.key,  this.bookingID,  this.fromPage,  this.phone, this.subBookingId, this.token}) ;
+  const BookingDetailsScreen(
+      {super.key,
+      this.bookingID,
+      this.fromPage,
+      this.phone,
+      this.subBookingId,
+      this.token});
 
   @override
   State<BookingDetailsScreen> createState() => _BookingDetailsScreenState();
 }
 
-class _BookingDetailsScreenState extends State<BookingDetailsScreen> with SingleTickerProviderStateMixin {
+class _BookingDetailsScreenState extends State<BookingDetailsScreen>
+    with SingleTickerProviderStateMixin {
   final scaffoldState = GlobalKey<ScaffoldState>();
   TabController? tabController;
   bool isSubBooking = false;
@@ -26,46 +32,59 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> with Single
   @override
   void initState() {
     super.initState();
-    tabController = TabController(length: BookingDetailsTabs.values.length, vsync: this);
+    tabController =
+        TabController(length: BookingDetailsTabs.values.length, vsync: this);
     _loadData();
   }
 
   _loadData() async {
-
     if (_isValidToken(widget.token)) {
       String transactionId = _extractTransactionId(widget.token!);
-      PaymentResponseModel? paymentResponse = await Get.find<CheckOutController>().getDigitalPaymentResponse(transactionId: transactionId);
+      PaymentResponseModel? paymentResponse =
+          await Get.find<CheckOutController>()
+              .getDigitalPaymentResponse(transactionId: transactionId);
 
-      if (_hasBookingRepeatId(paymentResponse) !=null ) {
-        Get.find<BookingDetailsController>().getSubBookingDetails(bookingId: _hasBookingRepeatId(paymentResponse) ?? "");
+      if (_hasBookingRepeatId(paymentResponse) != null) {
+        Get.find<BookingDetailsController>().getSubBookingDetails(
+            bookingId: _hasBookingRepeatId(paymentResponse) ?? "");
         setState(() {
           isSubBooking = true;
         });
-      } else if(_hasBookingId(paymentResponse) != null){
-        Get.find<BookingDetailsController>().getBookingDetails(bookingId: _hasBookingId(paymentResponse) ?? "");
+      } else if (_hasBookingId(paymentResponse) != null) {
+        Get.find<BookingDetailsController>()
+            .getBookingDetails(bookingId: _hasBookingId(paymentResponse) ?? "");
         setState(() {
           isSubBooking = false;
         });
       }
     } else {
       if (_hasValidBookingId(widget.bookingID, widget.subBookingId)) {
-        isSubBooking = widget.subBookingId != null && widget.subBookingId != "null";
+        isSubBooking =
+            widget.subBookingId != null && widget.subBookingId != "null";
 
         if (widget.fromPage == "track-booking") {
-          Get.find<BookingDetailsController>().trackBookingDetails(widget.bookingID ?? "", "+${widget.phone?.trim()}", reload: false,);
+          Get.find<BookingDetailsController>().trackBookingDetails(
+            widget.bookingID ?? "",
+            "+${widget.phone?.trim()}",
+            reload: false,
+          );
         } else if (isSubBooking) {
-          Get.find<BookingDetailsController>().getSubBookingDetails(bookingId: widget.subBookingId ?? "");
+          Get.find<BookingDetailsController>()
+              .getSubBookingDetails(bookingId: widget.subBookingId ?? "");
         } else {
-          Get.find<BookingDetailsController>().getBookingDetails(bookingId: widget.bookingID ?? "");
+          Get.find<BookingDetailsController>()
+              .getBookingDetails(bookingId: widget.bookingID ?? "");
         }
       }
     }
   }
 
-
   bool _isValidToken(String? token) {
     if (token == null || token == "null" || token.isEmpty) return false;
-    String transactionReference = StringParser.parseString(utf8.decode(base64Url.decode(token)), "transaction_reference",);
+    String transactionReference = StringParser.parseString(
+      utf8.decode(base64Url.decode(token)),
+      "transaction_reference",
+    );
     return transactionReference.isNotEmpty;
   }
 
@@ -77,241 +96,330 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> with Single
   }
 
   String? _hasBookingRepeatId(PaymentResponseModel? response) {
-    return response?.content?.bookingRepeatId ;
+    return response?.content?.bookingRepeatId;
   }
+
   String? _hasBookingId(PaymentResponseModel? response) {
-    return response?.content?.bookingId ;
+    return response?.content?.bookingId;
   }
 
   bool _hasValidBookingId(String? bookingID, String? subBookingId) {
     return bookingID != null || subBookingId != null;
   }
 
-
   @override
   Widget build(BuildContext context) {
-
     return CustomPopScopeWidget(
-     onPopInvoked: (){
-       if(widget.fromPage == 'fromNotification') {
-         Get.offAllNamed(RouteHelper.getInitialRoute());
-       }
-     },
+      onPopInvoked: () {
+        if (widget.fromPage == 'fromNotification') {
+          Get.offAllNamed(RouteHelper.getInitialRoute());
+        }
+      },
       child: Scaffold(
-        endDrawer:ResponsiveHelper.isDesktop(context) ? const MenuDrawer():null,
+        endDrawer:
+            ResponsiveHelper.isDesktop(context) ? const MenuDrawer() : null,
         appBar: CustomAppBar(
           title: "booking_details".tr,
           onBackPressed: () {
-            if(widget.fromPage == 'fromNotification'){
+            if (widget.fromPage == 'fromNotification') {
               Get.offAllNamed(RouteHelper.getInitialRoute());
-            }else{
-              if(Navigator.canPop(context)){
+            } else {
+              if (Navigator.canPop(context)) {
                 Get.back();
-              }else{
+              } else {
                 Get.offAllNamed(RouteHelper.getInitialRoute());
               }
             }
           },
-          actionWidget: GetBuilder<BookingDetailsController>(builder: (bookingDetailsController){
+          actionWidget: GetBuilder<BookingDetailsController>(
+              builder: (bookingDetailsController) {
+            BookingDetailsContent? bookingDetailsContent = isSubBooking
+                ? bookingDetailsController.subBookingDetailsContent
+                : bookingDetailsController.bookingDetailsContent;
+            final List<CancelReason> cancelreason =
+                bookingDetailsContent?.cancelReasons ?? [];
 
-            BookingDetailsContent ? bookingDetailsContent = isSubBooking ? bookingDetailsController.subBookingDetailsContent : bookingDetailsController.bookingDetailsContent;
-final List<CancelReason> cancelreason = bookingDetailsContent?.cancelReasons ?? [];
-
-if (bookingDetailsContent != null) {
-  return bookingDetailsContent.bookingStatus == "pending" ? PopupMenuButton<PopupMenuModel>(
-          shape: RoundedRectangleBorder(
-            borderRadius: const BorderRadius.all(Radius.circular(Dimensions.radiusSmall)),
-            side: BorderSide(color: Theme.of(context).hintColor.withValues(alpha: 0.1)),
-          ),
-          surfaceTintColor: Theme.of(context).cardColor,
-          position: PopupMenuPosition.under,
-          elevation: 8,
-          shadowColor: Theme.of(context).hintColor.withValues(alpha: 0.3),
-          padding: EdgeInsets.zero,
-          menuPadding: EdgeInsets.zero,
-          itemBuilder: (BuildContext context) {
-            return bookingDetailsController
-                .getPopupMenuList(bookingDetailsContent.bookingStatus ?? "")
-                .map((PopupMenuModel option) {
-              return PopupMenuItem<PopupMenuModel>(
-                value: option,
-                padding: EdgeInsets.zero,
-                height: 45,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
-                  child: Text(option.title.tr, style: robotoRegular),
-                ),
-                onTap: () async {
-                  if (option.title == "download_invoice") {
-                    String languageCode = Get.find<LocalizationController>().locale.languageCode;
-                    String uri =
-                        "${AppConstants.baseUrl}${isSubBooking ? AppConstants.singleRepeatBookingInvoiceUrl : AppConstants.regularBookingInvoiceUrl}${bookingDetailsContent.id}/$languageCode";
-                    if (kDebugMode) {
-                      print("Uri : $uri");
-                    }
-                    await _launchUrl(Uri.parse(uri));
-                  } else if (option.title == "cancel") {
-                    String? selectedCancelReason;
-                    String? otherReason;
-
-                    // Show confirmation dialog
-                    Get.dialog(
-                      ConfirmationDialog(
-                        icon: Images.deleteProfile,
-                        title: 'are_you_sure_to_cancel_this_full_booking'.tr,
-                        description: 'once_cancel_full_booking'.tr,
-                        noButtonText: "yes_cancel".tr,
-                        noButtonColor: Theme.of(context).colorScheme.primary,
-                        noTextColor: Colors.white,
-                        yesButtonText: "not_now".tr,
-                        yesButtonColor: Theme.of(context).colorScheme.error,
-                        yesTextColor: Colors.white,
-                        onYesPressed: () {
-                          Get.back();
-                        },
-                        onNoPressed: () async {
-                          // When user clicks on "Yes, Cancel", show a new dialog for selecting cancellation reason
-                          Get.back(); // Close the confirmation dialog
-
-                          // Show dialog with cancel reasons and submit button
-                          Get.dialog(
-                            StatefulBuilder(
-                              builder: (context, setState) {
-                                return AlertDialog(
-                                  title: Text('Select Cancellation Reason'),
-                                  content: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      // Loop through the cancel reasons and display radio buttons
-                                      ...cancelreason.map((reason) {
-                                        return RadioListTile<String>(
-                                          value: reason.reason!, // Use the reason's value
-                                          groupValue: selectedCancelReason,
-                                          onChanged: (String? value) {
-                                            setState(() {
-                                              selectedCancelReason = value;
-                                              if (value != "Other") {
-                                                otherReason = null; // Clear the input if not "Other"
-                                              }
-                                            });
-                                          },
-                                          title: Text(reason.reason!.tr), // Use the reason's title
-                                        );
-                                      }).toList(),
-                                      if (selectedCancelReason == "Other") ...[
-                                        // If "Other" is selected, show the input field
-                                        TextField(
-                                          onChanged: (value) {
-                                            otherReason = value;
-                                          },
-                                          decoration: InputDecoration(
-                                            hintText: "Please provide your reason",
-                                            border: OutlineInputBorder(),
-                                          ),
-                                        ),
-                                      ]
-                                    ],
-                                  ),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Get.back(); // Close the reason selection dialog
-                                      },
-                                      child: Text(
-                                        "Cancel",
-                                        style: TextStyle(color: Theme.of(context).colorScheme.error),
-                                      ),
-                                    ),
-                                    TextButton(
-                                      onPressed: () async {
-                                        // Submit the cancellation based on selected reason
-                                        String? reasonToSubmit = selectedCancelReason;
-                                        if (reasonToSubmit == "Other" && otherReason != null && otherReason!.isNotEmpty) {
-                                          reasonToSubmit = otherReason;
-                                        }
-
-                                        if (reasonToSubmit != null) {
-                                          Get.dialog(const CustomLoader(), barrierDismissible: false);
-
-                                          if (isSubBooking) {
-                                            await bookingDetailsController.subBookingCancel(
-                                              subBookingId: bookingDetailsContent.id ?? "",
-                                            );
-                                          } else {
-                                            await bookingDetailsController.bookingCancel(
-                                              bookingId: bookingDetailsContent.id ?? "",
-                                              cancelReason: reasonToSubmit,
-                                            );
-                                          }
-
-                                          Get.back(); // Close the loading dialog
-                                          Get.back(); // Close the reason selection dialog
-                                        } else {
-                                          // Show a message if no reason is selected
-                                          Get.snackbar('Error', 'Please select a reason to cancel.',
-                                              snackPosition: SnackPosition.BOTTOM);
-                                        }
-                                      },
-                                      child: Text(
-                                        "Submit",
-                                        style: TextStyle(color: Theme.of(context).colorScheme.primary),
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              },
-                            ),
-                            useSafeArea: false,
-                          );
-                        },
+            if (bookingDetailsContent != null) {
+              return bookingDetailsContent.bookingStatus == "pending"
+                  ? PopupMenuButton<PopupMenuModel>(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: const BorderRadius.all(
+                            Radius.circular(Dimensions.radiusSmall)),
+                        side: BorderSide(
+                            color: Theme.of(context)
+                                .hintColor
+                                .withValues(alpha: 0.1)),
                       ),
+                      surfaceTintColor: Theme.of(context).cardColor,
+                      position: PopupMenuPosition.under,
+                      elevation: 8,
+                      shadowColor:
+                          Theme.of(context).hintColor.withValues(alpha: 0.3),
+                      padding: EdgeInsets.zero,
+                      menuPadding: EdgeInsets.zero,
+                      itemBuilder: (BuildContext context) {
+                        return bookingDetailsController
+                            .getPopupMenuList(
+                                bookingDetailsContent.bookingStatus ?? "")
+                            .map((PopupMenuModel option) {
+                          return PopupMenuItem<PopupMenuModel>(
+                            value: option,
+                            padding: EdgeInsets.zero,
+                            height: 45,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: Dimensions.paddingSizeDefault),
+                              child:
+                                  Text(option.title.tr, style: robotoRegular),
+                            ),
+                            onTap: () async {
+                              if (option.title == "download_invoice") {
+                                String languageCode =
+                                    Get.find<LocalizationController>()
+                                        .locale
+                                        .languageCode;
+                                String uri =
+                                    "${AppConstants.baseUrl}${isSubBooking ? AppConstants.singleRepeatBookingInvoiceUrl : AppConstants.regularBookingInvoiceUrl}${bookingDetailsContent.id}/$languageCode";
+                                if (kDebugMode) {
+                                  print("Uri : $uri");
+                                }
+                                await _launchUrl(Uri.parse(uri));
+                              } else if (option.title == "cancel") {
+                                String? selectedCancelReason;
+                                String? otherReason;
+
+                                // Show confirmation dialog
+                                Get.dialog(
+                                  ConfirmationDialog(
+                                    icon: Images.deleteProfile,
+                                    title:
+                                        'are_you_sure_to_cancel_this_full_booking'
+                                            .tr,
+                                    description: 'once_cancel_full_booking'.tr,
+                                    noButtonText: "yes_cancel".tr,
+                                    noButtonColor:
+                                        Theme.of(context).colorScheme.primary,
+                                    noTextColor: Colors.white,
+                                    yesButtonText: "not_now".tr,
+                                    yesButtonColor:
+                                        Theme.of(context).colorScheme.error,
+                                    yesTextColor: Colors.white,
+                                    onYesPressed: () {
+                                      Get.back();
+                                    },
+                                    onNoPressed: () async {
+                                      // When user clicks on "Yes, Cancel", show a new dialog for selecting cancellation reason
+                                      Get.back(); // Close the confirmation dialog
+
+                                      // Show dialog with cancel reasons and submit button
+                                      Get.dialog(
+                                        StatefulBuilder(
+                                          builder: (context, setState) {
+                                            return AlertDialog(
+                                              title: Text(
+                                                  'Select Cancellation Reason'),
+                                              content: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  // Loop through the cancel reasons and display radio buttons
+                                                  ...cancelreason.map((reason) {
+                                                    return RadioListTile<
+                                                        String>(
+                                                      value: reason
+                                                          .reason!, // Use the reason's value
+                                                      groupValue:
+                                                          selectedCancelReason,
+                                                      onChanged:
+                                                          (String? value) {
+                                                        setState(() {
+                                                          selectedCancelReason =
+                                                              value;
+                                                          if (value !=
+                                                              "Other") {
+                                                            otherReason =
+                                                                null; // Clear the input if not "Other"
+                                                          }
+                                                        });
+                                                      },
+                                                      title: Text(reason.reason!
+                                                          .tr), // Use the reason's title
+                                                    );
+                                                  }).toList(),
+                                                  if (selectedCancelReason ==
+                                                      "Other") ...[
+                                                    // If "Other" is selected, show the input field
+                                                    TextField(
+                                                      onChanged: (value) {
+                                                        otherReason = value;
+                                                      },
+                                                      decoration:
+                                                          InputDecoration(
+                                                        hintText:
+                                                            "Please provide your reason",
+                                                        border:
+                                                            OutlineInputBorder(),
+                                                      ),
+                                                    ),
+                                                  ]
+                                                ],
+                                              ),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Get.back(); // Close the reason selection dialog
+                                                  },
+                                                  child: Text(
+                                                    "Cancel",
+                                                    style: TextStyle(
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .error),
+                                                  ),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () async {
+                                                    // Submit the cancellation based on selected reason
+                                                    String? reasonToSubmit =
+                                                        selectedCancelReason;
+                                                    if (reasonToSubmit ==
+                                                            "Other" &&
+                                                        otherReason != null &&
+                                                        otherReason!
+                                                            .isNotEmpty) {
+                                                      reasonToSubmit =
+                                                          otherReason;
+                                                    }
+
+                                                    if (reasonToSubmit !=
+                                                        null) {
+                                                      Get.dialog(
+                                                          const CustomLoader(),
+                                                          barrierDismissible:
+                                                              false);
+
+                                                      if (isSubBooking) {
+                                                        await bookingDetailsController
+                                                            .subBookingCancel(
+                                                          subBookingId:
+                                                              bookingDetailsContent
+                                                                      .id ??
+                                                                  "",
+                                                        );
+                                                      } else {
+                                                        await bookingDetailsController
+                                                            .bookingCancel(
+                                                          bookingId:
+                                                              bookingDetailsContent
+                                                                      .id ??
+                                                                  "",
+                                                          cancelReason:
+                                                              reasonToSubmit,
+                                                        );
+                                                      }
+
+                                                      Get.back(); // Close the loading dialog
+                                                      Get.back(); // Close the reason selection dialog
+                                                    } else {
+                                                      // Show a message if no reason is selected
+                                                      Get.snackbar('Error',
+                                                          'Please select a reason to cancel.',
+                                                          snackPosition:
+                                                              SnackPosition
+                                                                  .BOTTOM);
+                                                    }
+                                                  },
+                                                  child: Text(
+                                                    "Submit",
+                                                    style: TextStyle(
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .primary),
+                                                  ),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        ),
+                                        useSafeArea: false,
+                                      );
+                                    },
+                                  ),
+                                );
+                              }
+                            },
+                          );
+                        }).toList();
+                      },
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: Dimensions.paddingSizeDefault),
+                        child: Icon(Icons.more_vert_sharp),
+                      ),
+                    )
+                  : IconButton(
+                      onPressed: () async {
+                        String languageCode = Get.find<LocalizationController>()
+                            .locale
+                            .languageCode;
+                        String uri =
+                            "${AppConstants.baseUrl}${isSubBooking ? AppConstants.singleRepeatBookingInvoiceUrl : AppConstants.regularBookingInvoiceUrl}${bookingDetailsContent.id}/$languageCode";
+                        if (kDebugMode) {
+                          print("Uri : $uri");
+                        }
+                        await _launchUrl(Uri.parse(uri));
+                      },
+                      icon: const Icon(Icons.file_download_outlined),
                     );
-                  }
-                },
-              );
-            }).toList();
-          },
-          child: const Padding(
-            padding: EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
-            child: Icon(Icons.more_vert_sharp),
-          ),
-        )
-      : IconButton(
-          onPressed: () async {
-            String languageCode = Get.find<LocalizationController>().locale.languageCode;
-            String uri =
-                "${AppConstants.baseUrl}${isSubBooking ? AppConstants.singleRepeatBookingInvoiceUrl : AppConstants.regularBookingInvoiceUrl}${bookingDetailsContent.id}/$languageCode";
-            if (kDebugMode) {
-              print("Uri : $uri");
+            } else {
+              return const SizedBox();
             }
-            await _launchUrl(Uri.parse(uri));
-          },
-          icon: const Icon(Icons.file_download_outlined),
-        );
-} else {
-  return const SizedBox();
-}
-}),
-),
-
-        body: RefreshIndicator(
-          onRefresh: () async =>  widget.bookingID != null? await Get.find<BookingDetailsController>().getBookingDetails(bookingId: widget.bookingID!) : null,
-          child: widget.bookingID == null && widget.subBookingId == null && widget.token == null ? const NoDataScreen(text: "no_data_found", type: NoDataType.bookings,) :
-          ResponsiveHelper.isDesktop(context) ? WebBookingDetailsScreen(isSubBooking: isSubBooking, bookingId: widget.bookingID,tabController: tabController) :
-          DefaultTabController(
-            length: 2, child: Column( mainAxisAlignment: MainAxisAlignment.start, children: [
-              BookingTabBar(tabController: tabController, isSubBooking: isSubBooking,),
-
-              Expanded(child: TabBarView(controller: tabController, children:  [
-                  BookingDetailsSection(bookingId: widget.bookingID,isSubBooking: isSubBooking,),
-                  BookingHistory(bookingId: widget.bookingID,isSubBooking: isSubBooking,),
-              ])),
-
-          ],))
+          }),
         ),
+        body: RefreshIndicator(
+            onRefresh: () async => widget.bookingID != null
+                ? await Get.find<BookingDetailsController>()
+                    .getBookingDetails(bookingId: widget.bookingID!)
+                : null,
+            child: widget.bookingID == null &&
+                    widget.subBookingId == null &&
+                    widget.token == null
+                ? const NoDataScreen(
+                    text: "no_data_found",
+                    type: NoDataType.bookings,
+                  )
+                : ResponsiveHelper.isDesktop(context)
+                    ? WebBookingDetailsScreen(
+                        isSubBooking: isSubBooking,
+                        bookingId: widget.bookingID,
+                        tabController: tabController)
+                    : DefaultTabController(
+                        length: 2,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            BookingTabBar(
+                              tabController: tabController,
+                              isSubBooking: isSubBooking,
+                            ),
+                            Expanded(
+                                child: TabBarView(
+                                    controller: tabController,
+                                    children: [
+                                  BookingDetailsSection(
+                                    bookingId: widget.bookingID,
+                                    isSubBooking: isSubBooking,
+                                  ),
+                                  BookingHistory(
+                                    bookingId: widget.bookingID,
+                                    isSubBooking: isSubBooking,
+                                  ),
+                                ])),
+                          ],
+                        ))),
       ),
     );
   }
+
   Future<void> _launchUrl(Uri url) async {
     if (!await launchUrl(url)) {
       throw 'Could not launch $url';
@@ -322,18 +430,24 @@ if (bookingDetailsContent != null) {
 class BookingTabBar extends StatelessWidget {
   final TabController? tabController;
   final bool isSubBooking;
-  const BookingTabBar({super.key, this.tabController, required this.isSubBooking}) ;
+  const BookingTabBar(
+      {super.key, this.tabController, required this.isSubBooking});
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<BookingDetailsController>( builder: (bookingDetailsTabsController) {
+    return GetBuilder<BookingDetailsController>(
+        builder: (bookingDetailsTabsController) {
       return Container(
-        height: 45, width: Dimensions.webMaxWidth,
+        height: 45,
+        width: Dimensions.webMaxWidth,
         color: Theme.of(context).cardColor,
         child: DecoratedBox(
           decoration: BoxDecoration(
             color: Colors.white.withValues(alpha: 0.0),
-            border: Border(bottom: BorderSide(color: Theme.of(context).colorScheme.primary, width: 0.5),),
+            border: Border(
+              bottom: BorderSide(
+                  color: Theme.of(context).colorScheme.primary, width: 0.5),
+            ),
           ),
           child: Row(
             children: [
@@ -341,228 +455,405 @@ class BookingTabBar extends StatelessWidget {
                 child: TabBar(
                   unselectedLabelColor: Colors.grey,
                   indicatorColor: Theme.of(context).colorScheme.primary,
-                  labelColor: Get.isDarkMode ? Colors.white : Theme.of(context).colorScheme.primary,
+                  labelColor: Get.isDarkMode
+                      ? Colors.white
+                      : Theme.of(context).colorScheme.primary,
                   controller: tabController,
                   labelStyle: const TextStyle(fontWeight: FontWeight.bold),
                   tabs: [
-                    Tab(child: Text('booking_details'.tr),),
-                    Tab(child: Text('status'.tr),),
+                    Tab(
+                      child: Text('booking_details'.tr),
+                    ),
+                    Tab(
+                      child: Text('status'.tr),
+                    ),
                   ],
                   onTap: (int? index) {
                     switch (index) {
-                      case 0:bookingDetailsTabsController.updateBookingStatusTabs(BookingDetailsTabs.bookingDetails);
-                      break;
+                      case 0:
+                        bookingDetailsTabsController.updateBookingStatusTabs(
+                            BookingDetailsTabs.bookingDetails);
+                        break;
 
-                      case 1:bookingDetailsTabsController.updateBookingStatusTabs(BookingDetailsTabs.status);
-                      break;
+                      case 1:
+                        bookingDetailsTabsController
+                            .updateBookingStatusTabs(BookingDetailsTabs.status);
+                        break;
                     }
                   },
                 ),
               ),
-
-              !ResponsiveHelper.isDesktop(context) ? const SizedBox() :
-              GetBuilder<BookingDetailsController>(builder: (bookingDetailsController){
-                BookingDetailsContent? bookingDetailsContent = isSubBooking ? bookingDetailsTabsController.subBookingDetailsContent : bookingDetailsTabsController.bookingDetailsContent;
-                final List<CancelReason> cancelreason = bookingDetailsContent?.cancelReasons ?? [];
-                return bookingDetailsContent != null ? Expanded(child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                  Padding(padding: const EdgeInsets.all(6.0),
-                    child: InkWell(
-                      onTap : () async {
-                        String languageCode = Get.find<LocalizationController>().locale.languageCode;
-                        String uri = "${AppConstants.baseUrl}${
-                            isSubBooking ? AppConstants.singleRepeatBookingInvoiceUrl : AppConstants.regularBookingInvoiceUrl}${bookingDetailsContent.id}/$languageCode";
-                        if (kDebugMode) {
-                          print("Uri : $uri");
-                        }
-                        await _launchUrl(Uri.parse(uri));
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall, vertical: Dimensions.paddingSizeEight),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                          border:Border.all(color: Theme.of(context).colorScheme.primary, width: 1),
-                        ),
-                        child: Row(
-                          children: [
-                            Text("invoice".tr, style: robotoMedium.copyWith(color: Theme.of(context).colorScheme.primary, fontSize: Dimensions.fontSizeSmall)),
-                            const SizedBox(width: Dimensions.paddingSizeSmall),
-
-                            SizedBox( height: 15, width: 15, child: Image.asset(Images.downloadImage)),
-                          ],
-                        ),
-                      ),
-                    ),
-
-                  ),
-
-                  const SizedBox(width: Dimensions.paddingSizeSmall),
-
-                  Get.find<AuthController>().isLoggedIn() && ((bookingDetailsContent.bookingStatus == "completed" && !isSubBooking ) ||   bookingDetailsContent.bookingStatus == "pending")?
-                 
-                  GetBuilder<ServiceBookingController>(
-                    builder: (serviceBookingController) {
-                      return InkWell(
-                        onTap: () {
-                          if(bookingDetailsContent.bookingStatus == "completed"){
-                            serviceBookingController.checkCartSubcategory(bookingDetailsContent.id!,bookingDetailsContent.subCategoryId!);
-                          }else{
-                            String? selectedCancelReason;
-                            String? otherReason;
-                            Get.dialog(
-                      ConfirmationDialog(
-                        icon: Images.deleteProfile,
-                        title: 'are_you_sure_to_cancel_this_full_booking'.tr,
-                        description: 'once_cancel_full_booking'.tr,
-                        noButtonText: "yes_cancel".tr,
-                        noButtonColor: Theme.of(context).colorScheme.primary,
-                        noTextColor: Colors.white,
-                        yesButtonText: "not_now".tr,
-                        yesButtonColor: Theme.of(context).colorScheme.error,
-                        yesTextColor: Colors.white,
-                        onYesPressed: () {
-                          Get.back();
-                        },
-                        onNoPressed: () async {
-                          // When user clicks on "Yes, Cancel", show a new dialog for selecting cancellation reason
-                          Get.back(); // Close the confirmation dialog
-
-                          // Show dialog with cancel reasons and submit button
-                          Get.dialog(
-                            StatefulBuilder(
-                              builder: (context, setState) {
-                                return AlertDialog(
-                                  title: Text('Select Cancellation Reason'),
-                                  content: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      // Loop through the cancel reasons and display radio buttons
-                                      ...cancelreason.map((reason) {
-                                        return RadioListTile<String>(
-                                          value: reason.reason!, // Use the reason's value
-                                          groupValue: selectedCancelReason,
-                                          onChanged: (String? value) {
-                                            setState(() {
-                                              selectedCancelReason = value;
-                                              if (value != "Other") {
-                                                otherReason = null; // Clear the input if not "Other"
-                                              }
-                                            });
-                                          },
-                                          title: Text(reason.reason!.tr), // Use the reason's title
-                                        );
-                                      }).toList(),
-                                      if (selectedCancelReason == "Other") ...[
-                                        // If "Other" is selected, show the input field
-                                        TextField(
-                                          onChanged: (value) {
-                                            otherReason = value;
-                                          },
-                                          decoration: InputDecoration(
-                                            hintText: "Please provide your reason",
-                                            border: OutlineInputBorder(),
-                                          ),
-                                        ),
-                                      ]
-                                    ],
+              !ResponsiveHelper.isDesktop(context)
+                  ? const SizedBox()
+                  : GetBuilder<BookingDetailsController>(
+                      builder: (bookingDetailsController) {
+                      BookingDetailsContent? bookingDetailsContent =
+                          isSubBooking
+                              ? bookingDetailsTabsController
+                                  .subBookingDetailsContent
+                              : bookingDetailsTabsController
+                                  .bookingDetailsContent;
+                      final List<CancelReason> cancelreason =
+                          bookingDetailsContent?.cancelReasons ?? [];
+                      return bookingDetailsContent != null
+                          ? Expanded(
+                              child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(6.0),
+                                  child: InkWell(
+                                    onTap: () async {
+                                      String languageCode =
+                                          Get.find<LocalizationController>()
+                                              .locale
+                                              .languageCode;
+                                      String uri =
+                                          "${AppConstants.baseUrl}${isSubBooking ? AppConstants.singleRepeatBookingInvoiceUrl : AppConstants.regularBookingInvoiceUrl}${bookingDetailsContent.id}/$languageCode";
+                                      if (kDebugMode) {
+                                        print("Uri : $uri");
+                                      }
+                                      await _launchUrl(Uri.parse(uri));
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal:
+                                              Dimensions.paddingSizeSmall,
+                                          vertical:
+                                              Dimensions.paddingSizeEight),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                            Dimensions.radiusDefault),
+                                        border: Border.all(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                            width: 1),
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Text("invoice".tr,
+                                              style: robotoMedium.copyWith(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .primary,
+                                                  fontSize: Dimensions
+                                                      .fontSizeSmall)),
+                                          const SizedBox(
+                                              width:
+                                                  Dimensions.paddingSizeSmall),
+                                          SizedBox(
+                                              height: 15,
+                                              width: 15,
+                                              child: Image.asset(
+                                                  Images.downloadImage)),
+                                        ],
+                                      ),
+                                    ),
                                   ),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Get.back(); // Close the reason selection dialog
-                                      },
-                                      child: Text(
-                                        "Cancel",
-                                        style: TextStyle(color: Theme.of(context).colorScheme.error),
-                                      ),
-                                    ),
-                                    TextButton(
-                                      onPressed: () async {
-                                        // Submit the cancellation based on selected reason
-                                        String? reasonToSubmit = selectedCancelReason;
-                                        if (reasonToSubmit == "Other" && otherReason != null && otherReason!.isNotEmpty) {
-                                          reasonToSubmit = otherReason;
-                                        }
+                                ),
+                                const SizedBox(
+                                    width: Dimensions.paddingSizeSmall),
+                                Get.find<AuthController>().isLoggedIn() &&
+                                        ((bookingDetailsContent.bookingStatus ==
+                                                    "completed" &&
+                                                !isSubBooking) ||
+                                            bookingDetailsContent
+                                                    .bookingStatus ==
+                                                "pending")
+                                    ? GetBuilder<ServiceBookingController>(
+                                        builder: (serviceBookingController) {
+                                          return InkWell(
+                                            onTap: () {
+                                              if (bookingDetailsContent
+                                                      .bookingStatus ==
+                                                  "completed") {
+                                                serviceBookingController
+                                                    .checkCartSubcategory(
+                                                        bookingDetailsContent
+                                                            .id!,
+                                                        bookingDetailsContent
+                                                            .subCategoryId!);
+                                              } else {
+                                                String? selectedCancelReason;
+                                                String? otherReason;
+                                                Get.dialog(
+                                                  ConfirmationDialog(
+                                                    icon: Images.deleteProfile,
+                                                    title:
+                                                        'are_you_sure_to_cancel_this_full_booking'
+                                                            .tr,
+                                                    description:
+                                                        'once_cancel_full_booking'
+                                                            .tr,
+                                                    noButtonText:
+                                                        "yes_cancel".tr,
+                                                    noButtonColor:
+                                                        Theme.of(context)
+                                                            .colorScheme
+                                                            .primary,
+                                                    noTextColor: Colors.white,
+                                                    yesButtonText: "not_now".tr,
+                                                    yesButtonColor:
+                                                        Theme.of(context)
+                                                            .colorScheme
+                                                            .error,
+                                                    yesTextColor: Colors.white,
+                                                    onYesPressed: () {
+                                                      Get.back();
+                                                    },
+                                                    onNoPressed: () async {
+                                                      // When user clicks on "Yes, Cancel", show a new dialog for selecting cancellation reason
+                                                      Get.back(); // Close the confirmation dialog
 
-                                        if (reasonToSubmit != null) {
-                                          Get.dialog(const CustomLoader(), barrierDismissible: false);
+                                                      // Show dialog with cancel reasons and submit button
+                                                      Get.dialog(
+                                                        StatefulBuilder(
+                                                          builder: (context,
+                                                              setState) {
+                                                            return AlertDialog(
+                                                              title: Text(
+                                                                  'Select Cancellation Reason'),
+                                                              content: Column(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .min,
+                                                                children: [
+                                                                  // Loop through the cancel reasons and display radio buttons
+                                                                  ...cancelreason
+                                                                      .map(
+                                                                          (reason) {
+                                                                    return RadioListTile<
+                                                                        String>(
+                                                                      value: reason
+                                                                          .reason!, // Use the reason's value
+                                                                      groupValue:
+                                                                          selectedCancelReason,
+                                                                      onChanged:
+                                                                          (String?
+                                                                              value) {
+                                                                        setState(
+                                                                            () {
+                                                                          selectedCancelReason =
+                                                                              value;
+                                                                          if (value !=
+                                                                              "Other") {
+                                                                            otherReason =
+                                                                                null; // Clear the input if not "Other"
+                                                                          }
+                                                                        });
+                                                                      },
+                                                                      title: Text(reason
+                                                                          .reason!
+                                                                          .tr), // Use the reason's title
+                                                                    );
+                                                                  }).toList(),
+                                                                  if (selectedCancelReason ==
+                                                                      "Other") ...[
+                                                                    // If "Other" is selected, show the input field
+                                                                    TextField(
+                                                                      onChanged:
+                                                                          (value) {
+                                                                        otherReason =
+                                                                            value;
+                                                                      },
+                                                                      decoration:
+                                                                          InputDecoration(
+                                                                        hintText:
+                                                                            "Please provide your reason",
+                                                                        border:
+                                                                            OutlineInputBorder(),
+                                                                      ),
+                                                                    ),
+                                                                  ]
+                                                                ],
+                                                              ),
+                                                              actions: [
+                                                                TextButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    Get.back(); // Close the reason selection dialog
+                                                                  },
+                                                                  child: Text(
+                                                                    "Cancel",
+                                                                    style: TextStyle(
+                                                                        color: Theme.of(context)
+                                                                            .colorScheme
+                                                                            .error),
+                                                                  ),
+                                                                ),
+                                                                TextButton(
+                                                                  onPressed:
+                                                                      () async {
+                                                                    // Submit the cancellation based on selected reason
+                                                                    String?
+                                                                        reasonToSubmit =
+                                                                        selectedCancelReason;
+                                                                    if (reasonToSubmit == "Other" &&
+                                                                        otherReason !=
+                                                                            null &&
+                                                                        otherReason!
+                                                                            .isNotEmpty) {
+                                                                      reasonToSubmit =
+                                                                          otherReason;
+                                                                    }
 
-                                          if (isSubBooking) {
-                                            await bookingDetailsController.subBookingCancel(
-                                              subBookingId: bookingDetailsContent.id ?? "",
-                                            );
-                                          } else {
-                                            await bookingDetailsController.bookingCancel(
-                                              bookingId: bookingDetailsContent.id ?? "",
-                                              cancelReason: reasonToSubmit,
-                                            );
-                                          }
+                                                                    if (reasonToSubmit !=
+                                                                        null) {
+                                                                      Get.dialog(
+                                                                          const CustomLoader(),
+                                                                          barrierDismissible:
+                                                                              false);
 
-                                          Get.back(); // Close the loading dialog
-                                          Get.back(); // Close the reason selection dialog
-                                        } else {
-                                          // Show a message if no reason is selected
-                                          Get.snackbar('Error', 'Please select a reason to cancel.',
-                                              snackPosition: SnackPosition.BOTTOM);
-                                        }
-                                      },
-                                      child: Text(
-                                        "Submit",
-                                        style: TextStyle(color: Theme.of(context).colorScheme.primary),
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              },
-                            ),
-                            useSafeArea: false,
-                          );
-                        },
-                      ),
-                    );}
-                        },
+                                                                      if (isSubBooking) {
+                                                                        await bookingDetailsController
+                                                                            .subBookingCancel(
+                                                                          subBookingId:
+                                                                              bookingDetailsContent.id ?? "",
+                                                                        );
+                                                                      } else {
+                                                                        await bookingDetailsController
+                                                                            .bookingCancel(
+                                                                          bookingId:
+                                                                              bookingDetailsContent.id ?? "",
+                                                                          cancelReason:
+                                                                              reasonToSubmit,
+                                                                        );
+                                                                      }
 
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color:Theme.of(context).colorScheme.primary,
-                            borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                            border: Border.all(color: Theme.of(context).colorScheme.primary),
-                          ),
-                          padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeEight, horizontal: Dimensions.paddingSizeLarge),
-                          child: (serviceBookingController.isLoading) ?
-                          Padding(padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault), child: SizedBox(height: 15, width:15, child: CircularProgressIndicator(color: Theme.of(context).colorScheme.onPrimary,))) :
-                          Text(bookingDetailsContent.bookingStatus == "completed" ? "rebook".tr : "cancel_booking".tr, style: robotoMedium.copyWith(color: Theme.of(context).colorScheme.onPrimary)
-                          ),
-                        ),
-                      );
-                    },
-                  ) : const SizedBox(),
-
-                  bookingDetailsContent.bookingStatus == "completed"  && !isSubBooking && Get.find<AuthController>().isLoggedIn() ?
-                  InkWell(
-                    onTap: () {
-                      showModalBottomSheet(context: context,
-                        useRootNavigator: true, isScrollControlled: true,
-                        backgroundColor: Colors.transparent, builder: (context) => ReviewRecommendationDialog(
-                          id: bookingDetailsContent.id!,
-                        ),
-                      );
-                      },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color:Theme.of(context).colorScheme.primary,
-                        borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                        border: Border.all(color: Theme.of(context).colorScheme.primary),
-                      ),
-                      margin: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall),
-                      padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeEight, horizontal: Dimensions.paddingSizeLarge),
-                      child: Text("review".tr, style: robotoMedium.copyWith(color: Theme.of(context).colorScheme.onPrimary)
-                      ),
-                    ),
-                  ) : const SizedBox(),
-
-
-                ],)) : const SizedBox();
-              })
+                                                                      Get.back(); // Close the loading dialog
+                                                                      Get.back(); // Close the reason selection dialog
+                                                                    } else {
+                                                                      // Show a message if no reason is selected
+                                                                      Get.snackbar(
+                                                                          'Error',
+                                                                          'Please select a reason to cancel.',
+                                                                          snackPosition:
+                                                                              SnackPosition.BOTTOM);
+                                                                    }
+                                                                  },
+                                                                  child: Text(
+                                                                    "Submit",
+                                                                    style: TextStyle(
+                                                                        color: Theme.of(context)
+                                                                            .colorScheme
+                                                                            .primary),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            );
+                                                          },
+                                                        ),
+                                                        useSafeArea: false,
+                                                      );
+                                                    },
+                                                  ),
+                                                );
+                                              }
+                                            },
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .primary,
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        Dimensions
+                                                            .radiusDefault),
+                                                border: Border.all(
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .primary),
+                                              ),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: Dimensions
+                                                          .paddingSizeEight,
+                                                      horizontal: Dimensions
+                                                          .paddingSizeLarge),
+                                              child: (serviceBookingController
+                                                      .isLoading)
+                                                  ? Padding(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal: Dimensions
+                                                              .paddingSizeDefault),
+                                                      child: SizedBox(
+                                                          height: 15,
+                                                          width: 15,
+                                                          child:
+                                                              CircularProgressIndicator(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .colorScheme
+                                                                .onPrimary,
+                                                          )))
+                                                  : Text(
+                                                      bookingDetailsContent
+                                                                  .bookingStatus ==
+                                                              "completed"
+                                                          ? "rebook".tr
+                                                          : "cancel_booking".tr,
+                                                      style:
+                                                          robotoMedium.copyWith(
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .colorScheme
+                                                                  .onPrimary)),
+                                            ),
+                                          );
+                                        },
+                                      )
+                                    : const SizedBox(),
+                                bookingDetailsContent.bookingStatus ==
+                                            "completed" &&
+                                        !isSubBooking &&
+                                        Get.find<AuthController>().isLoggedIn()
+                                    ? InkWell(
+                                        onTap: () {
+                                          showModalBottomSheet(
+                                            context: context,
+                                            useRootNavigator: true,
+                                            isScrollControlled: true,
+                                            backgroundColor: Colors.transparent,
+                                            builder: (context) =>
+                                                ReviewRecommendationDialog(
+                                              id: bookingDetailsContent.id!,
+                                            ),
+                                          );
+                                        },
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                            borderRadius: BorderRadius.circular(
+                                                Dimensions.radiusDefault),
+                                            border: Border.all(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .primary),
+                                          ),
+                                          margin: const EdgeInsets.symmetric(
+                                              horizontal:
+                                                  Dimensions.paddingSizeSmall),
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical:
+                                                  Dimensions.paddingSizeEight,
+                                              horizontal:
+                                                  Dimensions.paddingSizeLarge),
+                                          child: Text("review".tr,
+                                              style: robotoMedium.copyWith(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .onPrimary)),
+                                        ),
+                                      )
+                                    : const SizedBox(),
+                              ],
+                            ))
+                          : const SizedBox();
+                    })
             ],
           ),
         ),

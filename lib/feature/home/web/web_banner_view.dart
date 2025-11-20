@@ -6,187 +6,30 @@ class WebBannerView extends GetView<BannerController> {
   final PageController _pageController = PageController();
 
   WebBannerView({super.key});
+
   @override
   Widget build(BuildContext context) {
     bool isLtr = Get.find<LocalizationController>().isLtr;
+
     return Center(
       child: SizedBox(
         width: Dimensions.webMaxWidth,
         child: GetBuilder<BannerController>(
-
-          builder: (bannerController){
-            if(bannerController.banners != null && bannerController.banners!.isEmpty){
+          builder: (bannerController) {
+            if (bannerController.banners != null &&
+                bannerController.banners!.isEmpty) {
               return const SizedBox();
-            }else{
+            } else {
               return Container(
                 alignment: Alignment.center,
                 child: SizedBox(
-                    width: Dimensions.webMaxWidth,
-                    height: 220,
-                    child: bannerController.banners != null ? bannerController.banners!.length == 1 ?
-                    InkWell(
-                      onTap: () {
-                        BannerModel bannerModel = bannerController.banners![0];
-                        String link = bannerModel.redirectLink != null ? bannerModel.redirectLink! : '';
-                        String id = bannerModel.category != null ? bannerModel.category!.id! : '';
-                        String name = bannerModel.category != null ? bannerModel.category!.name! : "";
-                        bannerController.navigateFromBanner(
-                            bannerModel.resourceType!,
-                            id,
-                            link,
-                            bannerModel.resourceId != null ? bannerModel.resourceId! : '',
-                            categoryName: name
-                        );
-                      },
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                        child: CustomImage(
-                          image: '${bannerController.banners![0].bannerImageFullPath}',
-                          placeHolderBoxFit: BoxFit.fill,
-                          height: 220,
-                        ),
-                      ),
-
-                    ) : Stack(
-                        clipBehavior: Clip.none,
-                        fit: StackFit.expand,
-                        children: [
-                          PageView.builder(
-                            onPageChanged: (int index) => bannerController.setCurrentIndex(index, true),
-                            controller: _pageController,
-                            itemCount: (bannerController.banners!.length/2).ceil(),
-                            itemBuilder: (context, index) {
-                              int index1 = index * 2;
-                              int index2 = (index * 2) + 1;
-                              bool hasSecond = index2 < bannerController.banners!.length;
-                              return Row(
-                                  children: [
-                                    Expanded(
-                                      child: InkWell(
-                                        onTap: () {
-                                          BannerModel bannerModel = bannerController.banners![index1];
-                                          String link = bannerModel.redirectLink != null ? bannerModel.redirectLink! : '';
-                                          String id = bannerModel.category != null ? bannerModel.category!.id! : '';
-                                          String name = bannerModel.category != null ? bannerModel.category!.name! : "";
-
-                                          bannerController.navigateFromBanner(
-                                              bannerModel.resourceType!,
-                                              id,
-                                              link,
-                                              bannerModel.resourceId != null ? bannerModel.resourceId! : '',
-                                              categoryName: name);},
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                                          child: CustomImage(
-                                            image: '${bannerController.banners![index1].bannerImageFullPath}',
-                                            fit: BoxFit.cover,
-                                            height: 220,
-                                          ),
-
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(width: Dimensions.paddingSizeLarge),
-                                    Expanded(child: hasSecond ?
-                                    InkWell(
-                                      onTap: () {
-                                        BannerModel bannerModel = bannerController.banners![index2];
-                                        String link = bannerModel.redirectLink != null ? bannerModel.redirectLink! : '';
-                                        String id = bannerModel.category != null ? bannerModel.category!.id! : '';
-                                        String name = bannerModel.category != null ? bannerModel.category!.name! : "";
-                                        bannerController.navigateFromBanner(
-                                            bannerModel.resourceType!,
-                                            id,
-                                            link,
-                                            bannerModel.resourceId != null ? bannerModel.resourceId! : '',
-                                            categoryName: name);},
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                                        child: CustomImage(
-                                          image: '${bannerController.banners![index2].bannerImageFullPath}',
-                                          fit: BoxFit.cover,
-                                          height: 220,
-                                        ),
-                                      ),):
-                                    (!hasSecond && bannerController.banners!.length>2)?
-                                    InkWell(
-                                      onTap: () {
-                                        BannerModel bannerModel = bannerController.banners![0];
-                                        String link = bannerModel.redirectLink != null ? bannerModel.redirectLink! : '';
-                                        String id = bannerModel.category != null ? bannerModel.category!.id! : '';
-                                        String name = bannerModel.category != null ? bannerModel.category!.name! : "";
-                                        bannerController.navigateFromBanner(
-                                            bannerModel.resourceType!,
-                                            id,
-                                            link,
-                                            bannerModel.resourceId != null ? bannerModel.resourceId! : '',
-                                            categoryName: name);},
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                                        child: CustomImage(
-                                          image: '${bannerController.banners![0].bannerImageFullPath}',
-                                          fit: BoxFit.cover,
-                                          height: 220,),),):
-                                    const SizedBox()),
-                                  ]);},),
-                          bannerController.currentIndex != 0 ?
-                          Positioned(
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Padding(
-                                padding:  const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeExtraLarge),
-                                child: InkWell(
-                                  onTap: () => _pageController.previousPage(duration: const Duration(seconds: 1), curve: Curves.easeInOut),
-                                  child: Container(
-                                    height: 40, width: 40, alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Colors.white70.withValues(alpha: 0.6),
-                                      boxShadow: Get.find<ThemeController>().darkTheme ? null : cardShadow,
-                                    ),
-                                    child: Center(
-                                      child: Padding(
-                                        padding:  EdgeInsets.only(
-                                          left: isLtr ?  Dimensions.paddingSizeSmall : 0.0,
-                                          right: !isLtr ?  Dimensions.paddingSizeSmall : 0.0,
-                                        ),
-                                        child: Icon(
-                                            Icons.arrow_back_ios,
-                                            color: dark.cardColor
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ) :
-                          const SizedBox(),
-                          bannerController.currentIndex != ((bannerController.banners!.length/2).ceil()-1) ?
-                          Positioned(child: Align(
-                            alignment: Alignment.centerRight,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeExtraLarge),
-                              child: InkWell(
-                                onTap: () => _pageController.nextPage(duration: const Duration(seconds: 1), curve: Curves.easeInOut),
-                                child: Container(
-                                  height: 40, width: 40, alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Colors.white70.withValues(alpha: 0.6),
-                                      boxShadow: Get.find<ThemeController>().darkTheme ? null : cardShadow
-                                  ),
-                                  child: Icon(
-                                      Icons.arrow_forward_ios,
-                                      size: Dimensions.webArrowSize,
-                                      color: dark.cardColor
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),):
-                          const SizedBox(),
-                        ]): const WebBannerShimmer()),
+                  width: Dimensions.webMaxWidth,
+                  child: bannerController.banners != null
+                      ? bannerController.banners!.length == 1
+                          ? _singleBanner(bannerController, 0)
+                          : _multiBanner(bannerController, isLtr)
+                      : const WebBannerShimmer(),
+                ),
               );
             }
           },
@@ -194,7 +37,124 @@ class WebBannerView extends GetView<BannerController> {
       ),
     );
   }
+
+  // Single banner widget
+  Widget _singleBanner(BannerController controller, int index) {
+    return InkWell(
+      onTap: () => _onBannerTap(controller.banners![index], controller),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+        child: AspectRatio(
+          aspectRatio: 19 / 8,
+          child: CustomImage(
+            image: '${controller.banners![index].bannerImageFullPath}',
+            fit: BoxFit.cover,
+          ),
+        ),
+      ),
+    );
+  }
+
+  // Multi-banner PageView
+  Widget _multiBanner(BannerController controller, bool isLtr) {
+    final int totalPages = (controller.banners!.length / 2).ceil();
+
+    return Stack(
+      clipBehavior: Clip.none,
+      fit: StackFit.expand,
+      children: [
+        PageView.builder(
+          onPageChanged: (int index) => controller.setCurrentIndex(index, true),
+          controller: _pageController,
+          itemCount: totalPages,
+          itemBuilder: (context, pageIndex) {
+            int index1 = pageIndex * 2;
+            int index2 = (pageIndex * 2) + 1;
+            bool hasSecond = index2 < controller.banners!.length;
+
+            return Row(
+              children: [
+                Expanded(child: _singleBanner(controller, index1)),
+                const SizedBox(width: Dimensions.paddingSizeLarge),
+                Expanded(
+                  child: hasSecond
+                      ? _singleBanner(controller, index2)
+                      : (controller.banners!.length > 2
+                          ? _singleBanner(controller, 0)
+                          : const SizedBox()),
+                ),
+              ],
+            );
+          },
+        ),
+        // Left Arrow
+        if (controller.currentIndex != 0)
+          Positioned(
+            left: Dimensions.paddingSizeExtraLarge,
+            child: _navigationButton(
+              isLeft: true,
+              onTap: () => _pageController.previousPage(
+                  duration: const Duration(seconds: 1),
+                  curve: Curves.easeInOut),
+              isLtr: isLtr,
+            ),
+          ),
+        // Right Arrow
+        if (controller.currentIndex != totalPages - 1)
+          Positioned(
+            right: Dimensions.paddingSizeExtraLarge,
+            child: _navigationButton(
+              isLeft: false,
+              onTap: () => _pageController.nextPage(
+                  duration: const Duration(seconds: 1),
+                  curve: Curves.easeInOut),
+              isLtr: isLtr,
+            ),
+          ),
+      ],
+    );
+  }
+
+  // Navigation arrow button
+  Widget _navigationButton(
+      {required bool isLeft,
+      required VoidCallback onTap,
+      required bool isLtr}) {
+    final dark = Get.find<ThemeController>().darkTheme
+        ? ThemeData.dark()
+        : ThemeData.light();
+
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        height: 40,
+        width: 40,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.white70.withOpacity(0.6),
+          boxShadow: Get.find<ThemeController>().darkTheme ? null : cardShadow,
+        ),
+        child: Icon(
+          isLeft ? Icons.arrow_back_ios : Icons.arrow_forward_ios,
+          color: dark.cardColor,
+          size: Dimensions.webArrowSize,
+        ),
+      ),
+    );
+  }
+
+  void _onBannerTap(BannerModel banner, BannerController controller) {
+    String link = banner.redirectLink ?? '';
+    String id = banner.category?.id ?? '';
+    String name = banner.category?.name ?? '';
+
+    controller.navigateFromBanner(
+      banner.resourceType!,
+      id,
+      link,
+      banner.resourceId ?? '',
+      categoryName: name,
+    );
+  }
 }
-
-
-

@@ -51,16 +51,16 @@ class Images {
   static String get cod => 'cod'.png;
   static String get pay => 'cash_on_delivery_icon'.png;
   static String get profileIcon => 'profile_icon'.png;
-  static String get file=> 'file_icon'.png;
-  static String get image=> 'image_icon'.png;
-  static String get sendMessage=> 'send_message_icon'.png;
+  static String get file => 'file_icon'.png;
+  static String get image => 'image_icon'.png;
+  static String get sendMessage => 'send_message_icon'.png;
   static String get arabicTwo => 'arabic_two'.png;
-  static String get address=> 'address'.png;
-  static String get notification=> 'profile_notification'.png;
-  static String get settings=> 'settings'.png;
-  static String get homeProfile=> 'home_profile'.png;
-  static String get office=> 'office'.png;
-  static String get forgotPass=> 'forgot_pass'.png;
+  static String get address => 'address'.png;
+  static String get notification => 'profile_notification'.png;
+  static String get settings => 'settings'.png;
+  static String get homeProfile => 'home_profile'.png;
+  static String get office => 'office'.png;
+  static String get forgotPass => 'forgot_pass'.png;
   static String get translate => 'select_language'.png;
   static String get editPen => 'edit_pen'.png;
   static String get cartDelete => 'cart_delete'.png;
@@ -109,6 +109,7 @@ class Images {
   static String get hot => 'hot'.png;
   static String get reviewIcon => 'review_icon'.png;
   static String get providerImage => 'provider_image'.png;
+  static String get providernew => '14'.npng;
   static String get walletMenu => 'wallet_menu'.png;
   static String get shareIcon => 'share_icon'.png;
   static String get homeCreatePostMan => 'home_create_post_man'.png;
@@ -134,9 +135,12 @@ class Images {
   static String get servicePrice => 'service_price'.png;
   static String get downloadImage => 'download_icon'.png;
   static String get serviceNotAvailable => 'service_not_available'.png;
-  static String get createPostAddressBackground => 'create_post_address_background'.png;
-  static String get popularServicesBackgroundImage => 'popular_services_background_image'.png;
-  static String get createPostBackgroundImage => 'create_post_background_image'.png;
+  static String get createPostAddressBackground =>
+      'create_post_address_background'.png;
+  static String get popularServicesBackgroundImage =>
+      'popular_services_background_image'.png;
+  static String get createPostBackgroundImage =>
+      'create_post_background_image'.png;
   static String get searchIcon => 'search'.png;
   static String get emptyConversation => 'empty_conversation'.png;
   static String get fileIcon => 'file'.png;
@@ -165,7 +169,7 @@ class Images {
   static String get currentLocation => 'current_location'.png;
   static String get currentLocationIos => 'current_location'.png;
   static String get selectedProvider => 'selected_provider'.png;
-  static String get unselectedProvider=> 'unselected_provider'.png;
+  static String get unselectedProvider => 'unselected_provider'.png;
   static String get recommendedServiceBg => 'recommended_service'.png;
   static String get share => 'share'.png;
   static String get otp => 'otp'.png;
@@ -182,8 +186,8 @@ class Images {
   static String get favorite => 'favorite'.png;
   static String get unFavorite => 'unfavorite'.png;
   static String get copyCouponIcon => 'copy_coupon_icon'.png;
-  static String get appliedCouponPercentIcon => 'applied_coupon_percent_icon'.png;
-
+  static String get appliedCouponPercentIcon =>
+      'applied_coupon_percent_icon'.png;
 
   ///web social icon
   static get facebookIcon => 'facebook_icon'.png;
@@ -195,11 +199,53 @@ class Images {
   static get playStoreIcon => 'play_store'.png;
   static get appStoreIcon => 'app_store'.png;
   static String get apple => 'apple'.png;
+  static String get naboutus => 'about-us-icon'.npng;
+  static String get nbookings => 'booking-icon'.npng;
+  static String get ncancelpolicy => 'cancellation-policy-icon'.npng;
+  static String get ncoupn => 'coupon-icon'.npng;
+  static String get ninbox => 'inbox-icon'.npng;
+  static String get nlanguage => 'language-icon'.npng;
+  static String get nlogout => 'logout-icon'.npng;
+  static String get nloyalty => 'loyalty-point-icon'.npng;
+  static String get nfavorate => 'my-favourite-icon'.npng;
+  static String get nwallet => 'my-wallet-icon'.npng;
+  static String get nprivacy => 'privacy-policy-icon'.npng;
+  static String get nprofile => 'profile-only-icon-face-and-body'.npng;
+  static String get nrefer => 'refer-and-earn-indian-rupee-icon'.npng;
+  static String get nrefund => 'refund-policy-icon'.npng;
+  static String get nsetting => 'setting--icon'.npng;
+  static String get nsupport => 'support-icon'.npng;
+  static String get ncondition => 'term---condition-icon'.npng;
+  static String get maboutus => '12'.npng;
+  static String get mbookings => '5'.npng;
+  static String get mcancelpolicy => '17'.npng;
+  static String get mcoupn => '6'.npng;
+  static String get minbox => '2'.npng;
+  static String get mmap => '11'.npng;
 
+  static String get mlanguage => '3'.npng;
+  static String get mlogout => '18'.npng;
+  static String get mloyalty => '9'.npng;
+  static String get mfavorate => '7'.npng;
+  static String get mwallet => '8'.npng;
+  static String get mprivacy => '15'.npng;
+  static String get mprofile => '1'.npng;
+  static String get mrefer => 'refer-and-earn-indian-rupee-icon'.npng;
+  static String get mrefund => '10'.npng;
+  static String get msetting => '4'.npng;
+  static String get msupport => '13'.npng;
+  static String get mcondition => '16'.npng;
+  static String get ihome => '19-removebg-preview'.ipng;
+  static String get ibookings => '20-removebg-preview'.ipng;
+  static String get icart => '22-removebg-preview'.ipng;
+  static String get idiscount => '21-removebg-preview'.ipng;
+  static String get imenu => '23-removebg-preview'.ipng;
 }
 
 extension on String {
   String get png => 'assets/images/$this.png';
   String get jpg => 'assets/images/$this.jpg';
   String get json => 'assets/json/$this.json';
+  String get npng => 'assets/newicons/$this.png';
+  String get ipng => 'assets/landingservices/$this.png';
 }

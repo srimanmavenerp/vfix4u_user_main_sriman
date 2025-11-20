@@ -2,11 +2,7 @@ import 'package:demandium/feature/home/widget/nearby_provider_listview.dart';
 import 'package:demandium/popupbanneradds.dart';
 import 'package:get/get.dart';
 import 'package:demandium/utils/core_export.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../review/repo/submit_review_repo.dart';
-import '../review/view/new_rate_card.dart';
+
 import '../review/view/review_rating_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -78,10 +74,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         }
       });
     });
-    // final popupBannerController = Get.put(PopupBannerController());
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   popupBannerController.showBannerPopup();
-    // });
+
     WidgetsBinding.instance
         .addObserver(this); // Add observer for lifecycle changes
 
@@ -331,42 +324,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       appBar: homeAppBar(signInShakeKey: signInShakeKey),
       endDrawer:
           ResponsiveHelper.isDesktop(context) ? const MenuDrawer() : null,
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     var bookingController = Get.find<ServiceBookingController>();
-      //     BookingModel? latestBooking;
-      //     if (bookingController.bookingList != null && bookingController.bookingList!.isNotEmpty) {
-      //       latestBooking = bookingController.bookingList!
-      //           .where((booking) => booking.bookingStatus == 'completed')
-      //           .firstOrNull;
-      //     }
-      //
-      //     if (latestBooking != null) {
-      //       Navigator.push(
-      //         context,
-      //         MaterialPageRoute(
-      //           builder: (_) => MyReviewScreen(bookingModel: latestBooking!),
-      //         ),
-      //       );
-      //     } else {
-      //       showDialog(
-      //         context: context,
-      //         builder: (context) => AlertDialog(
-      //           title: const Text('No Completed Bookings'),
-      //           content: const Text('You need to have at least one completed booking to leave a review.'),
-      //           actions: [
-      //             TextButton(
-      //               onPressed: () => Navigator.of(context).pop(),
-      //               child: const Text('OK'),
-      //             ),
-      //           ],
-      //         ),
-      //       );
-      //     }
-      //   },
-      //   tooltip: 'Rating',
-      //   child: const Icon(Icons.star_rate, color: Colors.white),
-      // ),
       body: ResponsiveHelper.isDesktop(context)
           ? WebHomeScreen(
               scrollController: scrollController,

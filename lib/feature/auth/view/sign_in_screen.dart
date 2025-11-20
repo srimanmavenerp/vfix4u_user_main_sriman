@@ -40,7 +40,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     leading: IconButton(
                       hoverColor: Colors.transparent,
                       icon: Icon(Icons.arrow_back_ios,
-                          color: Theme.of(context).colorScheme.primary),
+                          color: const Color(0xffFEFEFE)),
                       color: Theme.of(context).textTheme.bodyLarge!.color,
                       onPressed: () => Navigator.pop(context),
                     ),
@@ -126,27 +126,42 @@ class _SignInScreenState extends State<SignInScreen> {
                               }
                             },
                             onValidate: (String? value) {
+                              value = value?.trim() ?? "";
+
+                              // Condition 1: otpLogin enabled and manualLogin disabled → strict phone validation
                               if (otpLogin == 1 &&
                                   manualLogin == 0 &&
                                   PhoneVerificationHelper.getValidPhoneNumber(
-                                          authController.countryDialCode +
-                                              signInPhoneController.text.trim(),
-                                          withCountryCode: true) ==
-                                      "") {
+                                    authController.countryDialCode +
+                                        signInPhoneController.text.trim(),
+                                    withCountryCode: true,
+                                  ).isEmpty) {
                                 return "enter_valid_phone_number".tr;
                               }
+
+                              // Condition 2: Number-login mode → validate phone
                               if (authController.isNumberLogin &&
                                   PhoneVerificationHelper.getValidPhoneNumber(
-                                          authController.countryDialCode +
-                                              signInPhoneController.text.trim(),
-                                          withCountryCode: true) ==
-                                      "") {
+                                    authController.countryDialCode +
+                                        signInPhoneController.text.trim(),
+                                    withCountryCode: true,
+                                  ).isEmpty) {
                                 return "enter_valid_phone_number".tr;
                               }
-                              return (GetUtils.isPhoneNumber(value!) ||
-                                      GetUtils.isEmail(value))
-                                  ? null
-                                  : 'enter_email_or_phone'.tr;
+
+                              // Condition 3: If user enters empty field → show error
+                              if (value.isEmpty) {
+                                return 'enter_email_or_phone'.tr;
+                              }
+
+                              // Condition 4: Validate valid phone or email → no error
+                              if (GetUtils.isPhoneNumber(value) ||
+                                  GetUtils.isEmail(value)) {
+                                return null; // VALID → Disable error
+                              }
+
+                              // Condition 5: Invalid input
+                              return 'enter_email_or_phone'.tr;
                             },
                           ),
 

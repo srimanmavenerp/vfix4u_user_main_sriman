@@ -2,7 +2,6 @@
 import 'package:get/get.dart';
 import 'package:demandium/utils/core_export.dart';
 
-
 class AddAddressScreen extends StatefulWidget {
   final bool fromCheckout;
   final AddressModel? address;
@@ -13,9 +12,12 @@ class AddAddressScreen extends StatefulWidget {
 }
 
 class _AddAddressScreenState extends State<AddAddressScreen> {
-  final TextEditingController _contactPersonNameController = TextEditingController();
-  final TextEditingController _contactPersonNumberController = TextEditingController();
-  final TextEditingController _serviceAddressController = TextEditingController();
+  final TextEditingController _contactPersonNameController =
+      TextEditingController();
+  final TextEditingController _contactPersonNumberController =
+      TextEditingController();
+  final TextEditingController _serviceAddressController =
+      TextEditingController();
   final TextEditingController _houseController = TextEditingController();
   final TextEditingController _floorController = TextEditingController();
   final TextEditingController _countryController = TextEditingController();
@@ -39,7 +41,6 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
 
   CameraPosition? _cameraPosition;
 
-
   @override
   void initState() {
     super.initState();
@@ -60,14 +61,14 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
     }
   }
 
-
   void _initializeLocationData() async {
     final locationController = Get.find<LocationController>();
 
     locationController.updateAddressLabel(addressLabelString: 'home'.tr);
     locationController.countryDialCode = CountryCode.fromCountryCode(
-        Get.find<SplashController>().configModel.content?.countryCode ?? "BD"
-    ).dialCode!;
+            Get.find<SplashController>().configModel.content?.countryCode ??
+                "BD")
+        .dialCode!;
 
     _countryController.text = '';
 
@@ -77,7 +78,8 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
 
     while (currentAddress == null && retryCount < maxRetries) {
       try {
-        currentAddress = await locationController.getCurrentLocation(true, deviceCurrentLocation: true);
+        currentAddress = await locationController.getCurrentLocation(true,
+            deviceCurrentLocation: true);
       } catch (e) {
         retryCount++;
         await Future.delayed(const Duration(seconds: 1));
@@ -86,12 +88,17 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
 
     if (currentAddress != null) {
       _initialPosition = LatLng(
-        double.tryParse(currentAddress.latitude ?? '') ?? 23.0000,
-        double.tryParse(currentAddress.longitude ?? '') ?? 90.0000,
+        double.tryParse(currentAddress.latitude ?? '') ?? 17.4422,
+        double.tryParse(currentAddress.longitude ?? '') ?? 78.3771,
       );
-      _serviceAddressController.text = currentAddress.address ?? ''; // <-- Set text here
+      _serviceAddressController.text =
+          currentAddress.address ?? ''; // <-- Set text here
     } else {
-      customSnackBar('Unable to fetch current location. Please try again.', type: ToasterMessageType.error);
+      // FALLBACK DEFAULT LOCATION
+      _initialPosition =
+          const LatLng(17.4422, 78.3771); // Hitech City, Hyderabad
+
+      _serviceAddressController.text = "Default Location";
       return;
     }
 
@@ -101,16 +108,18 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
   }
 
   setControllerData() async {
-
-
-    _serviceAddressController.text = widget.address?.address??"";
-    _contactPersonNameController.text = widget.address?.contactPersonName??'';
+    _serviceAddressController.text = widget.address?.address ?? "";
+    _contactPersonNameController.text = widget.address?.contactPersonName ?? '';
 
     String numberAfterValidation = PhoneVerificationHelper.isPhoneValid(
-        widget.address?.contactPersonNumber ?? Get.find<UserController>().userInfoModel?.phone ?? "", fromAuthPage: false);
-    if(numberAfterValidation == ""){
-      _contactPersonNumberController.text = widget.address?.contactPersonNumber?.replaceAll("null", "") ?? "";
-    }else{
+        widget.address?.contactPersonNumber ??
+            Get.find<UserController>().userInfoModel?.phone ??
+            "",
+        fromAuthPage: false);
+    if (numberAfterValidation == "") {
+      _contactPersonNumberController.text =
+          widget.address?.contactPersonNumber?.replaceAll("null", "") ?? "";
+    } else {
       _contactPersonNumberController.text = numberAfterValidation;
     }
     _cityController.text = widget.address?.city ?? '';
@@ -120,8 +129,9 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
     _houseController.text = widget.address?.house ?? '';
     _floorController.text = widget.address?.floor ?? '';
 
-    Get.find<LocationController>().updateAddressLabel(addressLabelString: widget.address?.addressLabel??"");
-    Get.find<LocationController>().setPlaceMark(addressModel : widget.address);
+    Get.find<LocationController>().updateAddressLabel(
+        addressLabelString: widget.address?.addressLabel ?? "");
+    Get.find<LocationController>().setPlaceMark(addressModel: widget.address);
     Get.find<LocationController>().buttonDisabledOption = false;
 
     Get.find<LocationController>().setUpdateAddress(widget.address!);
@@ -132,85 +142,126 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
   }
 
   @override
-  void dispose(){
+  void dispose() {
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-
-    double bottomPadding =
-        MediaQuery.of(context).padding.bottom;
+    double bottomPadding = MediaQuery.of(context).padding.bottom;
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: CustomAppBar(title: widget.address == null ? 'add_new_address'.tr : 'update_address'.tr),
-      endDrawer:ResponsiveHelper.isDesktop(context) ? const MenuDrawer():null,
-
+      appBar: CustomAppBar(
+          title: widget.address == null
+              ? 'add_new_address'.tr
+              : 'update_address'.tr),
+      endDrawer:
+          ResponsiveHelper.isDesktop(context) ? const MenuDrawer() : null,
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
-        child: FooterBaseView( child: Center( child: WebShadowWrap(child: SizedBox(width: Dimensions.webMaxWidth,
-          child: Padding(padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault,vertical: Dimensions.paddingSizeSmall),
-            child: GetBuilder<LocationController>(builder: (locationController) {
-              return Form(key: addressFormKey, child: Column(children: [
-
-                if(!ResponsiveHelper.isDesktop(context))
-                  Column(children: [
-                    _firstList(locationController),
-                    const SizedBox(height: Dimensions.paddingSizeDefault,),
-                    _secondList(locationController),
-                  ],),
-
-                if(ResponsiveHelper.isDesktop(context))
-                  Row(crossAxisAlignment: CrossAxisAlignment.start,children: [
-                    Expanded(child: _firstList(locationController),),
-                    const SizedBox(width: Dimensions.paddingSizeLarge * 2,),
-                    Expanded(
-                      child: _secondList(locationController),
+        child: FooterBaseView(
+            child: Center(
+                child: WebShadowWrap(
+                    child: SizedBox(
+          width: Dimensions.webMaxWidth,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+                horizontal: Dimensions.paddingSizeDefault,
+                vertical: Dimensions.paddingSizeSmall),
+            child:
+                GetBuilder<LocationController>(builder: (locationController) {
+              return Form(
+                  key: addressFormKey,
+                  child: Column(children: [
+                    if (!ResponsiveHelper.isDesktop(context))
+                      Column(
+                        children: [
+                          _firstList(locationController),
+                          const SizedBox(
+                            height: Dimensions.paddingSizeDefault,
+                          ),
+                          _secondList(locationController),
+                        ],
+                      ),
+                    if (ResponsiveHelper.isDesktop(context))
+                      Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: _firstList(locationController),
+                            ),
+                            const SizedBox(
+                              width: Dimensions.paddingSizeLarge * 2,
+                            ),
+                            Expanded(
+                              child: _secondList(locationController),
+                            ),
+                          ]),
+                    SizedBox(
+                      height: ResponsiveHelper.isDesktop(context)
+                          ? 50
+                          : 100 + bottomPadding,
                     ),
-                  ]),
-                SizedBox(height: ResponsiveHelper.isDesktop(context) ? 50 : 100 + bottomPadding,),
-
-                ResponsiveHelper.isDesktop(context) ?
-                CustomButton(
-                  radius: Dimensions.radiusDefault, fontSize: Dimensions.fontSizeLarge,
-                  buttonText: widget.address == null ? 'save_location'.tr : 'update_address'.tr,
-                  isLoading: locationController.isLoading,
-                  onPressed : (locationController.buttonDisabled || locationController.loading) ? null : () => _saveAddress(locationController),
-                ) : const SizedBox(),
-
-              ]));
+                    ResponsiveHelper.isDesktop(context)
+                        ? CustomButton(
+                            radius: Dimensions.radiusDefault,
+                            fontSize: Dimensions.fontSizeLarge,
+                            buttonText: widget.address == null
+                                ? 'save_location'.tr
+                                : 'update_address'.tr,
+                            isLoading: locationController.isLoading,
+                            onPressed: (locationController.buttonDisabled ||
+                                    locationController.loading)
+                                ? null
+                                : () => _saveAddress(locationController),
+                          )
+                        : const SizedBox(),
+                  ]));
             }),
           ),
         )))),
       ),
-
-      bottomSheet: !ResponsiveHelper.isDesktop(context) ? GetBuilder<LocationController>(builder: (locationController){
-        return SizedBox( height: 105 + bottomPadding,
-          child: CustomButton(
-            margin: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
-            radius: Dimensions.radiusDefault, fontSize: Dimensions.fontSizeLarge,
-            isLoading: locationController.isLoading,
-            buttonText: widget.address == null ? 'save_location'.tr : 'update_address'.tr,
-            onPressed : (locationController.buttonDisabled  || locationController.loading) ? null : () => _saveAddress(locationController),
-          ),
-        );
-      }): const SizedBox(),
+      bottomSheet: !ResponsiveHelper.isDesktop(context)
+          ? GetBuilder<LocationController>(builder: (locationController) {
+              return SizedBox(
+                height: 105 + bottomPadding,
+                child: CustomButton(
+                  margin: const EdgeInsets.symmetric(
+                      horizontal: Dimensions.paddingSizeDefault),
+                  radius: Dimensions.radiusDefault,
+                  fontSize: Dimensions.fontSizeLarge,
+                  isLoading: locationController.isLoading,
+                  buttonText: widget.address == null
+                      ? 'save_location'.tr
+                      : 'update_address'.tr,
+                  onPressed: (locationController.buttonDisabled ||
+                          locationController.loading)
+                      ? null
+                      : () => _saveAddress(locationController),
+                ),
+              );
+            })
+          : const SizedBox(),
     );
   }
 
-  void _saveAddress (LocationController locationController ){
+  void _saveAddress(LocationController locationController) {
     final isValid = addressFormKey.currentState!.validate();
-    if(isValid ){
-
+    if (isValid) {
       addressFormKey.currentState!.save();
 
       AddressModel addressModel = AddressModel(
-        id: widget.address?.id ,
+        id: widget.address?.id,
         addressType: locationController.selectedAddressType.name,
-        addressLabel:locationController.selectedAddressLabel.name.toLowerCase(),
+        addressLabel:
+            locationController.selectedAddressLabel.name.toLowerCase(),
         contactPersonName: _contactPersonNameController.text,
-        contactPersonNumber: Get.find<LocationController>().countryDialCode + PhoneVerificationHelper.isPhoneValid(Get.find<LocationController>().countryDialCode + _contactPersonNumberController.text, fromAuthPage: false),
+        contactPersonNumber: Get.find<LocationController>().countryDialCode +
+            PhoneVerificationHelper.isPhoneValid(
+                Get.find<LocationController>().countryDialCode +
+                    _contactPersonNumberController.text,
+                fromAuthPage: false),
         address: _serviceAddressController.text,
         city: _cityController.text,
         zipCode: _zipController.value.text,
@@ -223,24 +274,28 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
         street: _streetController.text,
       );
       if (kDebugMode) {
-        print("After Address Model and Save Button , Country Code is ${addressModel.contactPersonNumber}");
+        print(
+            "After Address Model and Save Button , Country Code is ${addressModel.contactPersonNumber}");
       }
-      if(widget.address == null) {
+      if (widget.address == null) {
         locationController.addAddress(addressModel, true);
-      }else {
-        if(widget.address!.id!=null && widget.address!.id!="null"){
-          locationController.updateAddress(addressModel, widget.address!.id!).then((response) {
-            if(response.isSuccess!) {
-              if(widget.fromCheckout){
+      } else {
+        if (widget.address!.id != null && widget.address!.id != "null") {
+          locationController
+              .updateAddress(addressModel, widget.address!.id!)
+              .then((response) {
+            if (response.isSuccess!) {
+              if (widget.fromCheckout) {
                 locationController.updateSelectedAddress(addressModel);
               }
               Get.back();
-              customSnackBar(response.message!.tr,type : ToasterMessageType.success);
-            }else {
+              customSnackBar(response.message!.tr,
+                  type: ToasterMessageType.success);
+            } else {
               customSnackBar(response.message!.tr);
             }
           });
-        }else{
+        } else {
           locationController.updateSelectedAddress(addressModel);
           Get.back();
         }
@@ -250,321 +305,368 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
 
   void _checkPermission(Function onTap) async {
     LocationPermission permission = await Geolocator.checkPermission();
-    if(permission == LocationPermission.denied) {
+    if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
     }
-    if(permission == LocationPermission.denied) {
+    if (permission == LocationPermission.denied) {
       customSnackBar('you_have_to_allow'.tr, type: ToasterMessageType.info);
-    }else if(permission == LocationPermission.deniedForever) {
+    } else if (permission == LocationPermission.deniedForever) {
       Get.dialog(const PermissionDialog());
-    }else {
+    } else {
       onTap();
     }
   }
 
   Widget _firstList(LocationController locationController) {
-    return Column(children: [
-      const SizedBox(height: Dimensions.paddingSizeDefault),
-      CustomTextField(
-        title: 'name'.tr,
-        hintText: 'contact_person_name_hint'.tr,
-        inputType: TextInputType.name,
-        controller: _contactPersonNameController,
-        focusNode: _nameNode,
-        nextFocus: _numberNode,
-        capitalization: TextCapitalization.words,
-        onValidate: (String? value){
-          return FormValidation().isValidLength(value!);
-        },
-      ),
-      const SizedBox(height: Dimensions.paddingSizeExtraLarge),
-
-      CustomTextField(
-        onCountryChanged: (CountryCode countryCode) {
-          locationController.countryDialCode = countryCode.dialCode!;
-        },
-        countryDialCode: locationController.countryDialCode,
-        title: 'phone_number'.tr,
-        hintText: 'contact_person_number_hint'.tr,
-        inputType: TextInputType.phone,
-        inputAction: TextInputAction.done,
-        focusNode: _numberNode,
-        nextFocus: _serviceAddressNode,
-        controller: _contactPersonNumberController,
-        onValidate: (String? value){
-          if(value == null || value.isEmpty){
-            return 'please_enter_phone_number'.tr;
-          }
-          return FormValidation().isValidPhone(
-              locationController.countryDialCode+(value),
-              fromAuthPage: false
-          );
-        },
-      ),
-      const SizedBox(height: Dimensions.paddingSizeLarge * 1.2),
-
-      Container(
-        height: ResponsiveHelper.isDesktop(context) ? 250 : 150,
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-          border: Border.all(width: 0.5, color: Theme.of(context).primaryColor.withValues(alpha: 0.5)),
+    return Column(
+      children: [
+        const SizedBox(height: Dimensions.paddingSizeDefault),
+        CustomTextField(
+          title: 'name'.tr,
+          hintText: 'contact_person_name_hint'.tr,
+          inputType: TextInputType.name,
+          controller: _contactPersonNameController,
+          focusNode: _nameNode,
+          nextFocus: _numberNode,
+          capitalization: TextCapitalization.words,
+          onValidate: (String? value) {
+            return FormValidation().isValidLength(value!);
+          },
         ),
-        padding: const EdgeInsets.all(1),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-          child: Stack(clipBehavior: Clip.none, children: [
-            if(_initialPosition != null)
-              GoogleMap(
-                minMaxZoomPreference: const MinMaxZoomPreference(0, 16),
-
-                initialCameraPosition: CameraPosition(
-                  target: _initialPosition!,
-                  zoom: 14.4746,
-                ),
-                zoomControlsEnabled: false,
-                
-                onCameraIdle: () async {
-                  try {
-                    final locationController = Get.find<LocationController>();
-                    // Always use the latest camera position for reverse geocoding
-                    final latLng = LatLng(_cameraPosition!.target.latitude, _cameraPosition!.target.longitude);
-                    // Make sure to call without using its return value
-                    locationController.updatePosition(_cameraPosition!, true, formCheckout: widget.fromCheckout);
-                    final latestAddress = await locationController.getAddressFromGeocode(latLng);
-                    _serviceAddressController.text = latestAddress.address ?? '';
-                    setState(() {_initialPosition = latLng;});
-                  } catch (error) {
-                    if (kDebugMode) {
-                      print('error : $error');
-                    }
-                  }
-                },
-                onCameraMove: ((position) => _cameraPosition = position),
-                onMapCreated: (GoogleMapController controller) {
-                  locationController.setMapController(controller);
-                  _controller.complete(controller);
-
-                  if(widget.address == null) {
-                    locationController.getCurrentLocation(true, mapController: controller);
-                  }
-                },
-                style: Get.isDarkMode ? Get.find<ThemeController>().darkMap : Get.find<ThemeController>().lightMap,
-                myLocationButtonEnabled: false,
-
-              ),
-            locationController.loading ? const Center(child: CircularProgressIndicator()) : const SizedBox(),
-            Center(child: !locationController.loading ? Image.asset(Images.marker, height: 40, width: 40,)
-                : const CircularProgressIndicator()),
-            Positioned(
-              bottom: 10,
-              left:Get.find<LocalizationController>().isLtr ? null: Dimensions.paddingSizeSmall,
-              right:Get.find<LocalizationController>().isLtr ?  0:null,
-              child: InkWell(
-                onTap: () => _checkPermission(() async {
-                  final locationController = Get.find<LocationController>();
-                  // Always fetch the most accurate current location
-                  final address = await locationController.getCurrentLocation(
-                    true,
-                    deviceCurrentLocation: true,
-                    mapController: locationController.mapController,
-                    notify: true,
-                  );
-                  _serviceAddressController.text = address.address ?? '';
-                  setState(() {
-                    _initialPosition = LatLng(
-                      double.tryParse(address.latitude ?? '') ?? 23.0000,
-                      double.tryParse(address.longitude ?? '') ?? 90.0000,
-                    );
-                  });
-                }),
-                child: Container(
-                  width: 30, height: 30,
-                  margin: const EdgeInsets.only(right: Dimensions.paddingSizeLarge),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-                    color:Theme.of(context).primaryColorLight.withValues(alpha: .5)
+        const SizedBox(height: Dimensions.paddingSizeExtraLarge),
+        CustomTextField(
+          onCountryChanged: (CountryCode countryCode) {
+            locationController.countryDialCode = countryCode.dialCode!;
+          },
+          countryDialCode: locationController.countryDialCode,
+          title: 'phone_number'.tr,
+          hintText: 'contact_person_number_hint'.tr,
+          inputType: TextInputType.phone,
+          inputAction: TextInputAction.done,
+          focusNode: _numberNode,
+          nextFocus: _serviceAddressNode,
+          controller: _contactPersonNumberController,
+          onValidate: (String? value) {
+            if (value == null || value.isEmpty) {
+              return 'please_enter_phone_number'.tr;
+            }
+            return FormValidation().isValidPhone(
+                locationController.countryDialCode + (value),
+                fromAuthPage: false);
+          },
+        ),
+        const SizedBox(height: Dimensions.paddingSizeLarge * 1.2),
+        Container(
+          height: ResponsiveHelper.isDesktop(context) ? 250 : 150,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+            border: Border.all(
+                width: 0.5,
+                color: Theme.of(context).primaryColor.withValues(alpha: 0.5)),
+          ),
+          padding: const EdgeInsets.all(1),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+            child: Stack(clipBehavior: Clip.none, children: [
+              if (_initialPosition != null)
+                GoogleMap(
+                  minMaxZoomPreference: const MinMaxZoomPreference(0, 16),
+                  initialCameraPosition: CameraPosition(
+                    target: _initialPosition!,
+                    zoom: 14.4746,
                   ),
-                  child: Icon(Icons.my_location, color: Theme.of(context).primaryColor, size: 20),
-                ),
-              ),
-            ),
-            Positioned(
-              top: 10,
-              left:Get.find<LocalizationController>().isLtr ? null: Dimensions.paddingSizeSmall,
-              right:Get.find<LocalizationController>().isLtr ?  0:null,
-              child: InkWell(
-                onTap: () {
-                  Get.toNamed(
-                    RouteHelper.getPickMapRoute('add-addres', false, '${widget.fromCheckout}', null, null),
-                    arguments: PickMapScreen(
-                      fromAddAddress: true, fromSignUp: false, googleMapController: locationController.mapController,
-                      route: null, canRoute: false, formCheckout: widget.fromCheckout, zone: null,
-                    ),
-                  );
-                },
-                child: Container(
-                  width: 30, height: 30,
-                  margin: const EdgeInsets.only(right: Dimensions.paddingSizeLarge),
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-                      color: Theme.of(context).primaryColorLight.withValues(alpha: .5)),
-                  child: Icon(Icons.fullscreen, color: Theme.of(context).primaryColor, size: 20),
-                ),
-              ),
-            ),
-          ]),
-        ),
-      ),
+                  zoomControlsEnabled: false,
+                  onCameraIdle: () async {
+                    try {
+                      final locationController = Get.find<LocationController>();
+                      // Always use the latest camera position for reverse geocoding
+                      final latLng = LatLng(_cameraPosition!.target.latitude,
+                          _cameraPosition!.target.longitude);
+                      // Make sure to call without using its return value
+                      locationController.updatePosition(_cameraPosition!, true,
+                          formCheckout: widget.fromCheckout);
+                      final latestAddress = await locationController
+                          .getAddressFromGeocode(latLng);
+                      _serviceAddressController.text =
+                          latestAddress.address ?? '';
+                      setState(() {
+                        _initialPosition = latLng;
+                      });
+                    } catch (error) {
+                      if (kDebugMode) {
+                        print('error : $error');
+                      }
+                    }
+                  },
+                  onCameraMove: ((position) => _cameraPosition = position),
+                  onMapCreated: (GoogleMapController controller) {
+                    locationController.setMapController(controller);
+                    _controller.complete(controller);
 
-    ],);
+                    if (widget.address == null) {
+                      locationController.getCurrentLocation(true,
+                          mapController: controller);
+                    }
+                  },
+                  style: Get.isDarkMode
+                      ? Get.find<ThemeController>().darkMap
+                      : Get.find<ThemeController>().lightMap,
+                  myLocationButtonEnabled: false,
+                ),
+              locationController.loading
+                  ? const Center(child: CircularProgressIndicator())
+                  : const SizedBox(),
+              Center(
+                  child: !locationController.loading
+                      ? Image.asset(
+                          Images.marker,
+                          height: 40,
+                          width: 40,
+                        )
+                      : const CircularProgressIndicator()),
+              Positioned(
+                bottom: 10,
+                left: Get.find<LocalizationController>().isLtr
+                    ? null
+                    : Dimensions.paddingSizeSmall,
+                right: Get.find<LocalizationController>().isLtr ? 0 : null,
+                child: InkWell(
+                  onTap: () => _checkPermission(() async {
+                    final locationController = Get.find<LocationController>();
+                    // Always fetch the most accurate current location
+                    final address = await locationController.getCurrentLocation(
+                      true,
+                      deviceCurrentLocation: true,
+                      mapController: locationController.mapController,
+                      notify: true,
+                    );
+                    _serviceAddressController.text = address.address ?? '';
+                    setState(() {
+                      _initialPosition = LatLng(
+                        double.tryParse(address.latitude ?? '') ?? 23.0000,
+                        double.tryParse(address.longitude ?? '') ?? 90.0000,
+                      );
+                    });
+                  }),
+                  child: Container(
+                    width: 30,
+                    height: 30,
+                    margin: const EdgeInsets.only(
+                        right: Dimensions.paddingSizeLarge),
+                    decoration: BoxDecoration(
+                        borderRadius:
+                            BorderRadius.circular(Dimensions.radiusSmall),
+                        color: Theme.of(context)
+                            .primaryColorLight
+                            .withValues(alpha: .5)),
+                    child: Icon(Icons.my_location,
+                        color: Theme.of(context).primaryColor, size: 20),
+                  ),
+                ),
+              ),
+              Positioned(
+                top: 10,
+                left: Get.find<LocalizationController>().isLtr
+                    ? null
+                    : Dimensions.paddingSizeSmall,
+                right: Get.find<LocalizationController>().isLtr ? 0 : null,
+                child: InkWell(
+                  onTap: () {
+                    Get.toNamed(
+                      RouteHelper.getPickMapRoute('add-addres', false,
+                          '${widget.fromCheckout}', null, null),
+                      arguments: PickMapScreen(
+                        fromAddAddress: true,
+                        fromSignUp: false,
+                        googleMapController: locationController.mapController,
+                        route: null,
+                        canRoute: false,
+                        formCheckout: widget.fromCheckout,
+                        zone: null,
+                      ),
+                    );
+                  },
+                  child: Container(
+                    width: 30,
+                    height: 30,
+                    margin: const EdgeInsets.only(
+                        right: Dimensions.paddingSizeLarge),
+                    decoration: BoxDecoration(
+                        borderRadius:
+                            BorderRadius.circular(Dimensions.radiusSmall),
+                        color: Theme.of(context)
+                            .primaryColorLight
+                            .withValues(alpha: .5)),
+                    child: Icon(Icons.fullscreen,
+                        color: Theme.of(context).primaryColor, size: 20),
+                  ),
+                ),
+              ),
+            ]),
+          ),
+        ),
+      ],
+    );
   }
 
   Widget _secondList(LocationController locationController) {
-    return Column(children: [
-      const AddressLabelWidget(),
-      const SizedBox(height: Dimensions.paddingSizeTextFieldGap),
-      // Show the current address above the text field
-      GetBuilder<LocationController>(builder: (locationController) {
-        return Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Flexible(
-              child: Text(
-                locationController.address.address ?? '',
-                style: robotoMedium.copyWith(
-                  color: Colors.white,
-                  fontSize: Dimensions.fontSizeSmall,
+    return Column(
+      children: [
+        const AddressLabelWidget(),
+        const SizedBox(height: Dimensions.paddingSizeTextFieldGap),
+        // Show the current address above the text field
+        GetBuilder<LocationController>(builder: (locationController) {
+          return Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Flexible(
+                child: Text(
+                  locationController.address.address ?? '',
+                  style: robotoMedium.copyWith(
+                    color: Colors.white,
+                    fontSize: Dimensions.fontSizeSmall,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(width: Dimensions.paddingSizeExtraSmall),
+              const Icon(
+                Icons.arrow_forward_ios_rounded,
+                color: Colors.white,
+                size: 12,
+              ),
+              const SizedBox(width: Dimensions.paddingSizeLarge),
+            ],
+          );
+        }),
+        const SizedBox(height: Dimensions.paddingSizeTextFieldGap),
+
+        CustomTextField(
+            title: 'service_address'.tr,
+            hintText: 'service_address_hint'.tr,
+            inputType: TextInputType.streetAddress,
+            focusNode: _serviceAddressNode,
+            nextFocus: _houseNode,
+            controller: _serviceAddressController,
+            onChanged: (text) => locationController.setPlaceMark(address: text),
+            onValidate: (String? value) {
+              if (value == null || value.isEmpty) {
+                return 'enter_your_address'.tr;
+              }
+              return null;
+            }),
+        const SizedBox(height: Dimensions.paddingSizeTextFieldGap),
+
+        Row(
+          children: [
+            Expanded(
+              child: CustomTextField(
+                title: 'house'.tr,
+                hintText: 'enter_house_no'.tr,
+                inputType: TextInputType.streetAddress,
+                focusNode: _houseNode,
+                nextFocus: _floorNode,
+                controller: _houseController
+                  ..text = locationController.address.house ?? "",
+                onChanged: (text) =>
+                    locationController.setPlaceMark(house: text),
+                isRequired: false,
               ),
             ),
-            const SizedBox(width: Dimensions.paddingSizeExtraSmall),
-            const Icon(
-              Icons.arrow_forward_ios_rounded,
-              color: Colors.white,
-              size: 12,
+            const SizedBox(width: Dimensions.paddingSizeTextFieldGap),
+            Expanded(
+              child: CustomTextField(
+                title: 'floor'.tr,
+                hintText: 'enter_floor_no'.tr,
+                inputType: TextInputType.streetAddress,
+                focusNode: _floorNode,
+                nextFocus: _cityNode,
+                controller: _floorController
+                  ..text = locationController.address.floor ?? "",
+                onChanged: (text) =>
+                    locationController.setPlaceMark(floor: text),
+                isRequired: false,
+              ),
             ),
-            const SizedBox(width: Dimensions.paddingSizeLarge),
           ],
-        );
-      }),
-      const SizedBox(height: Dimensions.paddingSizeTextFieldGap),
+        ),
 
-      CustomTextField(
-          title: 'service_address'.tr,
-          hintText: 'service_address_hint'.tr,
-          inputType: TextInputType.streetAddress,
-          focusNode: _serviceAddressNode,
-          nextFocus: _houseNode,
-          controller: _serviceAddressController,
-          onChanged: (text) => locationController.setPlaceMark(address: text),
-          onValidate: (String? value){
-            if(value == null || value.isEmpty){
-              return 'enter_your_address'.tr;
-            }
-            return null;
-          }
-      ),
-      const SizedBox(height: Dimensions.paddingSizeTextFieldGap),
+        const SizedBox(height: Dimensions.paddingSizeTextFieldGap),
 
-      Row(
-        children: [
-          Expanded(
-            child: CustomTextField(
-              title: 'house'.tr,
-              hintText: 'enter_house_no'.tr,
-              inputType: TextInputType.streetAddress,
-              focusNode: _houseNode,
-              nextFocus: _floorNode,
-              controller: _houseController..text = locationController.address.house ?? "",
-              onChanged: (text) => locationController.setPlaceMark(house: text),
-              isRequired: false,
+        Row(
+          children: [
+            Expanded(
+              child: CustomTextField(
+                title: 'city'.tr,
+                hintText: 'enter_city'.tr,
+                inputType: TextInputType.streetAddress,
+                focusNode: _cityNode,
+                nextFocus: _countryNode,
+                controller: _cityController
+                  ..text = locationController.address.city ?? "",
+                onChanged: (text) =>
+                    locationController.setPlaceMark(city: text),
+                isRequired: false,
+              ),
             ),
-          ),
-
-          const SizedBox(width: Dimensions.paddingSizeTextFieldGap),
-
-          Expanded(
-            child: CustomTextField(
-              title: 'floor'.tr,
-              hintText: 'enter_floor_no'.tr,
-              inputType: TextInputType.streetAddress,
-              focusNode: _floorNode,
-              nextFocus: _cityNode,
-              controller: _floorController..text = locationController.address.floor ?? "",
-              onChanged: (text) => locationController.setPlaceMark(floor: text),
-              isRequired: false,
+            const SizedBox(width: Dimensions.paddingSizeTextFieldGap),
+            Expanded(
+              child: CustomTextField(
+                title: 'country'.tr,
+                hintText: 'enter_country'.tr,
+                inputType: TextInputType.text,
+                focusNode: _countryNode,
+                inputAction: TextInputAction.next,
+                nextFocus: _zipNode,
+                controller: _countryController
+                  ..text = locationController.address.country ?? "",
+                onChanged: (text) =>
+                    locationController.setPlaceMark(country: text),
+                isRequired: false,
+              ),
             ),
-          ),
-        ],
-      ),
-
-      const SizedBox(height: Dimensions.paddingSizeTextFieldGap),
-
-      Row(
-        children: [
-          Expanded(
-            child: CustomTextField(
-              title: 'city'.tr,
-              hintText: 'enter_city'.tr,
-              inputType: TextInputType.streetAddress,
-              focusNode: _cityNode,
-              nextFocus: _countryNode,
-              controller: _cityController..text = locationController.address.city ?? "",
-              onChanged: (text) => locationController.setPlaceMark(city: text),
-              isRequired: false,
+          ],
+        ),
+        const SizedBox(height: Dimensions.paddingSizeTextFieldGap),
+        Row(
+          children: [
+            Expanded(
+              child: CustomTextField(
+                title: 'zip_code'.tr,
+                hintText: 'enter_zip_code'.tr,
+                inputType: TextInputType.text,
+                focusNode: _zipNode,
+                nextFocus: _streetNode,
+                controller: _zipController
+                  ..text = locationController.address.zipCode ?? "",
+                onChanged: (text) =>
+                    locationController.setPlaceMark(zipCode: text),
+                isRequired: false,
+              ),
             ),
-          ),
-
-          const SizedBox(width: Dimensions.paddingSizeTextFieldGap),
-
-          Expanded(
-            child: CustomTextField(
-              title: 'country'.tr,
-              hintText: 'enter_country'.tr,
-              inputType: TextInputType.text,
-              focusNode: _countryNode,
-              inputAction: TextInputAction.next,
-              nextFocus: _zipNode,
-              controller: _countryController..text = locationController.address.country ?? "",
-              onChanged: (text) => locationController.setPlaceMark(country: text),
-              isRequired: false,
+            const SizedBox(
+              width: Dimensions.paddingSizeDefault,
             ),
-          ),
-        ],
-      ),
-      const SizedBox(height: Dimensions.paddingSizeTextFieldGap),
-      Row(
-        children: [
-          Expanded(
-            child: CustomTextField(
-              title: 'zip_code'.tr,
-              hintText: 'enter_zip_code'.tr,
-              inputType: TextInputType.text,
-              focusNode: _zipNode,
-              nextFocus: _streetNode,
-              controller: _zipController..text = locationController.address.zipCode ?? "",
-              onChanged: (text) => locationController.setPlaceMark(zipCode: text),
-              isRequired: false,
+            Expanded(
+              child: CustomTextField(
+                title: 'street'.tr,
+                hintText: 'enter_street'.tr,
+                inputType: TextInputType.streetAddress,
+                focusNode: _streetNode,
+                inputAction: TextInputAction.done,
+                controller: _streetController
+                  ..text = locationController.address.street ?? "",
+                onChanged: (text) =>
+                    locationController.setPlaceMark(street: text),
+                isRequired: false,
+              ),
             ),
-          ),
-          const SizedBox(width: Dimensions.paddingSizeDefault,),
-          Expanded(
-            child: CustomTextField(
-              title: 'street'.tr,
-              hintText: 'enter_street'.tr,
-              inputType: TextInputType.streetAddress,
-              focusNode: _streetNode,
-              inputAction: TextInputAction.done,
-              controller: _streetController..text = locationController.address.street ?? "",
-              onChanged: (text) => locationController.setPlaceMark(street: text),
-              isRequired: false,
-            ),
-          ),
-        ],
-      ),
-    ],);
+          ],
+        ),
+      ],
+    );
   }
 }

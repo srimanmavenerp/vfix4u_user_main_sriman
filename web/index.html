@@ -5,8 +5,18 @@
 
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-  <meta name="description" content="A multi-vendor service providing app." />
-  <meta name="robots" content="nofollow, noindex, max-snippet:1, max-video-preview:1, max-image-preview:standard" />
+
+  <!-- SEO Meta Tags -->
+  <title>VFix4U – On-Demand IT Services in Hyderabad</title>
+  <meta name="description" content="VFix4U – Hyderabad’s trusted IT service provider. Book professional technicians for laptop, PC, and home appliance repairs, track appointments, and make secure payments online." />
+  <meta name="keywords" content="VFix4U, IT service, laptop repair, computer repair, Hyderabad, home appliance repair" />
+  <meta name="author" content="MAKS VFIX4U IT SOLUTIONS LLP" />
+  <meta name="robots" content="index, follow, max-snippet:50, max-image-preview:large, max-video-preview:large" />
+  <link rel="canonical" href="https://web.vfix4u.com/" />
+
+  <!-- Google Sign-In -->
+  <meta name="google-signin-client_id" 
+        content="1059020015260-ijigafl7u6peji5nthqms77n33plar9k.apps.googleusercontent.com">
 
   <!-- iOS/Android PWA meta -->
   <meta name="mobile-web-app-capable" content="yes" />
@@ -14,14 +24,12 @@
   <meta name="apple-mobile-web-app-title" content="VFix4U" />
 
   <!-- Icons -->
-  <link rel="apple-touch-icon" href="icons/Icon-192.png" />
+  <link rel="apple-touch-icon" href="favicon.png" />
   <link rel="icon" type="image/png" href="favicon.png" />
 
-  <title>VFix4U</title>
-
+  <!-- Manifest -->
   <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="style.css" />
-  <link rel="canonical" href="https://web.vfix4u.com/" />
 
   <style>
     .grecaptcha-badge { visibility: hidden; }
@@ -36,7 +44,7 @@
   <!-- Flutter inappwebview support -->
   <script src="/assets/packages/flutter_inappwebview_web/assets/web/web_support.js" defer></script>
 
-  <!-- Firebase (modular) -->
+  <!-- Firebase -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-analytics.js";
@@ -60,6 +68,7 @@
 
   <!-- Flutter bootstrap -->
   <script src="flutter_bootstrap.js" async></script>
+
 </head>
 
 <body>
@@ -76,7 +85,7 @@
   <header class="header">
     <div class="header-container d-flex align-items-center justify-content-between">
       <div class="header-start d-flex gap-5 align-items-center">
-        <img class="logo" src="webAppbarLogo.png" alt="Logo" />
+        <img class="logo" src="webAppbarLogo.png" alt="VFix4U Logo" />
         <div class="placeholder placeholder-wide"></div>
         <div class="placeholder"></div>
         <div class="placeholder"></div>
@@ -118,14 +127,11 @@
   <script>
     if (typeof(Storage) !== "undefined") {
       const theme = localStorage.getItem("flutter.demand_theme");
-      console.log("flutter.theme", theme);
       if (theme === "true") {
         document.body.classList.add("theme-dark");
       } else {
         document.body.classList.remove("theme-dark");
       }
-    } else {
-      console.log("localStorage is not supported");
     }
   </script>
 

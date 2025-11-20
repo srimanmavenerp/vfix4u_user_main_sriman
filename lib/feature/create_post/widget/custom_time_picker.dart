@@ -84,7 +84,7 @@ class CustomTimePicker extends StatelessWidget {
                         ? Colors.grey
                         : isSelected
                             ? Colors.white
-                            : Theme.of(context).hintColor,
+                            : Theme.of(context).hintColor, 
                     elevation: isPast ? 0 : 2,
                   ),
                   onPressed: isPast
@@ -111,35 +111,6 @@ class CustomTimePicker extends StatelessWidget {
           }),
 
           const SizedBox(height: 12),
-
-          // Info Card
-          Card(
-            color: Colors.orange.shade50,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: const Padding(
-              padding: EdgeInsets.all(12.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Icon(Icons.access_time, color: Colors.orange, size: 24),
-                  SizedBox(width: 10),
-                  Expanded(
-                    child: Text(
-                      "Note: Please select a time slot between 9:00 AM and 6:00 PM.\nPast time slots are disabled automatically.",
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.black87,
-                        fontWeight: FontWeight.w500,
-                        height: 1.4,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          )
         ],
       ),
     );

@@ -28,6 +28,8 @@
 // }
 
 ////changes by saif
+
+import 'package:demandium/common/widgets/custom_app_bar.dart';
 import 'package:demandium/utils/core_export.dart';
 import 'package:get/get.dart';
 
@@ -37,6 +39,7 @@ class ApiChecker {
       Get.find<AuthController>().clearSharedData(response: response);
       if (Get.currentRoute != RouteHelper.getInitialRoute()) {
         Get.offAllNamed(RouteHelper.getInitialRoute());
+
         customSnackBar("${response.statusCode!}".tr);
       }
     } else if (response.statusCode == 500) {

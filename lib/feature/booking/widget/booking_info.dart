@@ -118,8 +118,6 @@
 //   }
 // }
 
-
-
 import 'package:demandium/feature/booking/view/web_booking_details_screen.dart';
 import 'package:demandium/feature/booking/widget/booking_status_widget.dart';
 import 'package:get/get.dart';
@@ -140,9 +138,10 @@ class BookingInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final DateTime currentTime = DateTime.now();
-     DateTime? serviceDateTime = DateTime.tryParse(bookingDetails.serviceSchedule ?? '');
-     bool showCancelButton = false;
-     if (serviceDateTime != null) {
+    DateTime? serviceDateTime =
+        DateTime.tryParse(bookingDetails.serviceSchedule ?? '');
+    bool showCancelButton = false;
+    if (serviceDateTime != null) {
       final difference = serviceDateTime.difference(currentTime);
       showCancelButton = difference.inMinutes > 60;
     }
@@ -150,7 +149,8 @@ class BookingInfo extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-        boxShadow: Get.find<ThemeController>().darkTheme ? null : searchBoxShadow,
+        boxShadow:
+            Get.find<ThemeController>().darkTheme ? null : searchBoxShadow,
       ),
       child: Padding(
         padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
@@ -180,7 +180,8 @@ class BookingInfo extends StatelessWidget {
               img: Images.calendar1,
               title: "${'booking_date'.tr} : ",
               date: DateConverter.dateMonthYearTimeTwentyFourFormat(
-                DateConverter.isoUtcStringToLocalDate(bookingDetails.createdAt!),
+                DateConverter.isoUtcStringToLocalDate(
+                    bookingDetails.createdAt!),
               ),
             ),
             Gaps.verticalGapOf(Dimensions.paddingSizeExtraSmall),
@@ -200,17 +201,14 @@ class BookingInfo extends StatelessWidget {
             BookingItem(
               img: Images.iconLocation,
               title:
-              '${'address'.tr} : ${bookingDetails.serviceAddress?.address ?? bookingDetails.subBooking?.serviceAddress?.address ?? 'no_address_found'.tr}',
+                  '${'address'.tr} : ${bookingDetails.serviceAddress?.address ?? bookingDetails.subBooking?.serviceAddress?.address ?? 'no_address_found'.tr}',
               date: '',
             ),
             Gaps.verticalGapOf(Dimensions.paddingSizeSmall),
 
-
             /// Conditional Buttons (Cancel, Pay)
             if (bookingDetails.bookingStatus != "canceled")
-
-
-            Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   /// ✅ Show cancel button for all accepted bookings regardless of payment
@@ -225,9 +223,7 @@ class BookingInfo extends StatelessWidget {
                         );
                       },
                       child: Text("cancel_booking".tr),
-
                     ),
-
 
                   // if (bookingDetails.bookingStatus == "accepted" && bookingDetails.bookingStatus != "completed")
                   //   ElevatedButton(
@@ -246,13 +242,13 @@ class BookingInfo extends StatelessWidget {
                   if (bookingDetails.isPaid == 0)
                     ElevatedButton(
                       onPressed: () {
-                        bookingDetailsTabController.showCustomPayViaOnlineDialog(bookingDetails.id);
+                        bookingDetailsTabController
+                            .showCustomPayViaOnlineDialog(bookingDetails.id);
                       },
                       child: Text("pay".tr),
                     ),
                 ],
               ),
-
 
             /// Conditional Buttons (Cancel, Pay)
             // if (bookingDetails.isPaid == 0 &&

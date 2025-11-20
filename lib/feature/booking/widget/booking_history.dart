@@ -267,9 +267,7 @@
 //   }
 // }
 
-
 ////saif code
-
 
 import 'package:demandium/feature/booking/widget/booking_screen_shimmer.dart';
 import 'package:demandium/feature/booking/widget/timeline/connectors.dart';
@@ -303,84 +301,104 @@ class BookingHistory extends StatelessWidget {
           return SingleChildScrollView(
             child: Column(
               children: [
-                ResponsiveHelper.isDesktop(context) ? const SizedBox() : Column(
-                  children: [
-                    Gaps.verticalGapOf(Dimensions.paddingSizeExtraLarge),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('${'booking_place'.tr} : ',
-                            style: robotoMedium.copyWith(
-                                fontSize: Dimensions.fontSizeDefault,
-                                color: Theme.of(context).textTheme.bodyLarge!.color)),
-                        Text(
-                          DateConverter.dateMonthYearTimeTwentyFourFormat(
-                              DateConverter.isoUtcStringToLocalDate(
-                                  bookingDetails.createdAt!.toString())),
-                          textDirection: TextDirection.ltr,
-                          style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeDefault),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: Dimensions.paddingSizeExtraSmall),
-                    Gaps.verticalGapOf(Dimensions.paddingSizeExtraSmall),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text("${'service_scheduled_date'.tr} : ",
-                            style: robotoMedium.copyWith(
-                                fontSize: Dimensions.fontSizeDefault,
-                                color: Theme.of(context).textTheme.bodyLarge!.color)),
-                        Text(
-                          DateConverter.dateMonthYearTimeTwentyFourFormat(
-                              DateTime.tryParse(bookingDetails.serviceSchedule!)!),
-                          style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeDefault),
-                          textDirection: TextDirection.ltr,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: Dimensions.paddingSizeSmall),
-                    RichText(
-                      text: TextSpan(
-                        text: '${'payment_status'.tr} : ',
-                        style: robotoMedium.copyWith(
-                            fontSize: Dimensions.fontSizeDefault,
-                            color: Theme.of(context).textTheme.bodyLarge!.color),
+                ResponsiveHelper.isDesktop(context)
+                    ? const SizedBox()
+                    : Column(
                         children: [
-                          TextSpan(
-                            text: '${bookingDetails.isPaid == 0 ? 'unpaid'.tr : 'paid'.tr} ',
-                            style: robotoMedium.copyWith(
-                              fontSize: Dimensions.fontSizeDefault,
-                              color: bookingDetails.isPaid == 0
-                                  ? Theme.of(context).colorScheme.error
-                                  : Colors.green,
-                              decoration: TextDecoration.none,
+                          Gaps.verticalGapOf(Dimensions.paddingSizeExtraLarge),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('${'booking_place'.tr} : ',
+                                  style: robotoMedium.copyWith(
+                                      fontSize: Dimensions.fontSizeDefault,
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge!
+                                          .color)),
+                              Text(
+                                DateConverter.dateMonthYearTimeTwentyFourFormat(
+                                    DateConverter.isoUtcStringToLocalDate(
+                                        bookingDetails.createdAt!.toString())),
+                                textDirection: TextDirection.ltr,
+                                style: robotoRegular.copyWith(
+                                    fontSize: Dimensions.fontSizeDefault),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                              height: Dimensions.paddingSizeExtraSmall),
+                          Gaps.verticalGapOf(Dimensions.paddingSizeExtraSmall),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text("${'service_scheduled_date'.tr} : ",
+                                  style: robotoMedium.copyWith(
+                                      fontSize: Dimensions.fontSizeDefault,
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge!
+                                          .color)),
+                              Text(
+                                DateConverter.dateMonthYearTimeTwentyFourFormat(
+                                    DateTime.tryParse(
+                                        bookingDetails.serviceSchedule!)!),
+                                style: robotoRegular.copyWith(
+                                    fontSize: Dimensions.fontSizeDefault),
+                                textDirection: TextDirection.ltr,
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: Dimensions.paddingSizeSmall),
+                          RichText(
+                            text: TextSpan(
+                              text: '${'payment_status'.tr} : ',
+                              style: robotoMedium.copyWith(
+                                  fontSize: Dimensions.fontSizeDefault,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge!
+                                      .color),
+                              children: [
+                                TextSpan(
+                                  text:
+                                      '${bookingDetails.isPaid == 0 ? 'unpaid'.tr : 'paid'.tr} ',
+                                  style: robotoMedium.copyWith(
+                                    fontSize: Dimensions.fontSizeDefault,
+                                    color: bookingDetails.isPaid == 0
+                                        ? Theme.of(context).colorScheme.error
+                                        : Colors.green,
+                                    decoration: TextDecoration.none,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: Dimensions.paddingSizeSmall),
-                    RichText(
-                      text: TextSpan(
-                        text: '${'booking_status'.tr} : ',
-                        style: robotoMedium.copyWith(
-                            fontSize: Dimensions.fontSizeDefault,
-                            color: Theme.of(context).textTheme.bodyLarge!.color),
-                        children: [
-                          TextSpan(
-                            text: bookingDetails.bookingStatus!.tr,
-                            style: robotoMedium.copyWith(
-                                fontSize: Dimensions.fontSizeDefault,
-                                color: Theme.of(context).colorScheme.primary),
+                          const SizedBox(height: Dimensions.paddingSizeSmall),
+                          RichText(
+                            text: TextSpan(
+                              text: '${'booking_status'.tr} : ',
+                              style: robotoMedium.copyWith(
+                                  fontSize: Dimensions.fontSizeDefault,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge!
+                                      .color),
+                              children: [
+                                TextSpan(
+                                  text: bookingDetails.bookingStatus!.tr,
+                                  style: robotoMedium.copyWith(
+                                      fontSize: Dimensions.fontSizeDefault,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primary),
+                                ),
+                              ],
+                            ),
                           ),
+                          Gaps.verticalGapOf(Dimensions.paddingSizeDefault),
                         ],
                       ),
-                    ),
-                    Gaps.verticalGapOf(Dimensions.paddingSizeDefault),
-                  ],
-                ),
-
                 Padding(
                   padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
                   child: HistoryStatus(
@@ -388,7 +406,7 @@ class BookingHistory extends StatelessWidget {
                     statusHistories: bookingDetails.statusHistories,
                     scheduleHistories: bookingDetails.scheduleHistories,
                     increment: bookingDetails.scheduleHistories!.length > 1 &&
-                        bookingDetails.statusHistories!.isNotEmpty
+                            bookingDetails.statusHistories!.isNotEmpty
                         ? 2
                         : 1,
                   ),
@@ -423,7 +441,8 @@ class HistoryStatus extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Refund> refundList = List<Refund>.from(bookingDetailsContent?.refunds ?? []);
+    final List<Refund> refundList =
+        List<Refund>.from(bookingDetailsContent?.refunds ?? []);
 
     // Define your custom status order
     final Map<String, int> statusOrder = {
@@ -449,7 +468,11 @@ class HistoryStatus extends StatelessWidget {
     final int statusCount = statusList.length;
     final int scheduleCount = scheduleList.length;
 
-    final int totalItemCount = 1 + (statusCount >= 1 ? 1 : 0) + (scheduleCount > 1 ? (scheduleCount - 1) : 0) + (statusCount > 1 ? statusCount - 1 : 0) + refundCount;
+    final int totalItemCount = 1 +
+        (statusCount >= 1 ? 1 : 0) +
+        (scheduleCount > 1 ? (scheduleCount - 1) : 0) +
+        (statusCount > 1 ? statusCount - 1 : 0) +
+        refundCount;
 
     return Timeline.tileBuilder(
       shrinkWrap: true,
@@ -480,14 +503,21 @@ class HistoryStatus extends StatelessWidget {
           if (index > 1 && scheduleCount > 1) {
             int scheduleIndex = index - 2;
             if (scheduleIndex < scheduleCount - 1) {
-              return _buildScheduleTile(context, scheduleList[scheduleIndex + 1]);
+              return _buildScheduleTile(
+                  context, scheduleList[scheduleIndex + 1]);
             }
           }
 
           // After schedule changes and first status, show other statuses
-          int afterBookingAndSchedule = 2 + (scheduleCount > 1 ? (scheduleCount - 1) : 0);
-          if (index >= afterBookingAndSchedule && index < afterBookingAndSchedule + (statusCount > 1 ? statusCount - 1 : 0)) {
-            int statusIndex = index - afterBookingAndSchedule + 1; // +1 because first status is already shown
+          int afterBookingAndSchedule =
+              2 + (scheduleCount > 1 ? (scheduleCount - 1) : 0);
+          if (index >= afterBookingAndSchedule &&
+              index <
+                  afterBookingAndSchedule +
+                      (statusCount > 1 ? statusCount - 1 : 0)) {
+            int statusIndex = index -
+                afterBookingAndSchedule +
+                1; // +1 because first status is already shown
             return _buildStatusTile(context, statusList[statusIndex]);
           }
 
@@ -501,10 +531,8 @@ class HistoryStatus extends StatelessWidget {
           // Fallback in case something slips through
           return const SizedBox();
         },
-
         connectorBuilder: (_, __, ___) =>
             SolidLineConnector(color: Theme.of(context).colorScheme.primary),
-
         indicatorBuilder: (_, __) => DotIndicator(
           color: Theme.of(context).colorScheme.primary,
           child: const Icon(Icons.check, color: Colors.white),
@@ -515,26 +543,28 @@ class HistoryStatus extends StatelessWidget {
 
   Widget _buildCustomerBooking(BuildContext context) {
     final createdAt = scheduleHistories?.isNotEmpty == true
-        ? DateConverter.isoUtcStringToLocalDate(scheduleHistories![0].createdAt!)
+        ? DateConverter.isoUtcStringToLocalDate(
+            scheduleHistories![0].createdAt!)
         : DateTime.now();
 
     return _buildTimelineTile(
       context,
       title:
-      "${'service_booked_by_customer'.tr} ${bookingDetailsContent?.customer?.firstName ?? bookingDetailsContent?.serviceAddress?.contactPersonName ?? ""} ${bookingDetailsContent?.customer?.lastName ?? ""}",
+          "${'service_booked_by_customer'.tr} ${bookingDetailsContent?.customer?.firstName ?? bookingDetailsContent?.serviceAddress?.contactPersonName ?? ""} ${bookingDetailsContent?.customer?.lastName ?? ""}",
       date: createdAt,
     );
   }
 
   Widget _buildStatusTile(BuildContext context, StatusHistories status) {
     final userType = status.user?.userType?.tr ?? '';
-    final userName = "${status.user?.firstName ?? ""} ${status.user?.lastName ?? ""}";
+    final userName =
+        "${status.user?.firstName ?? ""} ${status.user?.lastName ?? ""}";
     final date = DateConverter.isoUtcStringToLocalDate(status.createdAt!);
 
     return _buildTimelineTile(
       context,
       title:
-      "${'booking'.tr} ${(status.bookingStatus ?? '').toLowerCase().tr} ${'by'.tr} $userType",
+          "${'booking'.tr} ${(status.bookingStatus ?? '').toLowerCase().tr} ${'by'.tr} $userType",
       subtitle: userName,
       date: date,
     );
@@ -557,15 +587,18 @@ class HistoryStatus extends StatelessWidget {
 
   Widget _buildRefundTile(BuildContext context, Refund refund) {
     return Padding(
-      padding: const EdgeInsets.only(left: 20.0, bottom: 20.0, top: 7, right: 10),
+      padding:
+          const EdgeInsets.only(left: 20.0, bottom: 20.0, top: 7, right: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text("${'Refund '.tr}: ${refund.refundStatus.tr}",
-              style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeDefault)),
+              style:
+                  robotoRegular.copyWith(fontSize: Dimensions.fontSizeDefault)),
           const SizedBox(height: Dimensions.paddingSizeSmall),
           Text("${'Refund Amount'.tr}: ${refund.refundAmount}",
-              style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall)),
+              style:
+                  robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall)),
           const SizedBox(height: Dimensions.paddingSizeSmall),
           //Text("${'Refund ID'.tr}: ${refund.refundId}",
           //style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall)),
@@ -587,12 +620,14 @@ class HistoryStatus extends StatelessWidget {
   Widget _buildTimelineTile(BuildContext context,
       {required String title, String? subtitle, required DateTime date}) {
     return Padding(
-      padding: const EdgeInsets.only(left: 20.0, bottom: 20.0, top: 7, right: 10),
+      padding:
+          const EdgeInsets.only(left: 20.0, bottom: 20.0, top: 7, right: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(title,
-              style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeDefault)),
+              style:
+                  robotoRegular.copyWith(fontSize: Dimensions.fontSizeDefault)),
           if (subtitle != null) ...[
             const SizedBox(height: Dimensions.paddingSizeSmall),
             Text(subtitle,

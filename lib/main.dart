@@ -7,7 +7,9 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+
   if (ResponsiveHelper.isMobilePhone()) {
     HttpOverrides.global = MyHttpOverrides();
     await FlutterDownloader.initialize();
@@ -15,14 +17,17 @@ Future<void> main() async {
   setPathUrlStrategy();
   if (GetPlatform.isWeb) {
     await Firebase.initializeApp(
-        options: const FirebaseOptions(
-            apiKey: "AIzaSyC2mUsQqp94796LvzJlKSyyBxEmAIpsZlU",
-            authDomain: "vfix4u-42216.firebaseapp.com",
-            projectId: "vfix4u-42216",
-            storageBucket: "vfix4u-42216.firebasestorage.app",
-            messagingSenderId: "125949822411",
-            appId: "1:125949822411:web:6f69a97dfb8e2137dea24e",
-            measurementId: "G-5CWKM48VHF"));
+      options: const FirebaseOptions(
+        apiKey: "AIzaSyBkVk3l1DpqvoPmrhrR_lOMgXlJtb4VWhE",
+        authDomain: "vfix4u-ef2fc.firebaseapp.com",
+        projectId: "vfix4u-ef2fc",
+        storageBucket: "vfix4u-ef2fc.firebasestorage.app",
+        messagingSenderId: "1059020015260",
+        appId: "1:1059020015260:web:9defb33596bc8c3b54cf59",
+        measurementId: "G-LPDF2JCCFC",
+      ),
+    );
+
     await FacebookAuth.instance.webAndDesktopInitialize(
       appId: "637072917840079",
       cookie: true,
@@ -57,6 +62,7 @@ Future<void> main() async {
       print("");
     }
   }
+
   runApp(MyApp(
     languages: languages,
     body: body,
@@ -125,6 +131,11 @@ class _MyAppState extends State<MyApp> {
       }
       _route();
     }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (MediaQuery.of(context).size.width > 900) {
+        Get.find<LocationController>().updateLocationIfNull();
+      }
+    });
   }
 
   @override
@@ -134,7 +145,6 @@ class _MyAppState extends State<MyApp> {
         return GetBuilder<SplashController>(builder: (splashController) {
           if ((GetPlatform.isWeb &&
               splashController.configModel.content == null)) {
-            // return const SizedBox();
             return const Center(child: CircularProgressIndicator());
           } else {
             return GetMaterialApp(

@@ -111,16 +111,28 @@ class _MenuDrawerState extends State<MenuDrawer>
             Get.back();
             Get.toNamed(RouteHelper.getMyWalletScreen());
           }),
-    if (Get.find<SplashController>().configModel.content!.loyaltyPointStatus !=
-            0 &&
-        Get.find<AuthController>().isLoggedIn())
-      Menu(
-          icon: Images.myPoint,
-          title: 'loyalty_point'.tr,
-          onTap: () {
-            Get.back();
-            Get.toNamed(RouteHelper.getLoyaltyPointScreen());
-          }),
+
+    Menu(
+      icon: Images.providernew,
+      title: 'become_a_provider'.tr,
+      onTap: () async {
+        Get.back();
+        final uri = Uri.parse("https://vfix4u.com/provider/auth/sign-up");
+        await launchUrl(
+          uri,
+          mode: LaunchMode.externalApplication, // Mobile & Desktop
+          webOnlyWindowName: '_blank', // Web new tab
+        );
+      },
+    ),
+
+    Menu(
+        icon: Images.myPoint,
+        title: 'loyalty_point'.tr,
+        onTap: () {
+          Get.back();
+          Get.toNamed(RouteHelper.getLoyaltyPointScreen());
+        }),
 
     if (Get.find<SplashController>().configModel.content?.referEarnStatus == 1)
       Menu(
@@ -210,6 +222,7 @@ class _MenuDrawerState extends State<MenuDrawer>
                       Get.find<AuthController>().clearSharedData();
                       Get.find<AuthController>().googleLogout();
                       Get.find<AuthController>().signOutWithFacebook();
+
                       Get.offAllNamed(RouteHelper.getInitialRoute());
                       customSnackBar("logged_out_successfully".tr,
                           type: ToasterMessageType.success);

@@ -1,5 +1,5 @@
 name: demandium
-description: A new Flutter application.
+description: Vfix4u user Application.
 publish_to: 'none' #
 version: 1.0.8+12
 
@@ -83,6 +83,7 @@ dependencies:
   drift: ^2.19.0
   drift_flutter: ^0.1.0
   get_storage: ^2.1.1
+  font_awesome_flutter: ^10.9.1
 
 dev_dependencies:
   flutter_test:
@@ -97,10 +98,11 @@ flutter:
   assets:
     - assets/images/
     - assets/language/
+    - assets/landingservices/
     - assets/json/
     - assets/map/
-    - assets/
-    - assets/images/user_logo.png
+    - assets/newicons/
+
 
   fonts:
     - family: Ubuntu

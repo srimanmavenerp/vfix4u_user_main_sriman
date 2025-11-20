@@ -46,7 +46,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                 leading: IconButton(
                   hoverColor: Colors.transparent,
                   icon: Icon(Icons.arrow_back_ios,
-                      color: Theme.of(context).colorScheme.primary),
+                      color: const Color(0xffFEFEFE)),
                   color: Theme.of(context).textTheme.bodyLarge!.color,
                   onPressed: () {
                     Navigator.pop(context);
@@ -221,6 +221,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         exit(0);
       } else {
         _socialLogout();
+
         Navigator.pushNamed(context, RouteHelper.getInitialRoute());
       }
       return Future.value(false);

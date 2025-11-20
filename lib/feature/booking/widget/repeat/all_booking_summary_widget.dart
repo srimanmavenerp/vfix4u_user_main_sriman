@@ -4,89 +4,139 @@ import 'package:get/get.dart';
 class AllBookingSummaryWidget extends StatelessWidget {
   final TabController? tabController;
   final BookingDetailsContent bookingDetails;
-  const AllBookingSummaryWidget({super.key, this.tabController, required this.bookingDetails,});
+  const AllBookingSummaryWidget({
+    super.key,
+    this.tabController,
+    required this.bookingDetails,
+  });
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
-      decoration: BoxDecoration(color: Theme.of(context).cardColor , borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-        boxShadow: Get.find<ThemeController>().darkTheme ? null : searchBoxShadow,
-      ),//boxShadow: shadow),
-      padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeDefault),
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
+        borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+        boxShadow:
+            Get.find<ThemeController>().darkTheme ? null : searchBoxShadow,
+      ), //boxShadow: shadow),
+      padding:
+          const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeDefault),
 
       child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
-          child: Row( mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: [
+          padding: const EdgeInsets.symmetric(
+              horizontal: Dimensions.paddingSizeDefault),
+          child:
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Text(
               'all_booking_summary'.tr,
-              style:robotoMedium.copyWith(
+              style: robotoMedium.copyWith(
                 color: Theme.of(context).textTheme.bodyLarge!.color!,
               ),
             ),
             InkWell(
-              onTap: (){
+              onTap: () {
                 tabController?.index = 1;
               },
-              child: Text('view_all_booking'.tr, style: robotoBold.copyWith(color: Theme.of(context).colorScheme.primary)),
+              child: Text('view_all_booking'.tr,
+                  style: robotoBold.copyWith(color: const Color(0xffFEFEFE))),
             )
           ]),
         ),
-
         const SizedBox(height: Dimensions.paddingSizeSmall),
-        Divider(height: 1, thickness: 1, color: Theme.of(context).hintColor.withValues(alpha: 0.4),),
+        Divider(
+          height: 1,
+          thickness: 1,
+          color: Theme.of(context).hintColor.withValues(alpha: 0.4),
+        ),
         const SizedBox(height: Dimensions.paddingSizeSmall),
-
-        ResponsiveHelper.isDesktop(context) ? Row(children: [
-          Expanded(child: Column(children: [
-            _ItemWidget(title: "booking_type", subtitle: "${bookingDetails.bookingType?.toLowerCase()}".tr,),
-            _ItemWidget(
-              title: "date_range",
-              subtitle: DateConverter.convertDateTimeRangeToString(
-                  DateTimeRange(
-                    start: DateTime.tryParse(bookingDetails.startDate ?? "") ?? DateTime.now(),
-                    end: DateTime.tryParse(bookingDetails.endDate ?? "") ?? DateTime.now(),
+        ResponsiveHelper.isDesktop(context)
+            ? Row(children: [
+                Expanded(
+                    child: Column(children: [
+                  _ItemWidget(
+                    title: "booking_type",
+                    subtitle: "${bookingDetails.bookingType?.toLowerCase()}".tr,
                   ),
-                  format: "d MMM, y"
-              ),
-            ),
-            _ItemWidget(title: "arrival_time", subtitle: DateConverter.convertDateTimeToTime(DateTime.tryParse(bookingDetails.startDate ?? "") ?? DateTime.now()),),
-            _ItemWidget(title: "total_amount", subtitle: PriceConverter.convertPrice( bookingDetails.totalBookingAmount ?? 0)),
-
-          ])),
-
-          Expanded(child: Column(children: [
-            _ItemWidget(title: "total_booking", subtitle: "${bookingDetails.totalCount ?? ""}"),
-            _ItemWidget(title: "completed", subtitle: "${bookingDetails.completedCount ?? ""}"),
-            _ItemWidget(title: "canceled", subtitle: "${bookingDetails.canceledCount ?? ""}"),
-            _ItemWidget(title: "payment", subtitle: "${bookingDetails.paymentMethod}".tr),
-          ]))
-
-        ]) : Column(children: [
-          _ItemWidget(title: "booking_type", subtitle: "${bookingDetails.bookingType?.toLowerCase()}".tr,),
-          _ItemWidget(
-            title: "date_range",
-            subtitle: DateConverter.convertDateTimeRangeToString(
-                DateTimeRange(
-                  start: DateTime.tryParse(bookingDetails.startDate!) ?? DateTime.now(),
-                  end: DateTime.tryParse(bookingDetails.endDate!) ?? DateTime.now(),
+                  _ItemWidget(
+                    title: "date_range",
+                    subtitle: DateConverter.convertDateTimeRangeToString(
+                        DateTimeRange(
+                          start: DateTime.tryParse(
+                                  bookingDetails.startDate ?? "") ??
+                              DateTime.now(),
+                          end:
+                              DateTime.tryParse(bookingDetails.endDate ?? "") ??
+                                  DateTime.now(),
+                        ),
+                        format: "d MMM, y"),
+                  ),
+                  _ItemWidget(
+                    title: "arrival_time",
+                    subtitle: DateConverter.convertDateTimeToTime(
+                        DateTime.tryParse(bookingDetails.startDate ?? "") ??
+                            DateTime.now()),
+                  ),
+                  _ItemWidget(
+                      title: "total_amount",
+                      subtitle: PriceConverter.convertPrice(
+                          bookingDetails.totalBookingAmount ?? 0)),
+                ])),
+                Expanded(
+                    child: Column(children: [
+                  _ItemWidget(
+                      title: "total_booking",
+                      subtitle: "${bookingDetails.totalCount ?? ""}"),
+                  _ItemWidget(
+                      title: "completed",
+                      subtitle: "${bookingDetails.completedCount ?? ""}"),
+                  _ItemWidget(
+                      title: "canceled",
+                      subtitle: "${bookingDetails.canceledCount ?? ""}"),
+                  _ItemWidget(
+                      title: "payment",
+                      subtitle: "${bookingDetails.paymentMethod}".tr),
+                ]))
+              ])
+            : Column(children: [
+                _ItemWidget(
+                  title: "booking_type",
+                  subtitle: "${bookingDetails.bookingType?.toLowerCase()}".tr,
                 ),
-                format: "d MMM, y"
-            ),
-          ),
-          _ItemWidget(title: "arrival_time", subtitle: DateConverter.convertDateTimeToTime(DateTime.tryParse(bookingDetails.startDate!) ?? DateTime.now()),),
-          _ItemWidget(title: "total_booking", subtitle: "${bookingDetails.totalCount ?? ""}"),
-          _ItemWidget(title: "completed", subtitle: "${bookingDetails.completedCount ?? ""}"),
-          _ItemWidget(title: "canceled", subtitle: "${bookingDetails.canceledCount ?? ""}"),
-          _ItemWidget(title: "total_amount", subtitle: PriceConverter.convertPrice( bookingDetails.totalBookingAmount ?? 0)),
-          _ItemWidget(title: "payment", subtitle: "${bookingDetails.paymentMethod}".tr),
-        ])
-
-
-
-
+                _ItemWidget(
+                  title: "date_range",
+                  subtitle: DateConverter.convertDateTimeRangeToString(
+                      DateTimeRange(
+                        start: DateTime.tryParse(bookingDetails.startDate!) ??
+                            DateTime.now(),
+                        end: DateTime.tryParse(bookingDetails.endDate!) ??
+                            DateTime.now(),
+                      ),
+                      format: "d MMM, y"),
+                ),
+                _ItemWidget(
+                  title: "arrival_time",
+                  subtitle: DateConverter.convertDateTimeToTime(
+                      DateTime.tryParse(bookingDetails.startDate!) ??
+                          DateTime.now()),
+                ),
+                _ItemWidget(
+                    title: "total_booking",
+                    subtitle: "${bookingDetails.totalCount ?? ""}"),
+                _ItemWidget(
+                    title: "completed",
+                    subtitle: "${bookingDetails.completedCount ?? ""}"),
+                _ItemWidget(
+                    title: "canceled",
+                    subtitle: "${bookingDetails.canceledCount ?? ""}"),
+                _ItemWidget(
+                    title: "total_amount",
+                    subtitle: PriceConverter.convertPrice(
+                        bookingDetails.totalBookingAmount ?? 0)),
+                _ItemWidget(
+                    title: "payment",
+                    subtitle: "${bookingDetails.paymentMethod}".tr),
+              ])
       ]),
     );
   }
@@ -99,19 +149,27 @@ class _ItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault, vertical: 3),
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+          horizontal: Dimensions.paddingSizeDefault, vertical: 3),
       child: Row(children: [
         Expanded(
           flex: 3,
-          child: Text(title.tr, style: robotoLight,),
+          child: Text(
+            title.tr,
+            style: robotoLight,
+          ),
         ),
         const Text("    :  "),
         Expanded(
           flex: 4,
-          child: Text( subtitle , style: robotoRegular.copyWith(height: 1.3,fontSize: Dimensions.fontSizeSmall),),
+          child: Text(
+            subtitle,
+            style: robotoRegular.copyWith(
+                height: 1.3, fontSize: Dimensions.fontSizeSmall),
+          ),
         ),
       ]),
     );
   }
 }
-

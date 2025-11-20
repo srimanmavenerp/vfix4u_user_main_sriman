@@ -130,8 +130,6 @@
 //   }
 // }
 
-
-
 import 'package:get/get.dart';
 import 'package:demandium/utils/core_export.dart';
 
@@ -140,7 +138,8 @@ class CompletePage extends StatelessWidget {
   final String? phoneNumber; // Accept phoneNumber as a parameter
   final String? bookingID; // Accept bookingID as a parameter
   final AddressModel? previousAddress; // Add previousAddress as a parameter
-  final bool showServiceNotAvailableDialog; // Add showServiceNotAvailableDialog as a parameter
+  final bool
+      showServiceNotAvailableDialog; // Add showServiceNotAvailableDialog as a parameter
 
   const CompletePage({
     super.key,
@@ -156,7 +155,8 @@ class CompletePage extends StatelessWidget {
     final bookingController = Get.find<BookingDetailsController>();
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
+      padding:
+          const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -230,26 +230,6 @@ class CompletePage extends StatelessWidget {
                             ?.color
                             ?.withValues(alpha: 0.8),
                       ),
-                      // onPressed: () async {
-                      //   // Ensure the phoneNumber is properly formatted
-                      //   String phoneWithCode = "${phoneNumber?.trim()}";
-                      //   String bookingCode = controller.bookingReadableId;
-                      //   print('---book---$bookingCode');
-                      //
-                      //   Get.to(() =>  BookingListScreen(
-                      //     isFromMenu: false,
-                      //     initialTab: BookingStatusTabs.pending,
-                      //   ));
-                      //
-                      //
-                      //   // Navigate to the BottomNavScreen with the `bookings` page selected (pageIndex = 1)
-                      //   // Get.to(() => BottomNavScreen(
-                      //   //   pageIndex: 1, // Set pageIndex to 1 to navigate to the bookings page
-                      //   //   previousAddress: previousAddress, // Pass the correct previousAddress parameter
-                      //   //   showServiceNotAvailableDialog: showServiceNotAvailableDialog, // Pass the correct flag
-                      //   // ));
-                      // },
-
                       onPressed: () async {
                         String phoneWithCode = "${phoneNumber?.trim()}";
                         String bookingCode = controller.bookingReadableId;
@@ -257,14 +237,14 @@ class CompletePage extends StatelessWidget {
 
                         // Navigate to BottomNavScreen (with pageIndex 1 for the bookings page)
                         Get.to(() => BottomNavScreen(
-                          pageIndex: 1, // BookingListScreen is at index 1
-                          previousAddress: previousAddress,
-                          showServiceNotAvailableDialog: showServiceNotAvailableDialog,
-                          initialBookingTab: BookingStatusTabs.pending, // Pass the initial tab value here
-                        ));
-                      }
-
-                  ),
+                              pageIndex: 1, // BookingListScreen is at index 1
+                              previousAddress: previousAddress,
+                              showServiceNotAvailableDialog:
+                                  showServiceNotAvailableDialog,
+                              initialBookingTab: BookingStatusTabs
+                                  .pending, // Pass the initial tab value here
+                            ));
+                      }),
                 ],
               );
             }),

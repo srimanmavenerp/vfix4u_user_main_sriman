@@ -13,7 +13,7 @@ class AddressAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: Get.isDarkMode
           ? Theme.of(context).cardColor.withOpacity(0.2)
-          : Theme.of(context).primaryColor,
+          : Colors.white,
       shape: Border(
         bottom: BorderSide(
           width: 0.4,
@@ -42,7 +42,7 @@ class AddressAppBar extends StatelessWidget implements PreferredSizeWidget {
                   Text(
                     'services_in'.tr,
                     style: robotoRegular.copyWith(
-                      color: Colors.white,
+                      color: Colors.black,
                       fontSize: Dimensions.fontSizeSmall,
                     ),
                   ),
@@ -58,7 +58,7 @@ class AddressAppBar extends StatelessWidget implements PreferredSizeWidget {
                               locationController.getUserAddress()!.address ??
                                   '',
                               style: robotoMedium.copyWith(
-                                color: Colors.white,
+                                color: Colors.black,
                                 fontSize: Dimensions.fontSizeSmall,
                               ),
                               maxLines: 1,
@@ -88,7 +88,7 @@ class AddressAppBar extends StatelessWidget implements PreferredSizeWidget {
                 child: const Icon(
                   Icons.notifications,
                   size: 25,
-                  color: Colors.white,
+                  color: Colors.black26,
                 ),
               ),
               const SizedBox(width: Dimensions.paddingSizeExtraSmall),
@@ -110,6 +110,7 @@ class AddressAppBar extends StatelessWidget implements PreferredSizeWidget {
 
                     return CircleAvatar(
                       radius: 18,
+                      backgroundColor: Color(0xFFF0692C),
                       backgroundImage: (userController.userInfoModel != null &&
                               userController.userInfoModel!.imageFullPath !=
                                   null &&
@@ -117,9 +118,18 @@ class AddressAppBar extends StatelessWidget implements PreferredSizeWidget {
                                   .userInfoModel!.imageFullPath!.isNotEmpty)
                           ? NetworkImage(
                               userController.userInfoModel!.imageFullPath!)
-                          : const AssetImage('assets/images/profile_icon.png')
-                              as ImageProvider,
-                      backgroundColor: Colors.transparent,
+                          : null, // no image
+                      child: (userController.userInfoModel == null ||
+                              userController.userInfoModel!.imageFullPath ==
+                                  null ||
+                              userController
+                                  .userInfoModel!.imageFullPath!.isEmpty)
+                          ? const Icon(
+                              Icons.person_outline_rounded,
+                              color: Colors.white,
+                              size: 22,
+                            )
+                          : null,
                     );
                   },
                 ),

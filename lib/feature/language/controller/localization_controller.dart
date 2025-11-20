@@ -6,41 +6,47 @@ class LocalizationController extends GetxController implements GetxService {
   late SharedPreferences sharedPreferences;
   late ApiClient apiClient;
 
-  LocalizationController({required this.sharedPreferences, required this.apiClient}) {
+  LocalizationController(
+      {required this.sharedPreferences, required this.apiClient}) {
     loadCurrentLanguage();
   }
 
-  Locale _locale = Locale(AppConstants.languages[0].languageCode!, AppConstants.languages[0].countryCode);
+  Locale _locale = Locale(AppConstants.languages[0].languageCode!,
+      AppConstants.languages[0].countryCode);
   bool _isLtr = true;
-  List<LanguageModel>  _localLanguages = [];
+  List<LanguageModel> _localLanguages = [];
 
   Locale get locale => _locale;
   bool get isLtr => _isLtr;
-  List<LanguageModel> get languages =>  _localLanguages;
+  List<LanguageModel> get languages => _localLanguages;
 
   void setLanguage(Locale locale, {bool isInitial = false}) {
     Get.updateLocale(locale);
     _locale = locale;
-    if(_locale.languageCode == 'ar') {
+    if (_locale.languageCode == 'ar') {
       _isLtr = false;
-    }else {
+    } else {
       _isLtr = true;
     }
     AddressModel? addressModel;
     try {
-      addressModel = AddressModel.fromJson(jsonDecode(sharedPreferences.getString(AppConstants.userAddress)!));
-    }catch(e) {
+      addressModel = AddressModel.fromJson(
+          jsonDecode(sharedPreferences.getString(AppConstants.userAddress)!));
+    } catch (e) {
       if (kDebugMode) {
         print(e);
       }
     }
+
     ///pick zone id to update header
     apiClient.updateHeader(
-      sharedPreferences.getString(AppConstants.token), addressModel?.zoneId,
-      locale.languageCode, Get.find<SplashController>().getGuestId(),
+      sharedPreferences.getString(AppConstants.token),
+      addressModel?.zoneId,
+      locale.languageCode,
+      Get.find<SplashController>().getGuestId(),
     );
     saveLanguage(_locale);
-    if(Get.find<LocationController>().getUserAddress() != null) {
+    if (Get.find<LocationController>().getUserAddress() != null) {
       Get.find<ServiceAreaController>().getZoneList();
     }
     Get.find<SplashController>().updateLanguage(isInitial);
@@ -64,16 +70,24 @@ class LocalizationController extends GetxController implements GetxService {
   int get selectedIndex => _selectedIndex;
   void setSelectIndex(int index, {bool shouldUpdate = true}) {
     _selectedIndex = index;
-    if(shouldUpdate){
+    if (shouldUpdate) {
       update();
     }
   }
 
-  void filterLanguage({bool shouldUpdate = true, bool isChooseLanguage = false, bool isInitial = false, String? fromPage = ""}) {
+  void filterLanguage(
+      {bool shouldUpdate = true,
+      bool isChooseLanguage = false,
+      bool isInitial = false,
+      String? fromPage = ""}) {
+    List<Language> adminLanguageList = isInitial
+        ? []
+        : Get.find<SplashController>().configModel.content?.languageList ?? [];
 
-    List<Language>  adminLanguageList = isInitial ? [] : Get.find<SplashController>().configModel.content?.languageList ?? [];
-
-    bool showAllLocalLanguage = (AppConstants.languageCode.length == 1 || adminLanguageList.isEmpty) ? true : false;
+    bool showAllLocalLanguage =
+        (AppConstants.languageCode.length == 1 || adminLanguageList.isEmpty)
+            ? true
+            : false;
 
     String? defaultLanguageCode;
 
@@ -82,90 +96,94 @@ class LocalizationController extends GetxController implements GetxService {
       localLanguageCode.add(element.languageCode!);
     }
 
-    if( ((isChooseLanguage || isInitial) && fromPage != "menuDrawer" ) && adminLanguageList.length == 1 && localLanguageCode.contains(adminLanguageList[0].languageCode)){
+    if (((isChooseLanguage || isInitial) && fromPage != "menuDrawer") &&
+        adminLanguageList.length == 1 &&
+        localLanguageCode.contains(adminLanguageList[0].languageCode)) {
+      int index = AppConstants.languages.indexWhere((element) =>
+          element.languageCode == adminLanguageList[0].languageCode);
 
-      int index = AppConstants.languages.indexWhere((element) => element.languageCode == adminLanguageList[0].languageCode);
-
-      if(index != -1){
-        _locale = Locale( AppConstants.languages[index].languageCode!,AppConstants.languages[index].countryCode);
+      if (index != -1) {
+        _locale = Locale(AppConstants.languages[index].languageCode!,
+            AppConstants.languages[index].countryCode);
         _isLtr = _locale.languageCode != 'ar';
-        Future.delayed(const Duration(milliseconds: 10), (){
+        Future.delayed(const Duration(milliseconds: 10), () {
           setLanguage(_locale, isInitial: true);
-          if(Get.find<SplashController>().isShowOnboardingScreen()){
+          if (Get.find<SplashController>().isShowOnboardingScreen()) {
             Get.offAllNamed(RouteHelper.onBoardScreen);
-          }else{
+          } else {
             Get.offAllNamed(RouteHelper.getInitialRoute());
           }
         });
       }
-
-    } else{
+    } else {
       for (var defaultLanguage in adminLanguageList) {
-        if(!localLanguageCode.contains(defaultLanguage.languageCode)){
+        if (!localLanguageCode.contains(defaultLanguage.languageCode)) {
           showAllLocalLanguage = true;
           break;
         }
-        if(defaultLanguage.isDefault == true){
+        if (defaultLanguage.isDefault == true) {
           defaultLanguageCode = defaultLanguage.languageCode;
         }
       }
 
-      if(!showAllLocalLanguage){
+      if (!showAllLocalLanguage) {
         _localLanguages = [];
         _selectedIndex = 0;
         for (var element in adminLanguageList) {
-          int index = AppConstants.languages.indexWhere((language) => language.languageCode == element.languageCode);
-          if(index > -1){
+          int index = AppConstants.languages.indexWhere(
+              (language) => language.languageCode == element.languageCode);
+          if (index > -1) {
             _localLanguages.add(AppConstants.languages[index]);
           }
         }
 
-
-        if(isChooseLanguage && fromPage != "menuDrawer"){
-          if(_localLanguages.indexWhere((e) => e.languageCode == defaultLanguageCode) != -1){
-            _selectedIndex = _localLanguages.indexWhere((e) => e.languageCode == defaultLanguageCode);
-          }else{
+        if (isChooseLanguage && fromPage != "menuDrawer") {
+          if (_localLanguages
+                  .indexWhere((e) => e.languageCode == defaultLanguageCode) !=
+              -1) {
+            _selectedIndex = _localLanguages
+                .indexWhere((e) => e.languageCode == defaultLanguageCode);
+          } else {
             _selectedIndex = 0;
           }
-        }else{
-          for(int index = 0; index< _localLanguages.length; index++) {
-            if(_localLanguages[index].languageCode == sharedPreferences.getString(AppConstants.languageCode)) {
+        } else {
+          for (int index = 0; index < _localLanguages.length; index++) {
+            if (_localLanguages[index].languageCode ==
+                sharedPreferences.getString(AppConstants.languageCode)) {
               _selectedIndex = index;
               break;
             }
           }
         }
-
-      } else{
-
-
-        if(defaultLanguageCode !=null && isChooseLanguage && fromPage != "menuDrawer"){
-          for(int index = 0; index< _localLanguages.length; index++) {
-            if(_localLanguages[index].languageCode == defaultLanguageCode) {
+      } else {
+        if (defaultLanguageCode != null &&
+            isChooseLanguage &&
+            fromPage != "menuDrawer") {
+          for (int index = 0; index < _localLanguages.length; index++) {
+            if (_localLanguages[index].languageCode == defaultLanguageCode) {
               _selectedIndex = index;
               break;
             }
           }
-
-        }else{
-          for(int index = 0; index< _localLanguages.length; index++) {
-            if(_localLanguages[index].languageCode == sharedPreferences.getString(AppConstants.languageCode)) {
+        } else {
+          for (int index = 0; index < _localLanguages.length; index++) {
+            if (_localLanguages[index].languageCode ==
+                sharedPreferences.getString(AppConstants.languageCode)) {
               _selectedIndex = index;
               break;
             }
           }
         }
       }
-      _locale = Locale( _localLanguages[_selectedIndex].languageCode!, _localLanguages[_selectedIndex].countryCode);
+      _locale = Locale(_localLanguages[_selectedIndex].languageCode!,
+          _localLanguages[_selectedIndex].countryCode);
       _isLtr = _locale.languageCode != 'ar';
 
-
-      if(fromPage != "menuDrawer"){
-        Future.delayed(const Duration(milliseconds: 1000), (){
+      if (fromPage != "menuDrawer") {
+        Future.delayed(const Duration(milliseconds: 1000), () {
           setLanguage(_locale, isInitial: true);
         });
       }
     }
   }
-
 }

@@ -5,14 +5,18 @@ class CustomLoader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: Container(
-      height: 85, width: 85,
+    return Center(
+        child: Container(
+      height: 85,
+      width: 85,
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
       ),
       alignment: Alignment.center,
-      child: CustomLoaderWidget(color: Theme.of(context).colorScheme.primary,),
+      child: CustomLoaderWidget(
+        color: Theme.of(context).colorScheme.primary,
+      ),
     ));
   }
 }

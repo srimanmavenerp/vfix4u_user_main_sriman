@@ -1,4 +1,3 @@
-
 import 'package:demandium/utils/core_export.dart';
 
 const Duration _kExpand = Duration(milliseconds: 200);
@@ -31,12 +30,12 @@ class RepeatBookingHistoryExpansionTile extends StatefulWidget {
     this.iconColor,
     this.collapsedIconColor,
     this.controlAffinity,
-  }) : assert(!initiallyExpanded),
+  })  : assert(!initiallyExpanded),
         assert(!maintainState),
         assert(
-        expandedCrossAxisAlignment != CrossAxisAlignment.baseline,
-        'CrossAxisAlignment.baseline is not supported since the expanded children '
-            'are aligned in a column, not a row. Try to use another constant.',
+          expandedCrossAxisAlignment != CrossAxisAlignment.baseline,
+          'CrossAxisAlignment.baseline is not supported since the expanded children '
+          'are aligned in a column, not a row. Try to use another constant.',
         );
 
   final Widget? leading;
@@ -66,12 +65,17 @@ class RepeatBookingHistoryExpansionTile extends StatefulWidget {
   final ListTileControlAffinity? controlAffinity;
 
   @override
-  State<RepeatBookingHistoryExpansionTile> createState() => _RepeatBookingHistoryExpansionTileState();
+  State<RepeatBookingHistoryExpansionTile> createState() =>
+      _RepeatBookingHistoryExpansionTileState();
 }
 
-class _RepeatBookingHistoryExpansionTileState extends State<RepeatBookingHistoryExpansionTile> with SingleTickerProviderStateMixin {
-  static final Animatable<double> _easeOutTween = CurveTween(curve: Curves.easeOut);
-  static final Animatable<double> _easeInTween = CurveTween(curve: Curves.easeIn);
+class _RepeatBookingHistoryExpansionTileState
+    extends State<RepeatBookingHistoryExpansionTile>
+    with SingleTickerProviderStateMixin {
+  static final Animatable<double> _easeOutTween =
+      CurveTween(curve: Curves.easeOut);
+  static final Animatable<double> _easeInTween =
+      CurveTween(curve: Curves.easeIn);
 
   final ColorTween _borderColorTween = ColorTween();
   final ColorTween _headerColorTween = ColorTween();
@@ -91,8 +95,10 @@ class _RepeatBookingHistoryExpansionTileState extends State<RepeatBookingHistory
     super.initState();
     _controller = AnimationController(duration: _kExpand, vsync: this);
     _heightFactor = _controller.drive(_easeInTween);
-    _backgroundColor = _controller.drive(_backgroundColorTween.chain(_easeOutTween));
-    _isExpanded = PageStorage.of(context).readState(context) as bool? ?? widget.initiallyExpanded;
+    _backgroundColor =
+        _controller.drive(_backgroundColorTween.chain(_easeOutTween));
+    _isExpanded = PageStorage.of(context).readState(context) as bool? ??
+        widget.initiallyExpanded;
     if (_isExpanded) {
       _controller.value = 1.0;
     }
@@ -119,8 +125,7 @@ class _RepeatBookingHistoryExpansionTileState extends State<RepeatBookingHistory
           if (!mounted) {
             return;
           }
-          setState(() {
-          });
+          setState(() {});
         });
       }
       PageStorage.of(context).writeState(context, _isExpanded);
@@ -128,14 +133,16 @@ class _RepeatBookingHistoryExpansionTileState extends State<RepeatBookingHistory
     widget.onExpansionChanged?.call(_isExpanded);
   }
 
-
   Widget _buildChildren(BuildContext context, Widget? child) {
-    final ExpansionTileThemeData expansionTileTheme = ExpansionTileTheme.of(context);
+    final ExpansionTileThemeData expansionTileTheme =
+        ExpansionTileTheme.of(context);
 
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-        border: Border.all(color: (Theme.of(context).hintColor.withValues(alpha: 0.2)), width: 0.5),
+        border: Border.all(
+            color: (Theme.of(context).hintColor.withValues(alpha: 0.2)),
+            width: 0.5),
       ),
       margin: const EdgeInsets.all(Dimensions.paddingSizeSmall),
       child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
@@ -147,7 +154,8 @@ class _RepeatBookingHistoryExpansionTileState extends State<RepeatBookingHistory
             onTap: null,
             leading: widget.leading,
             dense: true,
-            contentPadding: widget.tilePadding ?? expansionTileTheme.tilePadding,
+            contentPadding:
+                widget.tilePadding ?? expansionTileTheme.tilePadding,
             title: widget.titleWidget,
             subtitle: widget.subtitle,
           ),
@@ -164,15 +172,15 @@ class _RepeatBookingHistoryExpansionTileState extends State<RepeatBookingHistory
             ),
             padding: const EdgeInsets.all(4),
             margin: const EdgeInsets.symmetric(vertical: 10),
-            child: Icon( _isExpanded == true ?
-            Icons.keyboard_arrow_up :
-            Icons.keyboard_arrow_down_rounded,
+            child: Icon(
+              _isExpanded == true
+                  ? Icons.keyboard_arrow_up
+                  : Icons.keyboard_arrow_down_rounded,
               size: widget.trailingIconSize ?? Dimensions.paddingSizeLarge,
               color: Colors.white,
             ),
           ),
         ),
-
       ]),
     );
   }
@@ -180,21 +188,27 @@ class _RepeatBookingHistoryExpansionTileState extends State<RepeatBookingHistory
   @override
   void didChangeDependencies() {
     final ThemeData theme = Theme.of(context);
-    final ExpansionTileThemeData expansionTileTheme = ExpansionTileTheme.of(context);
+    final ExpansionTileThemeData expansionTileTheme =
+        ExpansionTileTheme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
     _borderColorTween.end = theme.dividerColor;
     _headerColorTween
-      ..begin = widget.collapsedTextColor
-          ?? expansionTileTheme.collapsedTextColor
-          ?? theme.textTheme.titleMedium!.color
-      ..end = widget.textColor ?? expansionTileTheme.textColor ?? colorScheme.primary;
+      ..begin = widget.collapsedTextColor ??
+          expansionTileTheme.collapsedTextColor ??
+          theme.textTheme.titleMedium!.color
+      ..end = widget.textColor ??
+          expansionTileTheme.textColor ??
+          colorScheme.primary;
     _iconColorTween
-      ..begin = widget.collapsedIconColor
-          ?? expansionTileTheme.collapsedIconColor
-          ?? theme.unselectedWidgetColor
-      ..end = widget.iconColor ?? expansionTileTheme.iconColor ?? colorScheme.primary;
+      ..begin = widget.collapsedIconColor ??
+          expansionTileTheme.collapsedIconColor ??
+          theme.unselectedWidgetColor
+      ..end = widget.iconColor ??
+          expansionTileTheme.iconColor ??
+          colorScheme.primary;
     _backgroundColorTween
-      ..begin = widget.collapsedBackgroundColor ?? expansionTileTheme.collapsedBackgroundColor
+      ..begin = widget.collapsedBackgroundColor ??
+          expansionTileTheme.collapsedBackgroundColor
       ..end = widget.backgroundColor ?? expansionTileTheme.backgroundColor;
 
     super.didChangeDependencies();
@@ -202,7 +216,8 @@ class _RepeatBookingHistoryExpansionTileState extends State<RepeatBookingHistory
 
   @override
   Widget build(BuildContext context) {
-    final ExpansionTileThemeData expansionTileTheme = ExpansionTileTheme.of(context);
+    final ExpansionTileThemeData expansionTileTheme =
+        ExpansionTileTheme.of(context);
     final bool closed = !_isExpanded && _controller.isDismissed;
     final bool shouldRemoveChildren = closed && !widget.maintainState;
 
@@ -211,9 +226,12 @@ class _RepeatBookingHistoryExpansionTileState extends State<RepeatBookingHistory
       child: TickerMode(
         enabled: !closed,
         child: Padding(
-          padding: widget.childrenPadding ?? expansionTileTheme.childrenPadding ?? EdgeInsets.zero,
+          padding: widget.childrenPadding ??
+              expansionTileTheme.childrenPadding ??
+              EdgeInsets.zero,
           child: Column(
-            crossAxisAlignment: widget.expandedCrossAxisAlignment ?? CrossAxisAlignment.center,
+            crossAxisAlignment:
+                widget.expandedCrossAxisAlignment ?? CrossAxisAlignment.center,
             children: widget.children,
           ),
         ),

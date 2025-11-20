@@ -34,12 +34,16 @@ class PaymentScreenState extends State<PaymentScreen> {
     if (GetPlatform.isAndroid) {
       await InAppWebViewController.setWebContentsDebuggingEnabled(kDebugMode);
 
-      bool swAvailable = await WebViewFeature.isFeatureSupported(WebViewFeature.SERVICE_WORKER_BASIC_USAGE);
-      bool swInterceptAvailable = await WebViewFeature.isFeatureSupported(WebViewFeature.SERVICE_WORKER_SHOULD_INTERCEPT_REQUEST);
+      bool swAvailable = await WebViewFeature.isFeatureSupported(
+          WebViewFeature.SERVICE_WORKER_BASIC_USAGE);
+      bool swInterceptAvailable = await WebViewFeature.isFeatureSupported(
+          WebViewFeature.SERVICE_WORKER_SHOULD_INTERCEPT_REQUEST);
 
       if (swAvailable && swInterceptAvailable) {
-        ServiceWorkerController serviceWorkerController = ServiceWorkerController.instance();
-        await serviceWorkerController.setServiceWorkerClient(ServiceWorkerClient(
+        ServiceWorkerController serviceWorkerController =
+            ServiceWorkerController.instance();
+        await serviceWorkerController
+            .setServiceWorkerClient(ServiceWorkerClient(
           shouldInterceptRequest: (request) async {
             if (kDebugMode) {
               print(request);
@@ -53,8 +57,10 @@ class PaymentScreenState extends State<PaymentScreen> {
     await browser.openUrlRequest(
       urlRequest: URLRequest(url: WebUri(selectedUrl!)),
       settings: InAppBrowserClassSettings(
-        webViewSettings: InAppWebViewSettings(useShouldOverrideUrlLoading: true, useOnLoadResource: true),
-        browserSettings: InAppBrowserSettings(hideUrlBar: true, hideToolbarTop: GetPlatform.isAndroid),
+        webViewSettings: InAppWebViewSettings(
+            useShouldOverrideUrlLoading: true, useOnLoadResource: true),
+        browserSettings: InAppBrowserSettings(
+            hideUrlBar: true, hideToolbarTop: GetPlatform.isAndroid),
       ),
     );
   }
@@ -63,13 +69,19 @@ class PaymentScreenState extends State<PaymentScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primary,
-      appBar: CustomAppBar(title: 'payment'.tr,),
+      appBar: CustomAppBar(
+        title: 'payment'.tr,
+      ),
       body: Center(
         child: Stack(
           children: [
-            _isLoading ? Center(
-              child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).colorScheme.primary)),
-            ) : const SizedBox.shrink(),
+            _isLoading
+                ? Center(
+                    child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                            Theme.of(context).colorScheme.primary)),
+                  )
+                : const SizedBox.shrink(),
           ],
         ),
       ),
@@ -150,7 +162,8 @@ class MyInAppBrowser extends InAppBrowser {
   }
 
   @override
-  Future<NavigationActionPolicy> shouldOverrideUrlLoading(navigationAction) async {
+  Future<NavigationActionPolicy> shouldOverrideUrlLoading(
+      navigationAction) async {
     String url = navigationAction.request.url.toString();
 
     if (kDebugMode) {
@@ -162,12 +175,14 @@ class MyInAppBrowser extends InAppBrowser {
       try {
         // Launch the UPI payment app using Intent (for Android)
         await launchUPIIntent(url);
-        return NavigationActionPolicy.CANCEL; // Don't load this URL in the webview
+        return NavigationActionPolicy
+            .CANCEL; // Don't load this URL in the webview
       } catch (e) {
         if (kDebugMode) {
           print("Error launching UPI: $e");
         }
-        return NavigationActionPolicy.ALLOW; // Let the WebView load the URL normally
+        return NavigationActionPolicy
+            .ALLOW; // Let the WebView load the URL normally
       }
     }
 
@@ -180,7 +195,7 @@ class MyInAppBrowser extends InAppBrowser {
     try {
       // Check if the URL is a valid UPI URL
       Uri upiUri = Uri.parse(url);
-      
+
       // Check if the system can handle the UPI Intent
       final bool isLaunched = await canLaunch(url);
 
@@ -216,9 +231,15 @@ class MyInAppBrowser extends InAppBrowser {
     }
     printLog("url:$url");
     if (_canRedirect) {
-      bool isSuccess = url.contains('success') && url.contains(AppConstants.baseUrl) && url.contains("flag");
-      bool isFailed = url.contains('fail') && url.contains(AppConstants.baseUrl) && url.contains("flag");
-      bool isCancel = url.contains('cancel') && url.contains(AppConstants.baseUrl) && url.contains("flag");
+      bool isSuccess = url.contains('success') &&
+          url.contains(AppConstants.baseUrl) &&
+          url.contains("flag");
+      bool isFailed = url.contains('fail') &&
+          url.contains(AppConstants.baseUrl) &&
+          url.contains("flag");
+      bool isCancel = url.contains('cancel') &&
+          url.contains(AppConstants.baseUrl) &&
+          url.contains("flag");
 
       if (kDebugMode) {
         print('This_called_1::::$url');
@@ -233,16 +254,22 @@ class MyInAppBrowser extends InAppBrowser {
           String token = StringParser.parseString(url, "token");
           Get.find<CartController>().getCartListFromServer();
           Get.back();
-          Get.offNamed(RouteHelper.getCheckoutRoute(RouteHelper.checkout, 'complete', 'null', token: token));
+          Get.offNamed(RouteHelper.getCheckoutRoute(
+              RouteHelper.checkout, 'complete', 'null',
+              token: token));
         } else if (fromPage == "custom-checkout") {
           Get.offNamed(RouteHelper.getOrderSuccessRoute('success'));
         } else if (fromPage == "add-fund") {
           Get.back();
           String uuid = const Uuid().v1();
-          Get.offNamed(RouteHelper.getMyWalletScreen(flag: 'success', token: uuid));
+          Get.offNamed(
+              RouteHelper.getMyWalletScreen(flag: 'success', token: uuid));
         } else if (fromPage == "switch-payment-method") {
           Get.back();
-          customSnackBar('your_payment_confirm_successfully'.tr, toasterTitle: 'payment_status'.tr, type: ToasterMessageType.success, duration: 4);
+          customSnackBar('your_payment_confirm_successfully'.tr,
+              toasterTitle: 'payment_status'.tr,
+              type: ToasterMessageType.success,
+              duration: 4);
         } else if (fromPage == "repeat-booking") {
           Get.back();
 
@@ -250,23 +277,27 @@ class MyInAppBrowser extends InAppBrowser {
           String? token = StringParser.parseString(url, "token");
 
           try {
-            subBookingId = StringParser.parseString(utf8.decode(base64Url.decode(token)), "booking_repeat_id");
+            subBookingId = StringParser.parseString(
+                utf8.decode(base64Url.decode(token)), "booking_repeat_id");
           } catch (e) {
             if (kDebugMode) {
               print(e);
             }
           }
           if (subBookingId != null) {
-            Get.find<BookingDetailsController>().getSubBookingDetails(bookingId: subBookingId);
+            Get.find<BookingDetailsController>()
+                .getSubBookingDetails(bookingId: subBookingId);
           }
-          customSnackBar("paid_successfully".tr, type: ToasterMessageType.success);
+          customSnackBar("paid_successfully".tr,
+              type: ToasterMessageType.success);
         }
       } else if (isFailed || isCancel) {
         if (fromPage == "add-fund") {
           Get.offNamed(RouteHelper.getMyWalletScreen(flag: 'failed'));
         } else if (fromPage == "repeat-booking") {
           Get.back();
-          customSnackBar("payment_failed_try_again".tr, type: ToasterMessageType.error, showDefaultSnackBar: false);
+          customSnackBar("payment_failed_try_again".tr,
+              type: ToasterMessageType.error, showDefaultSnackBar: false);
         } else {
           Get.offNamed(RouteHelper.getOrderSuccessRoute('fail'));
         }

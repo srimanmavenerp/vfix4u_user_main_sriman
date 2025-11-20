@@ -14,15 +14,16 @@ class _AddressScreenState extends State<AddressScreen> {
   void initState() {
     super.initState();
     // Fetch address list when screen initializes
-    Get.find<LocationController>().getAddressList(fromCheckout: widget.fromPage == "checkout");
+    Get.find<LocationController>()
+        .getAddressList(fromCheckout: widget.fromPage == "checkout");
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(title: 'my_address'.tr),
-      endDrawer: ResponsiveHelper.isDesktop(context) ? const MenuDrawer() : null,
-
+      endDrawer:
+          ResponsiveHelper.isDesktop(context) ? const MenuDrawer() : null,
       body: GetBuilder<LocationController>(builder: (locationController) {
         List<AddressModel>? addressList = locationController.addressList;
         List<AddressModel> zoneBasedAddress = [];
@@ -49,7 +50,8 @@ class _AddressScreenState extends State<AddressScreen> {
                   // Add address button for desktop
                   if (ResponsiveHelper.isDesktop(context))
                     Padding(
-                      padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                      padding:
+                          const EdgeInsets.all(Dimensions.paddingSizeDefault),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
@@ -57,7 +59,8 @@ class _AddressScreenState extends State<AddressScreen> {
                             width: 200,
                             buttonText: 'add_new_address'.tr,
                             onPressed: () => Get.toNamed(
-                              RouteHelper.getAddAddressRoute(widget.fromPage == 'checkout'),
+                              RouteHelper.getAddAddressRoute(
+                                  widget.fromPage == 'checkout'),
                             ),
                           ),
                         ],
@@ -78,16 +81,22 @@ class _AddressScreenState extends State<AddressScreen> {
                         child: GridView.builder(
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: ResponsiveHelper.isMobile(context) ? 1 : 2,
-                            childAspectRatio: ResponsiveHelper.isMobile(context) ? 4 : 6,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount:
+                                ResponsiveHelper.isMobile(context) ? 1 : 2,
+                            childAspectRatio:
+                                ResponsiveHelper.isMobile(context) ? 4 : 6,
                             crossAxisSpacing: Dimensions.paddingSizeExtraLarge,
                             mainAxisExtent: Dimensions.addressItemHeight,
-                            mainAxisSpacing: ResponsiveHelper.isDesktop(context) || ResponsiveHelper.isTab(context)
-                                ? Dimensions.paddingSizeExtraLarge
-                                : 2.0,
+                            mainAxisSpacing:
+                                ResponsiveHelper.isDesktop(context) ||
+                                        ResponsiveHelper.isTab(context)
+                                    ? Dimensions.paddingSizeExtraLarge
+                                    : 2.0,
                           ),
-                          padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
+                          padding:
+                              const EdgeInsets.all(Dimensions.paddingSizeSmall),
                           itemCount: addressList.length,
                           itemBuilder: (context, index) {
                             return AddressWidget(
@@ -95,18 +104,22 @@ class _AddressScreenState extends State<AddressScreen> {
                               address: addressList![index],
                               fromAddress: true,
                               fromCheckout: widget.fromPage == 'checkout',
-                              isSelected: addressList[index].id == selectedAddress?.id,
+                              isSelected:
+                                  addressList[index].id == selectedAddress?.id,
                               onTap: () async {
                                 print('Clicked address:');
-                                Get.dialog(const CustomLoader(), barrierDismissible: false);
+                                Get.dialog(const CustomLoader(),
+                                    barrierDismissible: false);
                                 AddressModel address = addressList![index];
-                                await locationController.setAddressIndex(address, fromAddressScreen: false);
+                                await locationController.setAddressIndex(
+                                    address,
+                                    fromAddressScreen: false);
                                 // If you want to navigate or update after selection, call your navigation or update logic here.
                                 // For example, if you want to mimic access_location_screen:
                                 locationController.saveAddressAndNavigate(
                                   address,
                                   false, // or widget.fromSignUp if available
-                                  null,  // or widget.route if available
+                                  null, // or widget.route if available
                                   false, // or widget.route != null if available
                                   true,
                                 );
@@ -114,19 +127,23 @@ class _AddressScreenState extends State<AddressScreen> {
                               },
                               onEditPressed: () {
                                 Get.toNamed(
-                                  RouteHelper.getEditAddressRoute(addressList![index], false),
+                                  RouteHelper.getEditAddressRoute(
+                                      addressList![index], false),
                                 );
                               },
                               onRemovePressed: () {
                                 if (Get.isSnackbarOpen) Get.back();
                                 Get.dialog(ConfirmationDialog(
                                   icon: Images.warning,
-                                  description: 'are_you_sure_want_to_delete_address'.tr,
+                                  description:
+                                      'are_you_sure_want_to_delete_address'.tr,
                                   onYesPressed: () {
                                     Navigator.of(context).pop();
-                                    Get.dialog(const CustomLoader(), barrierDismissible: false);
+                                    Get.dialog(const CustomLoader(),
+                                        barrierDismissible: false);
                                     locationController
-                                        .deleteUserAddressByID(addressList![index])
+                                        .deleteUserAddressByID(
+                                            addressList![index])
                                         .then((response) {
                                       Get.back();
                                       customSnackBar(
@@ -162,45 +179,39 @@ class _AddressScreenState extends State<AddressScreen> {
           return const Center(child: CustomLoader());
         }
       }),
-
-
       floatingActionButton: (!ResponsiveHelper.isDesktop(context) &&
-          Get.find<AuthController>().isLoggedIn())
+              Get.find<AuthController>().isLoggedIn())
           ? GestureDetector(
-        onTap: () {
-          Get.toNamed(RouteHelper.getAddAddressRoute(
-              widget.fromPage == 'checkout'));
-        },
-        child: Container(
-          decoration: BoxDecoration(
-            boxShadow: Get.isDarkMode ? null : shadow,
-            color: Theme.of(context).colorScheme.primary,
-            borderRadius:
-            BorderRadius.circular(Dimensions.radiusExtraMoreLarge),
-          ),
-          height: Dimensions.addAddressHeight,
-          width: Dimensions.addAddressWidth,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(Icons.add, color: Colors.white, size: 20),
-              const SizedBox(width: Dimensions.paddingSizeExtraSmall),
-              Text(
-                'add_new_address'.tr,
-                style: robotoMedium.copyWith(
-                  fontSize: Dimensions.fontSizeDefault,
-                  color: Theme.of(context).primaryColorLight,
+              onTap: () {
+                Get.toNamed(RouteHelper.getAddAddressRoute(
+                    widget.fromPage == 'checkout'));
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  boxShadow: Get.isDarkMode ? null : shadow,
+                  color: Theme.of(context).colorScheme.primary,
+                  borderRadius:
+                      BorderRadius.circular(Dimensions.radiusExtraMoreLarge),
+                ),
+                height: Dimensions.addAddressHeight,
+                width: Dimensions.addAddressWidth,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.add, color: Colors.white, size: 20),
+                    const SizedBox(width: Dimensions.paddingSizeExtraSmall),
+                    Text(
+                      'add_new_address'.tr,
+                      style: robotoMedium.copyWith(
+                        fontSize: Dimensions.fontSizeDefault,
+                        color: Theme.of(context).primaryColorLight,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
-        ),
-      )
+            )
           : null,
     );
   }
 }
-
-
-
-

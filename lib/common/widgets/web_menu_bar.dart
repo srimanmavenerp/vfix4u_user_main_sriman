@@ -36,6 +36,8 @@ class WebMenuBar extends StatelessWidget implements PreferredSizeWidget {
       child: Row(children: [
         InkWell(
           onTap: () {
+            // web
+            // final toggleController = Get.find<rxboolController>();
             _closeSearchDialog();
             Get.find<AllSearchController>().clearSearchController();
             Get.toNamed(RouteHelper.getInitialRoute());

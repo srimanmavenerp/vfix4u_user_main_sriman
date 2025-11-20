@@ -23,8 +23,6 @@ class Dimensions {
   static const double pagesBottomPadding = 100.0;
   static const double pickMapIconSize = 100.0;
 
-  
-  
   static const double logoSize = 180.0;
   static const double cartWidgetSize = 30.0;
   static const double customAppbarSize = 70.0;
@@ -78,5 +76,4 @@ class Dimensions {
   ///wallet
   static const double walletTopCardHeight = 140;
   static const double currencyConvertButtonHeight = 220;
-
 }

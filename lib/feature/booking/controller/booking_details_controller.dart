@@ -6,14 +6,14 @@ import 'package:get/get.dart';
 import 'package:universal_html/html.dart' as html;
 import 'dart:convert';
 
+enum BookingDetailsTabs { bookingDetails, status }
 
-enum BookingDetailsTabs {bookingDetails, status}
-class BookingDetailsController extends GetxController implements GetxService{
+class BookingDetailsController extends GetxController implements GetxService {
   BookingDetailsRepo bookingDetailsRepo;
   BookingDetailsController({required this.bookingDetailsRepo});
 
   BookingDetailsTabs _selectedDetailsTabs = BookingDetailsTabs.bookingDetails;
-  BookingDetailsTabs get selectedBookingStatus =>_selectedDetailsTabs;
+  BookingDetailsTabs get selectedBookingStatus => _selectedDetailsTabs;
   List<String> cancelReasons = [];
 
   final bookingIdController = TextEditingController();
@@ -28,179 +28,212 @@ class BookingDetailsController extends GetxController implements GetxService{
   BookingDetailsContent? get bookingDetailsContent => _bookingDetailsContent;
 
   BookingDetailsContent? _subBookingDetailsContent;
-  BookingDetailsContent? get subBookingDetailsContent => _subBookingDetailsContent;
+  BookingDetailsContent? get subBookingDetailsContent =>
+      _subBookingDetailsContent;
 
   DigitalPaymentMethod? _selectedDigitalPaymentMethod;
-  DigitalPaymentMethod ? get selectedDigitalPaymentMethod => _selectedDigitalPaymentMethod;
-
+  DigitalPaymentMethod? get selectedDigitalPaymentMethod =>
+      _selectedDigitalPaymentMethod;
 
   @override
-  void onInit(){
+  void onInit() {
     Get.find<CheckOutController>().getPaymentMethodList(
-        avoidPartialPayment: (
-            Get.find<SplashController>().configModel.content?.partialPayment ==
+        avoidPartialPayment:
+            (Get.find<SplashController>().configModel.content?.partialPayment ==
                 0));
     super.onInit();
   }
 
-  void updateBookingStatusTabs(BookingDetailsTabs bookingDetailsTabs){
+  void updateBookingStatusTabs(BookingDetailsTabs bookingDetailsTabs) {
     _selectedDetailsTabs = bookingDetailsTabs;
     update();
   }
 
-
-  Future<void> bookingCancel({required String bookingId, bool fromListScreen = false, cancelReason,})async{
+  Future<void> bookingCancel({
+    required String bookingId,
+    bool fromListScreen = false,
+    cancelReason,
+  }) async {
     _isCancelling = true;
     update();
-    Response? response =  await  bookingDetailsRepo.bookingCancel(bookingID: bookingId, cancelReason: cancelReason);
-    if(response.statusCode == 200 && response.body['response_code']=="status_update_success_200"){
+    Response? response = await bookingDetailsRepo.bookingCancel(
+        bookingID: bookingId, cancelReason: cancelReason);
+    if (response.statusCode == 200 &&
+        response.body['response_code'] == "status_update_success_200") {
       _isCancelling = false;
-      customSnackBar('booking_cancelled_successfully'.tr, type : ToasterMessageType.success);
-      if(fromListScreen) {
+      customSnackBar('booking_cancelled_successfully'.tr,
+          type: ToasterMessageType.success);
+      if (fromListScreen) {
         Get.find<ServiceBookingController>().updateBookingStatusTabs(
-            Get.find<ServiceBookingController>().selectedBookingStatus,
+          Get.find<ServiceBookingController>().selectedBookingStatus,
         );
-      }else{
+      } else {
         await getBookingDetails(bookingId: bookingId);
         Get.find<ServiceBookingController>().updateBookingStatusTabs(
           Get.find<ServiceBookingController>().selectedBookingStatus,
         );
       }
-
-    }else if(response.statusCode == 200 && (response.body['response_code'] == "booking_already_accepted_200"
-        || response.body['response_code'] == "booking_already_ongoing_200" || response.body['response_code'] == "booking_already_completed_200")){
+    } else if (response.statusCode == 200 &&
+        (response.body['response_code'] == "booking_already_accepted_200" ||
+            response.body['response_code'] == "booking_already_ongoing_200" ||
+            response.body['response_code'] ==
+                "booking_already_completed_200")) {
       customSnackBar(response.body['message'] ?? "");
       await getBookingDetails(bookingId: bookingId);
       _isCancelling = false;
-    }
-    else{
+    } else {
       _isCancelling = false;
       ApiChecker.checkApi(response);
     }
     update();
   }
 
-  Future<void> subBookingCancel({required String subBookingId})async{
+  Future<void> subBookingCancel({required String subBookingId}) async {
     _isCancelling = true;
     update();
-    Response? response =  await  bookingDetailsRepo.subBookingCancel(bookingID: subBookingId);
-    if(response.statusCode == 200 ){
+    Response? response =
+        await bookingDetailsRepo.subBookingCancel(bookingID: subBookingId);
+    if (response.statusCode == 200) {
       _isCancelling = false;
 
       await getSubBookingDetails(bookingId: subBookingId);
-      if(_bookingDetailsContent != null){
-        getBookingDetails(bookingId: _bookingDetailsContent?.id ?? "", reload : false );
+      if (_bookingDetailsContent != null) {
+        getBookingDetails(
+            bookingId: _bookingDetailsContent?.id ?? "", reload: false);
       }
-      customSnackBar('booking_cancelled_successfully'.tr, type : ToasterMessageType.success);
-    } else{
+      customSnackBar('booking_cancelled_successfully'.tr,
+          type: ToasterMessageType.success);
+    } else {
       _isCancelling = false;
       ApiChecker.checkApi(response);
     }
     update();
   }
 
-  Future<void> getBookingDetails({required String bookingId, bool reload = true})async{
-    if(reload){
+  Future<void> getBookingDetails(
+      {required String bookingId, bool reload = true}) async {
+    if (reload) {
       _bookingDetailsContent = null;
     }
-    Response response = await bookingDetailsRepo.getBookingDetails(bookingID: bookingId);
-    if(response.statusCode == 200){
-      _bookingDetailsContent = BookingDetailsContent.fromJson(response.body['content']);
+    Response response =
+        await bookingDetailsRepo.getBookingDetails(bookingID: bookingId);
+    if (response.statusCode == 200) {
+      _bookingDetailsContent =
+          BookingDetailsContent.fromJson(response.body['content']);
       update();
     } else {
       ApiChecker.checkApi(response);
     }
   }
 
-  Future<void> getSubBookingDetails({required String bookingId})async{
-
+  Future<void> getSubBookingDetails({required String bookingId}) async {
     _subBookingDetailsContent = null;
-    Response response = await bookingDetailsRepo.getSubBookingDetails(bookingID: bookingId);
-    if(response.statusCode == 200){
-      _subBookingDetailsContent = BookingDetailsContent.fromJson(response.body['content']);
-
+    Response response =
+        await bookingDetailsRepo.getSubBookingDetails(bookingID: bookingId);
+    if (response.statusCode == 200) {
+      _subBookingDetailsContent =
+          BookingDetailsContent.fromJson(response.body['content']);
     } else {
       ApiChecker.checkApi(response);
     }
     update();
-
   }
 
-
-  Future<void> trackBookingDetails(String bookingReadableId, String phone, {bool reload = false}) async {
-    if(reload){
+  Future<void> trackBookingDetails(String bookingReadableId, String phone,
+      {bool reload = false}) async {
+    if (reload) {
       _isLoading = true;
       update();
     }
-    if( reload || _bookingDetailsContent == null){
-
-      Response response = await bookingDetailsRepo.trackBookingDetails(bookingID: bookingReadableId, phoneNUmber: phone);
-      if(response.statusCode == 200){
-        _bookingDetailsContent = BookingDetailsContent.fromJson(response.body['content']);
+    if (reload || _bookingDetailsContent == null) {
+      Response response = await bookingDetailsRepo.trackBookingDetails(
+          bookingID: bookingReadableId, phoneNUmber: phone);
+      if (response.statusCode == 200) {
+        _bookingDetailsContent =
+            BookingDetailsContent.fromJson(response.body['content']);
         update();
-      }else{
+      } else {
         _bookingDetailsContent = null;
         _isLoading = false;
         update();
       }
     }
-    if(reload){
+    if (reload) {
       _isLoading = false;
       update();
     }
-
   }
 
-  void updateSelectedDigitalPayment({DigitalPaymentMethod? value, bool shouldUpdate = true}){
+  void updateSelectedDigitalPayment(
+      {DigitalPaymentMethod? value, bool shouldUpdate = true}) {
     _selectedDigitalPaymentMethod = value;
-    if(shouldUpdate){
+    if (shouldUpdate) {
       update();
     }
   }
 
-  void resetBookingDetailsValue({bool shouldUpdate = false, bool resetBookingDetails = false}){
+  void resetBookingDetailsValue(
+      {bool shouldUpdate = false, bool resetBookingDetails = false}) {
     _selectedDetailsTabs = BookingDetailsTabs.bookingDetails;
     _subBookingDetailsContent = null;
-    if(resetBookingDetails){
+    if (resetBookingDetails) {
       _bookingDetailsContent = null;
     }
   }
 
-
-  void resetTrackingData({bool shouldUpdate = true}){
+  void resetTrackingData({bool shouldUpdate = true}) {
     bookingIdController.clear();
     phoneController.clear();
     _bookingDetailsContent = null;
 
-    if(shouldUpdate){
+    if (shouldUpdate) {
       update();
     }
   }
 
-  void manageDialog(){
-
+  void manageDialog() {
     var userData = Get.find<UserController>().userInfoModel;
-    if(Get.find<AuthController>().isLoggedIn() && userData !=null && userData.lastIncompleteOfflineBooking != null && getLastIncompleteOfflineBookingId() != userData.lastIncompleteOfflineBooking?.id){
-     if(Get.isDialogOpen == false){
-       if(ResponsiveHelper.isDesktop(Get.context)){
-         Get.dialog(Center(child: IncompleteOfflinePaymentDialog(booking: Get.find<UserController>().userInfoModel?.lastIncompleteOfflineBooking,))).then((value){
-           setLastIncompleteOfflineBookingId(userData.lastIncompleteOfflineBooking?.id ?? "");
-         });
-       }else{
-         showModalBottomSheet(context: Get.context!,
-           builder: (_){
-             return  IncompleteOfflinePaymentDialog(booking: Get.find<UserController>().userInfoModel?.lastIncompleteOfflineBooking,);
-           },
-           backgroundColor: Colors.transparent,
-         ).then((value){
-           setLastIncompleteOfflineBookingId(userData.lastIncompleteOfflineBooking?.id ?? "");
-         });
-       }
-     }
+    if (Get.find<AuthController>().isLoggedIn() &&
+        userData != null &&
+        userData.lastIncompleteOfflineBooking != null &&
+        getLastIncompleteOfflineBookingId() !=
+            userData.lastIncompleteOfflineBooking?.id) {
+      if (Get.isDialogOpen == false) {
+        if (ResponsiveHelper.isDesktop(Get.context)) {
+          Get.dialog(Center(
+              child: IncompleteOfflinePaymentDialog(
+            booking: Get.find<UserController>()
+                .userInfoModel
+                ?.lastIncompleteOfflineBooking,
+          ))).then((value) {
+            setLastIncompleteOfflineBookingId(
+                userData.lastIncompleteOfflineBooking?.id ?? "");
+          });
+        } else {
+          showModalBottomSheet(
+            context: Get.context!,
+            builder: (_) {
+              return IncompleteOfflinePaymentDialog(
+                booking: Get.find<UserController>()
+                    .userInfoModel
+                    ?.lastIncompleteOfflineBooking,
+              );
+            },
+            backgroundColor: Colors.transparent,
+          ).then((value) {
+            setLastIncompleteOfflineBookingId(
+                userData.lastIncompleteOfflineBooking?.id ?? "");
+          });
+        }
+      }
     }
 
-    if(Get.find<ServiceController>().allService !=null && Get.find<ServiceController>().allService!.isNotEmpty && (Get.currentRoute.contains(RouteHelper.home) || Get.currentRoute.contains("/?page=home"))){
-      if(Get.find<UserController>().showReferWelcomeDialog() && Get.find<AuthController>().getIsShowReferralBottomSheet() == true){
+    if (Get.find<ServiceController>().allService != null &&
+        Get.find<ServiceController>().allService!.isNotEmpty &&
+        (Get.currentRoute.contains(RouteHelper.home) ||
+            Get.currentRoute.contains("/?page=home"))) {
+      if (Get.find<UserController>().showReferWelcomeDialog() &&
+          Get.find<AuthController>().getIsShowReferralBottomSheet() == true) {
         Future.delayed(const Duration(microseconds: 500), () {
           showModalBottomSheet(
             isDismissible: false,
@@ -215,8 +248,8 @@ class BookingDetailsController extends GetxController implements GetxService{
     }
   }
 
-  Future<void>  setLastIncompleteOfflineBookingId(String bookingId) async {
-    await  bookingDetailsRepo.setLastIncompleteOfflineBookingId(bookingId);
+  Future<void> setLastIncompleteOfflineBookingId(String bookingId) async {
+    await bookingDetailsRepo.setLastIncompleteOfflineBookingId(bookingId);
   }
 
   String getLastIncompleteOfflineBookingId() {
@@ -226,38 +259,43 @@ class BookingDetailsController extends GetxController implements GetxService{
   List<PopupMenuModel> getPopupMenuList(String status) {
     if (status == "pending") {
       return [
-        PopupMenuModel(title: "download_invoice", icon: Icons.file_download_outlined),
+        PopupMenuModel(
+            title: "download_invoice", icon: Icons.file_download_outlined),
         PopupMenuModel(title: "cancel", icon: Icons.cancel_outlined),
       ];
-    } else if(status == "completed"){
+    } else if (status == "completed") {
       return [
-        PopupMenuModel(title: "download_invoice", icon: Icons.file_download_outlined),
+        PopupMenuModel(
+            title: "download_invoice", icon: Icons.file_download_outlined),
         PopupMenuModel(title: "review", icon: Icons.reviews_outlined),
       ];
     }
     return [];
   }
 
-  List<PopupMenuModel> getPServiceLogMenuList({required String status,  bool nextService = false}) {
-
+  List<PopupMenuModel> getPServiceLogMenuList(
+      {required String status, bool nextService = false}) {
     if (status == "pending") {
       return [
-        PopupMenuModel(title: "download_invoice", icon: Icons.file_download_outlined),
-
+        PopupMenuModel(
+            title: "download_invoice", icon: Icons.file_download_outlined),
       ];
     } else if (status == "accepted") {
       return [
-        if(nextService) PopupMenuModel(title: "booking_details", icon: Icons.remove_red_eye),
-        PopupMenuModel(title: "download_invoice", icon: Icons.file_download_outlined),
-        if(!nextService) PopupMenuModel(title: "cancel", icon: Icons.cancel_outlined),
+        if (nextService)
+          PopupMenuModel(title: "booking_details", icon: Icons.remove_red_eye),
+        PopupMenuModel(
+            title: "download_invoice", icon: Icons.file_download_outlined),
+        if (!nextService)
+          PopupMenuModel(title: "cancel", icon: Icons.cancel_outlined),
       ];
-    }
-
-    else if (status == "ongoing" || status == "completed" || status == "canceled") {
+    } else if (status == "ongoing" ||
+        status == "completed" ||
+        status == "canceled") {
       return [
         PopupMenuModel(title: "booking_details", icon: Icons.remove_red_eye),
-        PopupMenuModel(title: "download_invoice", icon: Icons.file_download_outlined),
-
+        PopupMenuModel(
+            title: "download_invoice", icon: Icons.file_download_outlined),
       ];
     }
     return [];
@@ -472,13 +510,13 @@ class BookingDetailsController extends GetxController implements GetxService{
                                                                         decoration:
                                                                             BoxDecoration(
                                                                           color: checkoutController.selectedOfflineMethod == offlineMethod
-                                                                              ? Theme.of(context).colorScheme.primary
+                                                                              ? const Color(0xffFEFEFE)
                                                                               : Theme.of(context).cardColor,
                                                                           border: Border.all(
                                                                               width: 1,
-                                                                              color: Theme.of(context).colorScheme.primary.withValues(
-                                                                                    alpha: checkoutController.selectedOfflineMethod == offlineMethod ? 0.7 : 0.2,
-                                                                                  )),
+                                                                              color: const Color(0xffFEFEFE).withValues(
+                                                                                alpha: checkoutController.selectedOfflineMethod == offlineMethod ? 0.7 : 0.2,
+                                                                              )),
                                                                           borderRadius:
                                                                               BorderRadius.circular(Dimensions.radiusDefault),
                                                                         ),
@@ -529,14 +567,13 @@ class BookingDetailsController extends GetxController implements GetxService{
                               snackPosition: SnackPosition.BOTTOM);
 
                           makeDigitalPayment(
-                              addressModel,
-                              checkoutController.selectedDigitalPaymentMethod,
-                              isPartialPayment,
-                              checkoutController,
-                              bookingDetailsId,
-                              );
+                            addressModel,
+                            checkoutController.selectedDigitalPaymentMethod,
+                            isPartialPayment,
+                            checkoutController,
+                            bookingDetailsId,
+                          );
                         },
-
                         child: Text("Pay now"),
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.blue),
@@ -558,8 +595,7 @@ class BookingDetailsController extends GetxController implements GetxService{
       DigitalPaymentMethod? paymentMethod,
       bool isPartialPayment,
       CheckOutController checkoutController,
-      String bookingDetailsId
-      ) {
+      String bookingDetailsId) {
     String url = '';
     String hostname = html.window.location.hostname!;
     String protocol = html.window.location.protocol;
@@ -591,10 +627,11 @@ class BookingDetailsController extends GetxController implements GetxService{
             : 0;
     String platform = ResponsiveHelper.isWeb() ? "web" : "app";
 
-     url = '${AppConstants.baseUrl}/payment?payment_method=${paymentMethod?.gateway}&access_token=${base64Url.encode(utf8.encode(userId))}&zone_id=$zoneId'
-    '&service_schedule=$schedule&service_address_id=$addressId&callback=$callbackUrl&service_address=$encodedAddress&new_user_info=$encodedNewUserInfo&is_partial=$isPartial&payment_platform=$platform&booking_id=$bookingDetailsId';
+    url =
+        '${AppConstants.baseUrl}/payment?payment_method=${paymentMethod?.gateway}&access_token=${base64Url.encode(utf8.encode(userId))}&zone_id=$zoneId'
+        '&service_schedule=$schedule&service_address_id=$addressId&callback=$callbackUrl&service_address=$encodedAddress&new_user_info=$encodedNewUserInfo&is_partial=$isPartial&payment_platform=$platform&booking_id=$bookingDetailsId';
 
-print('pain $url');
+    print('pain $url');
 
     if (GetPlatform.isWeb) {
       printLog("url_with_digital_payment:$url");
@@ -609,6 +646,4 @@ print('pain $url');
   }
 
   void showCancelBookingDialog(String? id) {}
-
-
 }

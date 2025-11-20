@@ -3,14 +3,14 @@ import 'package:get/get.dart';
 
 class MyFavoriteScreen extends StatefulWidget {
   final String? fromPage;
-  const MyFavoriteScreen({super.key, this.fromPage}) ;
+  const MyFavoriteScreen({super.key, this.fromPage});
 
   @override
   State<MyFavoriteScreen> createState() => _MyFavoriteScreenState();
 }
 
-class _MyFavoriteScreenState extends State<MyFavoriteScreen> with SingleTickerProviderStateMixin {
-
+class _MyFavoriteScreenState extends State<MyFavoriteScreen>
+    with SingleTickerProviderStateMixin {
   TabController? tabController;
 
   @override
@@ -21,24 +21,24 @@ class _MyFavoriteScreenState extends State<MyFavoriteScreen> with SingleTickerPr
     Get.find<MyFavoriteController>().getProviderList(1, true);
   }
 
-
   @override
   Widget build(BuildContext context) {
     return CustomPopScopeWidget(
-      onPopInvoked: (){
+      onPopInvoked: () {
         Get.offAllNamed(RouteHelper.getInitialRoute());
       },
       child: Scaffold(
-        endDrawer:ResponsiveHelper.isDesktop(context) ? const MenuDrawer():null,
+        endDrawer:
+            ResponsiveHelper.isDesktop(context) ? const MenuDrawer() : null,
         appBar: CustomAppBar(
           title: "my_favorite".tr,
           onBackPressed: () {
-            if(widget.fromPage == 'fromNotification'){
+            if (widget.fromPage == 'fromNotification') {
               Get.offAllNamed(RouteHelper.getInitialRoute());
-            }else{
-              if(Navigator.canPop(context)){
+            } else {
+              if (Navigator.canPop(context)) {
                 Get.back();
-              }else{
+              } else {
                 Get.offAllNamed(RouteHelper.getInitialRoute());
               }
             }
@@ -46,21 +46,26 @@ class _MyFavoriteScreenState extends State<MyFavoriteScreen> with SingleTickerPr
         ),
         body: FooterBaseView(
           isScrollView: ResponsiveHelper.isDesktop(context) ? true : false,
-          child: GetBuilder<MyFavoriteController>(builder: (myFavoriteController){
+          child:
+              GetBuilder<MyFavoriteController>(builder: (myFavoriteController) {
             return Center(
               child: SizedBox(
                 width: Dimensions.webMaxWidth,
                 child: Column(
                   children: [
-
-                    FavoriteTabBarView(tabController: tabController,),
-
+                    FavoriteTabBarView(
+                      tabController: tabController,
+                    ),
                     SizedBox(
-                      height : ResponsiveHelper.isDesktop(context) ? Get.height * 0.8 : Get.height * 0.83,
-                      child: TabBarView( controller: tabController, children: const [
-                        FavoriteServiceListView(),
-                        FavoriteProviderListView(),
-                      ]),
+                      height: ResponsiveHelper.isDesktop(context)
+                          ? Get.height * 0.8
+                          : Get.height * 0.83,
+                      child: TabBarView(
+                          controller: tabController,
+                          children: const [
+                            FavoriteServiceListView(),
+                            FavoriteProviderListView(),
+                          ]),
                     )
                   ],
                 ),

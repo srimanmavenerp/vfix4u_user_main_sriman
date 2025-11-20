@@ -1,19 +1,19 @@
 import 'package:demandium/utils/core_export.dart';
 
 class RippleButton extends StatelessWidget {
-  const RippleButton({super.key, required this.onTap, this.borderRadius = 5}) ;
+  const RippleButton({super.key, required this.onTap, this.borderRadius = 5});
   final GestureTapCallback onTap;
   final double borderRadius;
 
   @override
   Widget build(BuildContext context) {
-    return  Material(
+    return Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
         hoverColor: Colors.transparent,
-        splashColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
-        highlightColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.05),
+        splashColor: const Color(0xffFEFEFE).withValues(alpha: 0.1),
+        highlightColor: const Color(0xffFEFEFE).withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(borderRadius),
       ),
     );
