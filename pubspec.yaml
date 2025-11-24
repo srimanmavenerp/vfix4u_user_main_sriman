@@ -102,6 +102,7 @@ flutter:
     - assets/json/
     - assets/map/
     - assets/newicons/
+    - assets/notification.mp3
 
 
   fonts:

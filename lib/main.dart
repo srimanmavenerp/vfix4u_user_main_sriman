@@ -1,7 +1,17 @@
+import 'dart:io';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:app_links/app_links.dart';
+import 'package:uuid/uuid.dart';
 import 'utils/core_export.dart';
 import 'helper/get_di.dart' as di;
 
+// Notification plugin
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
@@ -14,7 +24,10 @@ Future<void> main() async {
     HttpOverrides.global = MyHttpOverrides();
     await FlutterDownloader.initialize();
   }
-  setPathUrlStrategy();
+
+  setPathUrlStrategy(); // For Web routing
+
+  // Firebase initialization
   if (GetPlatform.isWeb) {
     await Firebase.initializeApp(
       options: const FirebaseOptions(
@@ -38,44 +51,45 @@ Future<void> main() async {
     await Firebase.initializeApp();
   }
 
-  if (defaultTargetPlatform == TargetPlatform.android) {
+  // Request FCM permissions
+  if (Platform.isAndroid) {
     await FirebaseMessaging.instance.requestPermission();
+  } else if (Platform.isIOS) {
+    await FirebaseMessaging.instance.requestPermission(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
   }
 
   Map<String, Map<String, String>> languages = await di.init();
   NotificationBody? body;
   String? path;
+
   try {
-    if (!kIsWeb) {
-      path = await initDynamicLinks();
-    }
+    if (!kIsWeb) path = await initDynamicLinks();
 
     final RemoteMessage? remoteMessage =
         await FirebaseMessaging.instance.getInitialMessage();
     if (remoteMessage != null) {
       body = NotificationHelper.convertNotification(remoteMessage.data);
     }
+
     await NotificationHelper.initialize(flutterLocalNotificationsPlugin);
     FirebaseMessaging.onBackgroundMessage(myBackgroundMessageHandler);
   } catch (e) {
-    if (kDebugMode) {
-      print("");
-    }
+    if (kDebugMode) print("Error in main initialization: $e");
   }
 
-  runApp(MyApp(
-    languages: languages,
-    body: body,
-    route: path,
-  ));
+  runApp(MyApp(languages: languages, body: body, route: path));
 }
 
 class MyApp extends StatefulWidget {
   final Map<String, Map<String, String>>? languages;
   final NotificationBody? body;
   final String? route;
-  const MyApp(
-      {super.key, @required this.languages, @required this.body, this.route});
+
+  const MyApp({super.key, this.languages, this.body, this.route});
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -84,18 +98,12 @@ class MyApp extends StatefulWidget {
 Future<String?> initDynamicLinks() async {
   final appLinks = AppLinks();
   final uri = await appLinks.getInitialLink();
-  String? path;
-  if (uri != null) {
-    path = uri.path;
-  } else {
-    path = null;
-  }
-  return path;
+  return uri?.path;
 }
 
 class _MyAppState extends State<MyApp> {
   void _route() async {
-    Get.find<SplashController>().getConfigData().then((success) async {
+    Get.find<SplashController>().getConfigData().then((_) async {
       if (Get.find<LocationController>().getUserAddress() != null) {
         AddressModel addressModel =
             Get.find<LocationController>().getUserAddress()!;
@@ -106,6 +114,7 @@ class _MyAppState extends State<MyApp> {
             responseModel.totalServiceCount;
         Get.find<LocationController>().saveUserAddress(addressModel);
       }
+
       if (Get.find<AuthController>().isLoggedIn()) {
         Get.find<AuthController>().updateToken();
       }
@@ -131,6 +140,7 @@ class _MyAppState extends State<MyApp> {
       }
       _route();
     }
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (MediaQuery.of(context).size.width > 900) {
         Get.find<LocationController>().updateLocationIfNull();

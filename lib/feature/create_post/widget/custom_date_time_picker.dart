@@ -261,8 +261,6 @@
 
 ///new code
 
-
-
 import 'package:demandium/utils/core_export.dart';
 import 'package:demandium/feature/create_post/widget/custom_date_picker.dart';
 import 'package:demandium/feature/create_post/widget/custom_time_picker.dart';
@@ -328,9 +326,7 @@ class CustomDateTimePicker extends StatelessWidget {
                 child: actionButtonWidget(Get.context!, scheduleController),
               ),
 
-
               /// ASAP Button if enabled
-
 
               if (configModel.content?.instantBooking == 1)
                 Column(
@@ -347,10 +343,10 @@ class CustomDateTimePicker extends StatelessWidget {
                       //height: 40,
                       radius: Dimensions.radiusExtraMoreLarge,
                       backgroundColor:
-                      scheduleController.initialSelectedScheduleType ==
-                          ScheduleType.asap
-                          ? Theme.of(Get.context!).colorScheme.primary
-                          : Theme.of(Get.context!).disabledColor,
+                          scheduleController.initialSelectedScheduleType ==
+                                  ScheduleType.asap
+                              ? Theme.of(Get.context!).colorScheme.primary
+                              : Theme.of(Get.context!).disabledColor,
                       buttonText: "ASAP".tr.toUpperCase(),
                       onPressed: () {
                         scheduleController.updateScheduleType(
@@ -398,72 +394,72 @@ class CustomDateTimePicker extends StatelessWidget {
             return ElevatedButton(
               style: ElevatedButton.styleFrom(
                 padding:
-                const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                 shape: RoundedRectangleBorder(
                   borderRadius:
-                  BorderRadius.circular(Dimensions.radiusExtraMoreLarge),
+                      BorderRadius.circular(Dimensions.radiusExtraMoreLarge),
                 ),
               ),
               onPressed: controller.isOkButtonDisabled
                   ? null
                   : () {
-                ConfigModel config =
-                    Get.find<SplashController>().configModel;
+                      ConfigModel config =
+                          Get.find<SplashController>().configModel;
 
-                if (controller.initialSelectedScheduleType == null ||
-                    controller.selectedDate.isEmpty) {
-                  customSnackBar(
-                    'select_your_preferable_booking_time'.tr +
-                        ' Please select a time between 9:00 AM and 11:00 PM.',
-                    showDefaultSnackBar: false,
-                  );
-                  controller.update();
-                  return;
-                }
+                      if (controller.initialSelectedScheduleType == null ||
+                          controller.selectedDate.isEmpty) {
+                        customSnackBar(
+                          'select_your_preferable_booking_time'.tr +
+                              ' Please select a time between 9:00 AM and 11:00 PM.',
+                          showDefaultSnackBar: false,
+                        );
+                        controller.update();
+                        return;
+                      }
 
-                if (config.content?.advanceBooking != null &&
-                    config.content?.scheduleBookingTimeRestriction == 1 &&
-                    controller.initialSelectedScheduleType !=
-                        ScheduleType.asap) {
-                  if (controller.selectedTime.isEmpty) {
-                    customSnackBar('please_select_time'.tr,
-                        showDefaultSnackBar: false);
-                    controller.update();
-                    return;
-                  }
+                      if (config.content?.advanceBooking != null &&
+                          config.content?.scheduleBookingTimeRestriction == 1 &&
+                          controller.initialSelectedScheduleType !=
+                              ScheduleType.asap) {
+                        if (controller.selectedTime.isEmpty) {
+                          customSnackBar('please_select_time'.tr,
+                              showDefaultSnackBar: false);
+                          controller.update();
+                          return;
+                        }
 
-                  String? restrictionError =
-                  controller.checkValidityOfTimeRestriction(
-                    config.content!.advanceBooking!,
-                    controller.selectedDate,
-                    controller.selectedTime,
-                  );
+                        String? restrictionError =
+                            controller.checkValidityOfTimeRestriction(
+                          config.content!.advanceBooking!,
+                          controller.selectedDate,
+                          controller.selectedTime,
+                        );
 
-                  if (restrictionError != null) {
-                    customSnackBar(restrictionError,
-                        showDefaultSnackBar: false);
-                    controller.update();
-                    return;
-                  }
-                }
+                        if (restrictionError != null) {
+                          customSnackBar(restrictionError,
+                              showDefaultSnackBar: false);
+                          controller.update();
+                          return;
+                        }
+                      }
 
-                controller.buildSchedule(
-                    scheduleType: ScheduleType.schedule);
-                Get.back();
-              },
+                      controller.buildSchedule(
+                          scheduleType: ScheduleType.schedule);
+                      Get.back();
+                    },
               child: controller.isOkButtonDisabled
                   ? Row(
-                mainAxisSize: MainAxisSize.min,
-                children: const [
-                  SizedBox(
-                    width: 16,
-                    height: 16,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  ),
-                  SizedBox(width: 8),
-                  Text("..."),
-                ],
-              )
+                      mainAxisSize: MainAxisSize.min,
+                      children: const [
+                        SizedBox(
+                          width: 16,
+                          height: 16,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        ),
+                        SizedBox(width: 8),
+                        Text("..."),
+                      ],
+                    )
                   : Text("OK".tr.toUpperCase()),
             );
           }),
@@ -471,5 +467,4 @@ class CustomDateTimePicker extends StatelessWidget {
       ),
     );
   }
-
 }

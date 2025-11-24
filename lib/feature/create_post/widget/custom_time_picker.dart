@@ -24,35 +24,63 @@ class CustomTimePicker extends StatelessWidget {
 
           // Time slots
           GetBuilder<ScheduleController>(builder: (controller) {
-            // Assuming controller.selectedDate is like "2025-10-27"
-            String dateString = controller.selectedDate;
-            print("Selected Date: $dateString");
+            DateTime selectedDate = DateTime.parse(controller.selectedDate);
+            DateTime today = DateTime.now();
 
-// Parse the string into a DateTime object
-            DateTime selectedDate = DateTime.parse(dateString);
-
-// Define the list of time slots
-            final List<DateTime> timeSlots = [];
-
-// Define time range (9 AM – 6 PM)
-            final start = DateTime(
-                selectedDate.year, selectedDate.month, selectedDate.day, 9, 0);
-            final end = DateTime(
-                selectedDate.year, selectedDate.month, selectedDate.day, 18, 0);
-
-            print("Start time: $start");
-            print("End time: $end");
+            // Define time slots (9 AM – 6 PM)
+            List<DateTime> activeSlots = [];
+            DateTime start = DateTime(
+                selectedDate.year, selectedDate.month, selectedDate.day, 9);
+            DateTime end = DateTime(
+                selectedDate.year, selectedDate.month, selectedDate.day, 18);
 
             DateTime slot = start;
             while (slot.isBefore(end) || slot.isAtSameMomentAs(end)) {
-              timeSlots.add(slot);
-              slot = slot.add(const Duration(minutes: 60)); // 1-hour intervals
+              activeSlots.add(slot);
+              slot = slot.add(const Duration(hours: 1));
+            }
+
+            // Current time + 1 hour
+            DateTime currentTime = DateTime.now().add(const Duration(hours: 1));
+
+            // 🔹 Validate current selectedTime
+            if (controller.selectedTime.isNotEmpty) {
+              DateTime selectedTimeDT =
+                  _parseSelectedTime(controller.selectedTime, selectedDate);
+
+              bool isValid = false;
+              if (_isSameDate(selectedDate, today)) {
+                // For today, selectedTime must be after current time
+                isValid = selectedTimeDT.isAfter(currentTime);
+              } else {
+                // For future dates, any time slot is valid
+                isValid = activeSlots.any((s) =>
+                    s.hour == selectedTimeDT.hour &&
+                    s.minute == selectedTimeDT.minute);
+              }
+
+              // If invalid → update to first valid slot
+              if (!isValid) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  if (_isSameDate(selectedDate, today)) {
+                    int index =
+                        activeSlots.indexWhere((s) => s.isAfter(currentTime));
+                    if (index == -1) index = 0;
+                    controller.selectedTime =
+                        '${activeSlots[index].hour.toString().padLeft(2, '0')}:${activeSlots[index].minute.toString().padLeft(2, '0')}:00';
+                  } else {
+                    controller.selectedTime =
+                        '${activeSlots[0].hour.toString().padLeft(2, '0')}:${activeSlots[0].minute.toString().padLeft(2, '0')}:00';
+                  }
+                  controller.update();
+                });
+              }
             }
 
             return GridView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              itemCount: timeSlots.length,
+              itemCount: activeSlots.length, // ✅ use activeSlots here
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
                 mainAxisSpacing: 8,
@@ -60,17 +88,13 @@ class CustomTimePicker extends StatelessWidget {
                 childAspectRatio: 2.5,
               ),
               itemBuilder: (context, index) {
-                final time = timeSlots[index];
+                final time = activeSlots[index]; // ✅ use activeSlots
                 final formattedTime = DateFormat('hh:mm a').format(time);
 
                 final isSelected = controller.selectedTime
                     .startsWith(DateFormat('HH:mm').format(time));
 
-                // Current time (for comparison) + 1 hour
-                final currentTime =
-                    DateTime.now().add(const Duration(hours: 1));
-
-// Disable past time slots
+                // Disable past time slots
                 final isPast = time.isBefore(currentTime);
 
                 return ElevatedButton(
@@ -84,11 +108,11 @@ class CustomTimePicker extends StatelessWidget {
                         ? Colors.grey
                         : isSelected
                             ? Colors.white
-                            : Theme.of(context).hintColor, 
+                            : Theme.of(context).hintColor,
                     elevation: isPast ? 0 : 2,
                   ),
                   onPressed: isPast
-                      ? null // disable past buttons
+                      ? null
                       : () {
                           controller.selectedTime =
                               '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}:00';
@@ -114,5 +138,25 @@ class CustomTimePicker extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  // Helper functions
+  DateTime _parseSelectedTime(String timeString, DateTime baseDate) {
+    try {
+      final parts = timeString.split(':');
+      return DateTime(
+        baseDate.year,
+        baseDate.month,
+        baseDate.day,
+        int.parse(parts[0]),
+        int.parse(parts[1]),
+      );
+    } catch (e) {
+      return DateTime(0); // fallback if invalid
+    }
+  }
+
+  bool _isSameDate(DateTime d1, DateTime d2) {
+    return d1.year == d2.year && d1.month == d2.month && d1.day == d2.day;
   }
 }

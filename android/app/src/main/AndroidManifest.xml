@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-
+<uses-permission android:name="android.permission.POST_NOTIFICATIONS" />    
     <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="34" />
 
     <queries>
@@ -35,10 +35,7 @@
   <meta-data
         android:name="com.google.firebase.messaging.default_notification_icon"
         android:resource="@drawable/notification_icon" />
-        <!-- Optional: notification color -->
-<!-- <meta-data
-    android:name="com.google.firebase.messaging.default_notification_color"
-    android:resource="@color/colorPrimary" /> -->
+     
         <meta-data android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBjOIZCC6Afzl7_HyHnEoewg0KCMn3ecdQ"/>
 
@@ -71,6 +68,7 @@
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
 
+
             <meta-data
                 android:name="io.flutter.embedding.android.NormalTheme"
                 android:resource="@style/NormalTheme"
@@ -82,7 +80,7 @@
                 />
             <meta-data
                 android:name="com.google.firebase.messaging.default_notification_channel_id"
-                android:value="demandiumWithoutsound" />
+                android:value="vfix4u" />
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

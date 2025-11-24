@@ -594,8 +594,6 @@
 /////below saif
 /// ////new code
 
-
-
 import 'package:get/get.dart';
 import 'package:demandium/utils/core_export.dart';
 import 'package:intl/intl.dart';
@@ -612,9 +610,6 @@ class ScheduleController extends GetxController implements GetxService {
 
   int _scheduleDaysCount = 1;
   int get scheduleDaysCount => _scheduleDaysCount;
-
-
-
 
   /// Regular Booking ///
 
@@ -665,8 +660,6 @@ class ScheduleController extends GetxController implements GetxService {
   set updatePickedWeeklyRepeatTime(TimeOfDay? time) =>
       _pickedWeeklyRepeatTime = time;
 
-
-
   bool _isFinalRepeatWeeklyBooking = false;
   bool get isFinalRepeatWeeklyBooking => _isFinalRepeatWeeklyBooking;
 
@@ -712,8 +705,6 @@ class ScheduleController extends GetxController implements GetxService {
   set updateInitialCustomRepeatBookingDateRange(List<DateTime> dateList) =>
       _pickedInitialCustomRepeatBookingDateTimeList = dateList;
 
-
-
   void disableOkButtonTemporarily() {
     isOkButtonDisabled = true;
     update();
@@ -724,18 +715,17 @@ class ScheduleController extends GetxController implements GetxService {
     });
   }
 
-
   void buildSchedule(
       {bool shouldUpdate = true,
-        required ScheduleType scheduleType,
-        String? schedule}) {
+      required ScheduleType scheduleType,
+      String? schedule}) {
     if (schedule != null) {
       _selectedScheduleType = ScheduleType.schedule;
       scheduleTime = schedule;
     } else if (_initialSelectedScheduleType == ScheduleType.asap) {
       _selectedScheduleType = ScheduleType.asap;
       scheduleTime =
-      "${DateFormat('yyyy-MM-dd').format(DateTime.now())} ${DateFormat('HH:mm:ss').format(DateTime.now().add(const Duration(minutes: 2)))}";
+          "${DateFormat('yyyy-MM-dd').format(DateTime.now())} ${DateFormat('HH:mm:ss').format(DateTime.now().add(const Duration(minutes: 2)))}";
     } else {
       _selectedScheduleType = ScheduleType.schedule;
       scheduleTime = "$selectedDate $selectedTime";
@@ -756,21 +746,22 @@ class ScheduleController extends GetxController implements GetxService {
       update();
     }
   }
+
 // Add this to your controller
   void clearTimeValidation() {
     timePickerErrorMessage = null;
     update(); // Trigger UI update
   }
+
   DateTime? getSelectedDateTime() {
     return _selectedScheduleType == ScheduleType.schedule &&
-        scheduleTime != null
+            scheduleTime != null
         ? DateFormat('yyyy-MM-dd HH:mm:ss').parse(scheduleTime!)
         : null;
   }
 
-
-
-  String? checkValidityOfTimeRestriction(AdvanceBooking advanceBooking, String selectedDate, String selectedTime) {
+  String? checkValidityOfTimeRestriction(
+      AdvanceBooking advanceBooking, String selectedDate, String selectedTime) {
     try {
       if (selectedDate.trim().isEmpty || selectedTime.trim().isEmpty) {
         return 'Date or time is missing.';
@@ -785,7 +776,8 @@ class ScheduleController extends GetxController implements GetxService {
       DateTime selectedDateTime;
 
       // Parse depending on AM/PM presence
-      if (fullDateTime.toLowerCase().contains("am") || fullDateTime.toLowerCase().contains("pm")) {
+      if (fullDateTime.toLowerCase().contains("am") ||
+          fullDateTime.toLowerCase().contains("pm")) {
         selectedDateTime = DateFormat('yyyy-MM-dd h:mm a').parse(fullDateTime);
       } else {
         selectedDateTime = DateFormat('yyyy-MM-dd HH:mm').parse(fullDateTime);
@@ -796,26 +788,29 @@ class ScheduleController extends GetxController implements GetxService {
       DateTime now = DateTime.now();
       DateTime minBookingTime = now.add(const Duration(hours: 1));
       // Time window: between 9:00 AM and 11:00 PM
-      DateTime earliestTime = DateTime(selectedDateTime.year, selectedDateTime.month, selectedDateTime.day, 9);
-      DateTime latestTime = DateTime(selectedDateTime.year, selectedDateTime.month, selectedDateTime.day, 23);
+      DateTime earliestTime = DateTime(selectedDateTime.year,
+          selectedDateTime.month, selectedDateTime.day, 9);
+      DateTime latestTime = DateTime(selectedDateTime.year,
+          selectedDateTime.month, selectedDateTime.day, 23);
 
-      if (selectedDateTime.isBefore(earliestTime) || selectedDateTime.isAfter(latestTime)) {
+      if (selectedDateTime.isBefore(earliestTime) ||
+          selectedDateTime.isAfter(latestTime)) {
         return 'Please select a time between 9:00 AM and 11:00 PM.';
       }
       if (selectedDateTime.isBefore(minBookingTime)) {
         return 'You must schedule at least 1 hour ahead.';
       }
 
-
-
       // Validate advanced booking
       if (advanceBooking.advancedBookingRestrictionType == "day") {
-        final minDateTime = now.add(Duration(days: advanceBooking.advancedBookingRestrictionValue!));
+        final minDateTime = now.add(
+            Duration(days: advanceBooking.advancedBookingRestrictionValue!));
         if (selectedDateTime.isBefore(minDateTime)) {
           return "${'you_can_not_select_schedule_before'.tr} ${DateConverter.dateMonthYearTimeTwentyFourFormat(minDateTime)}";
         }
       } else if (advanceBooking.advancedBookingRestrictionType == "hour") {
-        final minDateTime = now.add(Duration(hours: advanceBooking.advancedBookingRestrictionValue!));
+        final minDateTime = now.add(
+            Duration(hours: advanceBooking.advancedBookingRestrictionValue!));
         if (selectedDateTime.isBefore(minDateTime)) {
           return "${'you_can_not_select_schedule_before'.tr} ${DateConverter.dateMonthYearTimeTwentyFourFormat(minDateTime)}";
         }
@@ -826,6 +821,7 @@ class ScheduleController extends GetxController implements GetxService {
       return 'Invalid time format.';
     }
   }
+
   bool isValidTime = false; // default to false
 
   void validateTime(AdvanceBooking advanceBooking) {
@@ -837,12 +833,14 @@ class ScheduleController extends GetxController implements GetxService {
     isValidTime = error == null;
     update(); // triggers GetBuilder to rebuild
   }
+
   void updateSelectedTimeWithValidation(String time, {String? date}) {
     clearTimeValidation();
 
     try {
       // Use current date if not provided
-      final selectedDate = date ?? DateFormat('yyyy-MM-dd').format(DateTime.now());
+      final selectedDate =
+          date ?? DateFormat('yyyy-MM-dd').format(DateTime.now());
       final selectedTime = time;
 
       // First validate basic format
@@ -864,28 +862,23 @@ class ScheduleController extends GetxController implements GetxService {
       DateTime selectedDateTime;
       String fullDateTime = "$selectedDate $selectedTime".trim();
 
-      if (fullDateTime.toLowerCase().contains("am") || fullDateTime.toLowerCase().contains("pm")) {
+      if (fullDateTime.toLowerCase().contains("am") ||
+          fullDateTime.toLowerCase().contains("pm")) {
         selectedDateTime = DateFormat('yyyy-MM-dd h:mm a').parse(fullDateTime);
       } else {
         selectedDateTime = DateFormat('yyyy-MM-dd HH:mm').parse(fullDateTime);
       }
 
       // Business hours validation (9AM-11PM)
-      DateTime earliestTime = DateTime(
-          selectedDateTime.year,
-          selectedDateTime.month,
-          selectedDateTime.day,
-          9
-      );
-      DateTime latestTime = DateTime(
-          selectedDateTime.year,
-          selectedDateTime.month,
-          selectedDateTime.day,
-          23
-      );
+      DateTime earliestTime = DateTime(selectedDateTime.year,
+          selectedDateTime.month, selectedDateTime.day, 9);
+      DateTime latestTime = DateTime(selectedDateTime.year,
+          selectedDateTime.month, selectedDateTime.day, 23);
 
-      if (selectedDateTime.isBefore(earliestTime) || selectedDateTime.isAfter(latestTime)) {
-        timePickerErrorMessage = 'Please select a time between 9:00 AM and 11:00 PM.';
+      if (selectedDateTime.isBefore(earliestTime) ||
+          selectedDateTime.isAfter(latestTime)) {
+        timePickerErrorMessage =
+            'Please select a time between 9:00 AM and 11:00 PM.';
         this.selectedTime = '';
         update();
         return;
@@ -911,7 +904,6 @@ class ScheduleController extends GetxController implements GetxService {
 
     update();
   }
-
 
   // String? checkValidityOfTimeRestriction(AdvanceBooking advanceBooking) {
   //
@@ -961,7 +953,7 @@ class ScheduleController extends GetxController implements GetxService {
       _selectedScheduleType = ScheduleType.asap;
       _initialSelectedScheduleType = ScheduleType.asap;
       scheduleTime =
-      "${DateFormat('yyyy-MM-dd').format(DateTime.now())} ${DateFormat('HH:mm:ss').format(DateTime.now().add(const Duration(minutes: 2)))}";
+          "${DateFormat('yyyy-MM-dd').format(DateTime.now())} ${DateFormat('HH:mm:ss').format(DateTime.now().add(const Duration(minutes: 2)))}";
     } else {
       _selectedScheduleType = ScheduleType.schedule;
       scheduleTime = null;
@@ -987,7 +979,7 @@ class ScheduleController extends GetxController implements GetxService {
 
   Future<void> updatePostInformation(String postId, String scheduleTime) async {
     Response response =
-    await scheduleRepo.changePostScheduleTime(postId, scheduleTime);
+        await scheduleRepo.changePostScheduleTime(postId, scheduleTime);
 
     if (response.statusCode == 200 &&
         response.body['response_code'] == "default_update_200") {
@@ -1134,7 +1126,7 @@ class ScheduleController extends GetxController implements GetxService {
 
   void calculateScheduleCountDays(
       {ServiceType? serviceType,
-        required RepeatBookingType repeatBookingType}) {
+      required RepeatBookingType repeatBookingType}) {
     if (selectedServiceType == ServiceType.regular ||
         serviceType == ServiceType.regular) {
       _scheduleDaysCount = 1;
@@ -1145,8 +1137,8 @@ class ScheduleController extends GetxController implements GetxService {
       } else if (repeatBookingType == RepeatBookingType.weekly) {
         _scheduleDaysCount = CheckoutHelper
             .calculateDaysCountBetweenDateRangeWithSpecificSelectedDay(
-            _finalPickedWeeklyRepeatBookingDateRange,
-            getWeeklyPickedDays());
+                _finalPickedWeeklyRepeatBookingDateRange,
+                getWeeklyPickedDays());
       } else {
         _scheduleDaysCount = _pickedCustomRepeatBookingDateTimeList.length;
       }

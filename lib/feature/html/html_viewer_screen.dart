@@ -70,17 +70,13 @@ class _HtmlViewerScreenState extends State<HtmlViewerScreen> {
                     width: Dimensions.webMaxWidth,
                     child: Column(
                       children: [
-                        const SizedBox(height: Dimensions.paddingSizeDefault),
-
-                        //  Removed image section
-
                         Container(
-                          padding: const EdgeInsets.all(
-                              Dimensions.paddingSizeDefault),
+                          padding:
+                              const EdgeInsets.all(Dimensions.paddingSizeSmall),
                           margin: EdgeInsets.only(
                             left: isDesktop ? 0 : Dimensions.paddingSizeSmall,
                             right: isDesktop ? 0 : Dimensions.paddingSizeSmall,
-                            top: Dimensions.paddingSizeLarge,
+                            top: Dimensions.paddingSizeSmall,
                           ),
                           decoration: BoxDecoration(
                             color: Theme.of(context).cardColor,
