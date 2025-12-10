@@ -89,14 +89,14 @@ class LocationController extends GetxController implements GetxService {
     if (address == null) {
       // 1️⃣ Get current location
       address = AddressModel(
-        latitude: "17.4440", // Hitech City latitude
-        longitude: "78.3770", // Hitech City longitude
+        latitude: "17.4105", // Habsiguda latitude
+        longitude: "78.5458", // Habsiguda longitude
         addressType: 'others',
-        zoneId: '20903ac0-0cf8-4410-927d-23fec4741703',
-        address: 'Hitech City, Hyderabad',
+        zoneId: 'f2747d7d-3f29-4af1-93ea-0099c901f79e',
+        address: 'Habsiguda, Hyderabad',
         country: 'India',
-        house: 'Hitech City, Hyderabad',
-        street: 'Hitech City, Hyderabad',
+        house: 'Habsiguda, Hyderabad',
+        street: 'Habsiguda, Hyderabad',
         city: 'Hyderabad',
         zipCode: '500082',
         addressLabel: AddressLabel.home.name,

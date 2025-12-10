@@ -144,67 +144,68 @@ class BookingDetailsContent {
   List<CancelReason>? cancelReasons;
   List<Refund>? refunds;
   PickupInfo? pickupInfo; // NEW FIELD
-
-  BookingDetailsContent({
-    this.id,
-    this.bookingId,
-    this.readableId,
-    this.customerId,
-    this.providerId,
-    this.zoneId,
-    this.bookingStatus,
-    this.isPaid,
-    this.paymentMethod,
-    this.transactionId,
-    this.smanReview,
-    this.totalBookingAmount,
-    this.totalTaxAmount,
-    this.totalDiscountAmount,
-    this.serviceSchedule,
-    this.serviceAddressId,
-    this.createdAt,
-    this.updatedAt,
-    this.categoryId,
-    this.subCategoryId,
-    this.bookingDetails,
-    this.scheduleHistories,
-    this.statusHistories,
-    this.partialPayments,
-    this.serviceAddress,
-    this.customer,
-    this.provider,
-    this.serviceman,
-    this.totalCampaignDiscountAmount,
-    this.totalCouponDiscountAmount,
-    this.bookingOtp,
-    this.photoEvidence,
-    this.photoEvidenceFullPath,
-    this.extraFee,
-    this.additionalCharge,
-    this.totalReferralDiscountAmount,
-    this.time,
-    this.startDate,
-    this.endDate,
-    this.totalCount,
-    this.bookingType,
-    this.completedCount,
-    this.canceledCount,
-    this.nextService,
-    this.isRepeatBooking,
-    this.weekNames,
-    this.repeatBookingList,
-    this.subBooking,
-    this.repeatEditHistory,
-    this.offlinePaymentId,
-    this.offlinePaymentStatus,
-    this.offlinePaymentDeniedNote,
-    this.offlinePaymentMethodName,
-    this.serviceData,
-    this.cancelReasons,
-    this.refundStatus,
-    this.refunds,
-    this.pickupInfo, // NEW FIELD
-  });
+  String? Bookingcancelreason;
+  BookingDetailsContent(
+      {this.id,
+      this.bookingId,
+      this.readableId,
+      this.customerId,
+      this.providerId,
+      this.zoneId,
+      this.bookingStatus,
+      this.isPaid,
+      this.paymentMethod,
+      this.transactionId,
+      this.smanReview,
+      this.totalBookingAmount,
+      this.totalTaxAmount,
+      this.totalDiscountAmount,
+      this.serviceSchedule,
+      this.serviceAddressId,
+      this.createdAt,
+      this.updatedAt,
+      this.categoryId,
+      this.subCategoryId,
+      this.bookingDetails,
+      this.scheduleHistories,
+      this.statusHistories,
+      this.partialPayments,
+      this.serviceAddress,
+      this.customer,
+      this.provider,
+      this.serviceman,
+      this.totalCampaignDiscountAmount,
+      this.totalCouponDiscountAmount,
+      this.bookingOtp,
+      this.photoEvidence,
+      this.photoEvidenceFullPath,
+      this.extraFee,
+      this.additionalCharge,
+      this.totalReferralDiscountAmount,
+      this.time,
+      this.startDate,
+      this.endDate,
+      this.totalCount,
+      this.bookingType,
+      this.completedCount,
+      this.canceledCount,
+      this.nextService,
+      this.isRepeatBooking,
+      this.weekNames,
+      this.repeatBookingList,
+      this.subBooking,
+      this.repeatEditHistory,
+      this.offlinePaymentId,
+      this.offlinePaymentStatus,
+      this.offlinePaymentDeniedNote,
+      this.offlinePaymentMethodName,
+      this.serviceData,
+      this.cancelReasons,
+      this.refundStatus,
+      this.refunds,
+      this.pickupInfo,
+      this.Bookingcancelreason // NEW FIELD
+      });
 
   BookingDetailsContent.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -230,6 +231,8 @@ class BookingDetailsContent {
     updatedAt = json['updated_at'];
     categoryId = json['category_id'];
     subCategoryId = json['sub_category_id'];
+    if (json['cancelled_reason'] != null || json['cancelled_reason'] != "")
+      Bookingcancelreason = json['cancelled_reason'];
     if (json['detail'] != null) {
       bookingDetails = <ItemService>[];
       json['detail'].forEach((v) {
@@ -366,6 +369,7 @@ class BookingDetailsContent {
     data['provider_id'] = providerId;
     data['sman_review'] = smanReview;
     data['zone_id'] = zoneId;
+
     data['refund_status'] = refundStatus;
     data['booking_status'] = bookingStatus;
     data['is_paid'] = isPaid;
@@ -383,6 +387,8 @@ class BookingDetailsContent {
     if (bookingDetails != null) {
       data['detail'] = bookingDetails!.map((v) => v.toJson()).toList();
     }
+    if (Bookingcancelreason != null || Bookingcancelreason != "")
+      data['cancelled_reason'] = Bookingcancelreason;
     if (serviceData != null) {
       data['service_data'] = serviceData!.map((v) => v.toJson()).toList();
     }

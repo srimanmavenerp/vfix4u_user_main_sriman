@@ -77,7 +77,7 @@ class RouteHelper {
   static const String maintenance = '/maintenance';
   static const String updateProfile = '/update-profile';
   static const String offlinePayment = '/offline-payment';
-
+  static const String ratecard = '/ratecard/item';
   static String getInitialRoute() => initial;
   static String getSplashRoute(NotificationBody? body, String? route) {
     String data = 'null';
@@ -88,6 +88,7 @@ class RouteHelper {
     return '$splash?data=$data&route=$route';
   }
 
+  static String getRateCard() => ratecard;
   static String getOffersRoute() => offers;
   static String getSignInRoute({String? fromPage}) => '$signIn?page=$fromPage';
   static String getSignUpRoute() => signUp;
@@ -513,6 +514,11 @@ class RouteHelper {
               fromPage: Get.parameters['fromPage'],
             ));
       },
+    ),
+    // 1. Define route
+    GetPage(
+      name: ratecard,
+      page: () => RateCardApp(Get.arguments), // receive arguments here
     ),
     GetPage(name: profile, page: () => const ProfileScreen()),
     GetPage(name: profileEdit, page: () => getRoute(const EditProfileScreen())),

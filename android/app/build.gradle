@@ -58,8 +58,8 @@ android {
         applicationId "com.vfix4u.com.vfix4u"
         minSdkVersion 23
         targetSdkVersion 35
-        versionCode 20
-        versionName '1.1.9'
+        versionCode 22
+        versionName '1.3.0'
         multiDexEnabled true
         ndk {
             debugSymbolLevel 'FULL'

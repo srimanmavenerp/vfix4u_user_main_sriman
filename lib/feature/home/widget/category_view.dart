@@ -46,6 +46,7 @@ class CategoryView extends StatelessWidget {
                     ),
                     itemBuilder: (context, index) {
                       final category = categoryController.categoryList![index];
+
                       return TextHover(builder: (hovered) {
                         return Stack(
                           children: [

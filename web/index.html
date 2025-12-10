@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
-  <base href="/" />
-
+<base href="$FLUTTER_BASE_HREF" />
+<!-- for deplye
+<base href="$FLUTTER_BASE_HREF" /> -->
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
 
@@ -15,6 +16,10 @@
   <link rel="canonical" href="https://web.vfix4u.com/" />
 
   <!-- Google Sign-In -->
+   <script src="https://accounts.google.com/gsi/client" async defer></script>
+   <!-- Required for FedCM on localhost -->
+<meta name="google-identity-services-provider" content="https://web.vfix4u.com">
+
   <meta name="google-signin-client_id" 
         content="1059020015260-ijigafl7u6peji5nthqms77n33plar9k.apps.googleusercontent.com">
 
@@ -38,11 +43,11 @@
       margin: 0;
       padding: 0;
       overflow-x: hidden;
-    }
+    }   
   </style>
 
   <!-- Flutter inappwebview support -->
-  <script src="/assets/packages/flutter_inappwebview_web/assets/web/web_support.js" defer></script>
+  <script src="assets/packages/flutter_inappwebview_web/assets/web/web_support.js" defer></script>
 
   <!-- Firebase -->
   <script type="module">

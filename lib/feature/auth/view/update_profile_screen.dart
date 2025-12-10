@@ -17,12 +17,12 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   var firstNameController = TextEditingController();
   var lastNameController = TextEditingController();
   var emailPhoneController = TextEditingController();
-  var refcontroller = TextEditingController();
+  // var refcontroller = TextEditingController();
 
   final _firstNameFocus = FocusNode();
   final _lastNameFocus = FocusNode();
   final _phoneEmailFocus = FocusNode();
-  final _refcodefocus = FocusNode();
+  // final _refcodefocus = FocusNode();
 
   bool _canExit = GetPlatform.isWeb ? true : false;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -157,22 +157,22 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                       ),
                       const SizedBox(
                           height: Dimensions.paddingSizeTextFieldGap),
-                      CustomTextField(
-                        title: 'referral_code'.tr,
-                        hintText: 'enter_referral_code'.tr,
-                        controller:
-                            refcontroller, // rename this to referralCodeController if possible
-                        inputType: TextInputType.text,
-                        focusNode: _refcodefocus,
-                        onValidate: (String? value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return 'please_enter_referral_code'.tr;
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(
-                          height: Dimensions.paddingSizeTextFieldGap),
+                      // CustomTextField(
+                      //   title: 'referral_code'.tr,
+                      //   hintText: 'enter_referral_code'.tr,
+                      //   controller:
+                      //       refcontroller, // rename this to referralCodeController if possible
+                      //   inputType: TextInputType.text,
+                      //   focusNode: _refcodefocus,
+                      //   onValidate: (String? value) {
+                      //     if (value == null || value.trim().isEmpty) {
+                      //       return 'please_enter_referral_code'.tr;
+                      //     }
+                      //     return null;
+                      //   },
+                      // ),
+                      // const SizedBox(
+                      //     height: Dimensions.paddingSizeTextFieldGap),
                       CustomButton(
                         buttonText: "done".tr,
                         onPressed: () {
@@ -250,14 +250,15 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
       String phone = PhoneVerificationHelper.getValidPhoneNumber(
           authController.countryDialCode + emailPhoneController.text.trim(),
           withCountryCode: true);
-      String refcode = refcontroller.text.toString();
+      // String refcode = refcontroller.text.toString();
       if (widget.tempToken != "") {
         await authController.registerWithSocialMedia(
             firstName: firstName,
             lastName: lastName,
             email: widget.email,
             phone: phone,
-            refcode: refcode);
+            // refcode: refcode
+            );
       } else {
         await authController.updateNewUserProfileAndLogin(
             firstName: firstName,

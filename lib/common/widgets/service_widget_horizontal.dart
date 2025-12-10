@@ -272,8 +272,6 @@
 //   }
 // }
 
-
-
 import 'package:get/get.dart';
 import 'package:demandium/utils/core_export.dart';
 
@@ -306,16 +304,16 @@ class ServiceWidgetHorizontal extends StatelessWidget {
           .price!
           .toDouble();
       for (var i = 0;
-      i <
-          serviceList[index]
-              .variationsAppFormat!
-              .zoneWiseVariations!
-              .length;
-      i++) {
+          i <
+              serviceList[index]
+                  .variationsAppFormat!
+                  .zoneWiseVariations!
+                  .length;
+          i++) {
         if (serviceList[index]
-            .variationsAppFormat!
-            .zoneWiseVariations![i]
-            .price! <
+                .variationsAppFormat!
+                .zoneWiseVariations![i]
+                .price! <
             lowestPrice) {
           lowestPrice = serviceList[index]
               .variationsAppFormat!
@@ -326,8 +324,10 @@ class ServiceWidgetHorizontal extends StatelessWidget {
       }
     }
 
-    Discount discountModel = PriceConverter.discountCalculation(serviceList[index]);
-    final double minPurchase = PriceConverter.getMinPurchase(serviceList[index]);
+    Discount discountModel =
+        PriceConverter.discountCalculation(serviceList[index]);
+    final double minPurchase =
+        PriceConverter.getMinPurchase(serviceList[index]);
 
     // Calculate discounted price
     double discountedPrice = PriceConverter.convertWithDiscount(
@@ -360,7 +360,8 @@ class ServiceWidgetHorizontal extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Theme.of(context).cardColor,
                   borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                  boxShadow: Get.find<ThemeController>().darkTheme ? null : cardShadow,
+                  boxShadow:
+                      Get.find<ThemeController>().darkTheme ? null : cardShadow,
                   border: Border.all(
                     color: Theme.of(context).hintColor.withOpacity(0.1),
                   ),
@@ -373,7 +374,8 @@ class ServiceWidgetHorizontal extends StatelessWidget {
                   Stack(
                     children: [
                       ClipRRect(
-                        borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
+                        borderRadius:
+                            BorderRadius.circular(Dimensions.radiusSmall),
                         child: CustomImage(
                           image: '${serviceList[index].thumbnailFullPath}',
                           height: 100,
@@ -383,12 +385,13 @@ class ServiceWidgetHorizontal extends StatelessWidget {
                       ),
                       lowestPrice > minPurchase
                           ? Align(
-                        alignment: Alignment.topLeft,
-                        child: DiscountTagWidget(
-                          discountAmount: discountModel.discountAmount,
-                          discountAmountType: discountModel.discountAmountType,
-                        ),
-                      )
+                              alignment: Alignment.topLeft,
+                              child: DiscountTagWidget(
+                                discountAmount: discountModel.discountAmount,
+                                discountAmountType:
+                                    discountModel.discountAmountType,
+                              ),
+                            )
                           : const SizedBox(),
                     ],
                   ),
@@ -409,26 +412,35 @@ class ServiceWidgetHorizontal extends StatelessWidget {
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
-                            const SizedBox(width: Dimensions.paddingSizeExtraLarge),
+                            const SizedBox(
+                                width: Dimensions.paddingSizeExtraLarge),
                           ],
                         ),
-                        const SizedBox(height: Dimensions.paddingSizeExtraSmall),
+                        const SizedBox(
+                            height: Dimensions.paddingSizeExtraSmall),
                         RatingBar(
-                          rating: double.parse(serviceList[index].avgRating.toString()),
+                          rating: double.parse(
+                              serviceList[index].avgRating.toString()),
                           size: 15,
                           ratingCount: serviceList[index].ratingCount,
                         ),
-                        const SizedBox(height: Dimensions.paddingSizeExtraSmall),
+                        const SizedBox(
+                            height: Dimensions.paddingSizeExtraSmall),
                         Text(
                           serviceList[index].shortDescription ?? "",
                           style: robotoRegular.copyWith(
                             fontSize: Dimensions.fontSizeSmall,
-                            color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.5),
+                            color: Theme.of(context)
+                                .textTheme
+                                .bodySmall
+                                ?.color
+                                ?.withOpacity(0.5),
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        const SizedBox(height: Dimensions.paddingSizeExtraSmall),
+                        const SizedBox(
+                            height: Dimensions.paddingSizeExtraSmall),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -451,39 +463,51 @@ class ServiceWidgetHorizontal extends StatelessWidget {
                                   textDirection: TextDirection.ltr,
                                   child: showOnlyOriginalPrice
                                       ? Text(
-                                    PriceConverter.convertPrice(lowestPrice),
-                                    style: robotoBold.copyWith(
-                                      fontSize: Dimensions.paddingSizeDefault,
-                                      color: Get.isDarkMode
-                                          ? Theme.of(context).primaryColorLight
-                                          : Theme.of(context).primaryColor,
-                                    ),
-                                  )
+                                          PriceConverter.convertPrice(
+                                              lowestPrice),
+                                          style: robotoBold.copyWith(
+                                            fontSize:
+                                                Dimensions.paddingSizeDefault,
+                                            color: Get.isDarkMode
+                                                ? Theme.of(context)
+                                                    .primaryColorLight
+                                                : Theme.of(context)
+                                                    .primaryColor,
+                                          ),
+                                        )
                                       : Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      Text(
-                                        PriceConverter.convertPrice(lowestPrice),
-                                        style: robotoRegular.copyWith(
-                                          fontSize: Dimensions.fontSizeSmall,
-                                          decoration: TextDecoration.lineThrough,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .error
-                                              .withOpacity(0.8),
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            Text(
+                                              PriceConverter.convertPrice(
+                                                  lowestPrice),
+                                              style: robotoRegular.copyWith(
+                                                fontSize:
+                                                    Dimensions.fontSizeSmall,
+                                                decoration:
+                                                    TextDecoration.lineThrough,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .error
+                                                    .withOpacity(0.8),
+                                              ),
+                                            ),
+                                            Text(
+                                              PriceConverter.convertPrice(
+                                                  discountedPrice),
+                                              style: robotoBold.copyWith(
+                                                fontSize: Dimensions
+                                                    .paddingSizeDefault,
+                                                color: Get.isDarkMode
+                                                    ? Theme.of(context)
+                                                        .primaryColorLight
+                                                    : Theme.of(context)
+                                                        .primaryColor,
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ),
-                                      Text(
-                                        PriceConverter.convertPrice(discountedPrice),
-                                        style: robotoBold.copyWith(
-                                          fontSize: Dimensions.paddingSizeDefault,
-                                          color: Get.isDarkMode
-                                              ? Theme.of(context).primaryColorLight
-                                              : Theme.of(context).primaryColor,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
                                 ),
                               ],
                             ),
@@ -501,7 +525,8 @@ class ServiceWidgetHorizontal extends StatelessWidget {
                       serviceController.recommendedServiceList![index].id!,
                     ),
                     arguments: ServiceDetailsScreen(
-                      serviceID: serviceController.recommendedServiceList![index].id!,
+                      serviceID:
+                          serviceController.recommendedServiceList![index].id!,
                     ),
                   );
                 }),

@@ -26,6 +26,7 @@ class BookingDetailsSection extends StatelessWidget {
           String bookingStatus = bookingDetails.bookingStatus ?? "";
           bool isLoggedIn = Get.find<AuthController>().isLoggedIn();
           print("object12345676543234567ui${bookingDetails.pickupInfo}");
+          print("object12345676543234567ui${bookingDetails.cancelReasons}");
           return SingleChildScrollView(
             physics: const ClampingScrollPhysics(),
             child: Center(

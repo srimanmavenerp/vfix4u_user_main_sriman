@@ -168,7 +168,7 @@ class _MenuScreenState extends State<MenuScreen> {
               InkWell(
                 onTap: () => Get.back(),
                 child: Icon(Icons.keyboard_arrow_down_rounded,
-                    size: 30, color: Theme.of(context).colorScheme.primary),
+                    size: 40, color: Theme.of(context).colorScheme.primary),
               ),
               const SizedBox(height: Dimensions.paddingSizeExtraSmall),
               ConstrainedBox(

@@ -28,9 +28,9 @@ class MenuButton extends StatelessWidget {
                   .withOpacity(0.5), // skin tone with transparency
             ),
             height: size - (size * 0.20),
-            padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
-            margin: const EdgeInsets.symmetric(
-                horizontal: Dimensions.paddingSizeSmall),
+            padding: const EdgeInsets.all(8),
+            // margin: const EdgeInsets.symmetric(
+            //     horizontal: Dimensions.paddingSizeSmall),
             alignment: Alignment.center,
             child: Image.asset(
               menu.icon!,

@@ -196,6 +196,31 @@ class BookingInfo extends StatelessWidget {
                 ),
               ),
             Gaps.verticalGapOf(Dimensions.paddingSizeExtraSmall),
+            if (bookingDetails.Bookingcancelreason != null)
+              BookingItem(
+                  img: Images.cancel,
+                  title:
+                      "Cancel Reason: ${bookingDetails.Bookingcancelreason} ",
+                  date: ""),
+            Gaps.verticalGapOf(Dimensions.paddingSizeExtraSmall),
+            // Column(
+            //   children: [
+            //     if (bookingDetails.cancelReasons != null &&
+            //         bookingDetails.cancelReasons!.isNotEmpty)
+            //       ...bookingDetails.cancelReasons!
+            //           .where((reasonItem) => reasonItem.reason != null)
+            //           .map(
+            //             (reasonItem) => BookingItem(
+            //               img: Images.cancel,
+            //               title: "Cancel Reason: ${reasonItem.reason}",
+            //               date: "",
+            //             ),
+            //           )
+            //           .toList(),
+            //   ],
+            // ),
+
+            Gaps.verticalGapOf(Dimensions.paddingSizeExtraSmall),
 
             /// Address
             BookingItem(

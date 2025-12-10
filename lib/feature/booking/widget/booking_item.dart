@@ -2,8 +2,12 @@ import 'package:get/get.dart';
 import 'package:demandium/utils/core_export.dart';
 
 class BookingItem extends StatelessWidget {
-  const BookingItem(
-      {super.key, required this.img, required this.title, required this.date});
+  const BookingItem({
+    super.key,
+    required this.img,
+    required this.title,
+    required this.date,
+  });
   final String img;
   final String title;
   final String date;
@@ -30,15 +34,16 @@ class BookingItem extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          Text(
-            date,
-            style: robotoLight.copyWith(
-              fontSize: Dimensions.fontSizeSmall,
+          if (date != null || date.isNotEmpty)
+            Text(
+              date,
+              style: robotoLight.copyWith(
+                fontSize: Dimensions.fontSizeSmall,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textDirection: TextDirection.ltr,
             ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            textDirection: TextDirection.ltr,
-          ),
         ]),
       ),
     ]);

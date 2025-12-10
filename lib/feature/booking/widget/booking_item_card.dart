@@ -248,8 +248,9 @@ class BookingItemCard extends StatelessWidget {
                       child: Text(
                         PriceConverter.convertPrice(
                             bookingModel.totalBookingAmount!.toDouble()),
-                        style:
-                            robotoBold.copyWith(color: const Color(0xffFEFEFE)),
+                        style: robotoBold.copyWith(
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
                       ),
                     ),
                   ],

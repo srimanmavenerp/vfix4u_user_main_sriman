@@ -12,14 +12,14 @@ class _MenuDrawerState extends State<MenuDrawer>
     with SingleTickerProviderStateMixin {
   final List<Menu> _menuList = [
     Menu(
-        icon: Images.profileIcon,
+        icon: Images.mprofile,
         title: 'profile'.tr,
         onTap: () {
           Get.back();
           Get.toNamed(RouteHelper.getProfileRoute());
         }),
     Menu(
-        icon: Images.chatImage,
+        icon: Images.msupport,
         title: 'inbox'.tr,
         onTap: () {
           Get.back();
@@ -32,14 +32,14 @@ class _MenuDrawerState extends State<MenuDrawer>
     //   Get.toNamed(RouteHelper.getLanguageScreen('menuDrawer'));
     // }),
     Menu(
-        icon: Images.settings,
+        icon: Images.msetting,
         title: 'settings'.tr,
         onTap: () {
           Get.back();
           Get.toNamed(RouteHelper.getSettingRoute());
         }),
     Menu(
-        icon: Images.bookingsIcon,
+        icon: Images.mbookings,
         title:
             Get.find<SplashController>().configModel.content?.guestCheckout ==
                         0 ||
@@ -73,7 +73,7 @@ class _MenuDrawerState extends State<MenuDrawer>
           }),
 
     Menu(
-        icon: Images.voucherIcon,
+        icon: Images.mcoupn,
         title: 'vouchers'.tr,
         onTap: () {
           Get.back();
@@ -92,7 +92,7 @@ class _MenuDrawerState extends State<MenuDrawer>
         }),
 
     Menu(
-        icon: Images.myFavorite,
+        icon: Images.mfavorate,
         title: 'my_favorite'.tr,
         onTap: () {
           Get.back();
@@ -105,7 +105,7 @@ class _MenuDrawerState extends State<MenuDrawer>
     if (Get.find<SplashController>().configModel.content!.walletStatus != 0 &&
         Get.find<AuthController>().isLoggedIn())
       Menu(
-          icon: Images.walletMenu,
+          icon: Images.mwallet,
           title: 'my_wallet'.tr,
           onTap: () {
             Get.back();
@@ -127,7 +127,7 @@ class _MenuDrawerState extends State<MenuDrawer>
     ),
 
     Menu(
-        icon: Images.myPoint,
+        icon: Images.mloyalty,
         title: 'loyalty_point'.tr,
         onTap: () {
           Get.back();
@@ -137,7 +137,7 @@ class _MenuDrawerState extends State<MenuDrawer>
     if (Get.find<SplashController>().configModel.content?.referEarnStatus == 1)
       Menu(
           title: 'refer_and_earn'.tr,
-          icon: Images.shareIcon,
+          icon: Images.mrefer,
           onTap: () {
             Get.back();
             Get.toNamed(Get.find<AuthController>().isLoggedIn()
@@ -147,7 +147,7 @@ class _MenuDrawerState extends State<MenuDrawer>
           }),
 
     Menu(
-        icon: Images.aboutUs,
+        icon: Images.maboutus,
         title: 'about_us'.tr,
         onTap: () {
           Get.back();
@@ -155,14 +155,14 @@ class _MenuDrawerState extends State<MenuDrawer>
         }),
 
     Menu(
-        icon: Images.termsIcon,
+        icon: Images.mcondition,
         title: 'terms_and_conditions'.tr,
         onTap: () {
           Get.back();
           Get.toNamed(RouteHelper.getHtmlRoute('terms-and-condition'));
         }),
     Menu(
-        icon: Images.privacyPolicyIcon,
+        icon: Images.mprivacy,
         title: 'privacy_policy'.tr,
         onTap: () {
           Get.back();
@@ -172,7 +172,7 @@ class _MenuDrawerState extends State<MenuDrawer>
     if (Get.find<SplashController>().configModel.content!.cancellationPolicy !=
         "")
       Menu(
-          icon: Images.cancellationPolicy,
+          icon: Images.mcancelpolicy,
           title: 'cancellation_policy'.tr,
           onTap: () {
             Get.back();
@@ -180,14 +180,14 @@ class _MenuDrawerState extends State<MenuDrawer>
           }),
     if (Get.find<SplashController>().configModel.content!.refundPolicy != "")
       Menu(
-          icon: Images.refundPolicy,
+          icon: Images.mrefund,
           title: 'refund_policy'.tr,
           onTap: () {
             Get.back();
             Get.toNamed(RouteHelper.getHtmlRoute('refund_policy'));
           }),
     Menu(
-        icon: Images.helpIcon,
+        icon: Images.msupport,
         title: 'help_&_support'.tr,
         onTap: () {
           Get.back();
@@ -195,7 +195,7 @@ class _MenuDrawerState extends State<MenuDrawer>
         }),
 
     Menu(
-        icon: Images.areaMenuIcon,
+        icon: Images.mmap,
         title: 'service_area'.tr,
         onTap: () {
           Get.back();
@@ -203,7 +203,7 @@ class _MenuDrawerState extends State<MenuDrawer>
         }),
 
     Menu(
-        icon: Images.logout,
+        icon: Images.mlogout,
         title: Get.find<AuthController>().isLoggedIn()
             ? 'logout'.tr
             : 'sign_in'.tr,
@@ -351,7 +351,7 @@ class _MenuDrawerState extends State<MenuDrawer>
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(
                                     Dimensions.radiusExtraLarge),
-                                color: Theme.of(context).primaryColor,
+                                color: const Color(0xFFFFE0BD).withOpacity(0.5),
                               ),
                               child: Image.asset(_menuList[index].icon!,
                                   height: 30, width: 30),
