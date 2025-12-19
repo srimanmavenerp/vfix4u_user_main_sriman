@@ -47,7 +47,8 @@ class BookingSummeryWidget extends StatelessWidget {
     final double totalDiscounts =
         discount + couponDiscount + campaignDiscount + referralDiscount;
     final double sub_Total = total - totalDiscounts + extraFee;
-
+    print(
+        "object${bookingDetails.paidamount} - ${paidAmount} -${totalBookingAmount} -${isPartialPayment}");
     return Container(
       decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
@@ -188,92 +189,108 @@ class BookingSummeryWidget extends StatelessWidget {
                       ],
                     ),
                   ),
-                Gaps.verticalGapOf(Dimensions.paddingSizeSmall),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: Dimensions.paddingSizeDefault),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('discount'.tr,
-                          style: robotoRegular.copyWith(
-                              fontSize: Dimensions.fontSizeSmall,
-                              color:
-                                  Theme.of(context).textTheme.bodyLarge!.color),
-                          overflow: TextOverflow.ellipsis),
-                      Directionality(
-                        textDirection: TextDirection.ltr,
-                        child: Text(
-                            "(-) ${PriceConverter.convertPrice(bookingDetails.totalDiscountAmount ?? 0)}",
+                if (bookingDetails.totalDiscountAmount != null &&
+                    bookingDetails.totalDiscountAmount!.toDouble() != 0)
+                  Gaps.verticalGapOf(Dimensions.paddingSizeSmall),
+                if (bookingDetails.totalCouponDiscountAmount != null &&
+                    bookingDetails.totalCouponDiscountAmount!.toDouble() != 0)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: Dimensions.paddingSizeDefault),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('discount'.tr,
                             style: robotoRegular.copyWith(
                                 fontSize: Dimensions.fontSizeSmall,
                                 color: Theme.of(context)
                                     .textTheme
                                     .bodyLarge!
-                                    .color)),
-                      ),
-                    ],
+                                    .color),
+                            overflow: TextOverflow.ellipsis),
+                        Directionality(
+                          textDirection: TextDirection.ltr,
+                          child: Text(
+                              "(-) ${PriceConverter.convertPrice(bookingDetails.totalDiscountAmount ?? 0)}",
+                              style: robotoRegular.copyWith(
+                                  fontSize: Dimensions.fontSizeSmall,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge!
+                                      .color)),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                Gaps.verticalGapOf(Dimensions.paddingSizeSmall),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: Dimensions.paddingSizeDefault),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'coupon_discount'.tr,
-                        style: robotoRegular.copyWith(
-                            fontSize: Dimensions.fontSizeSmall,
-                            color:
-                                Theme.of(context).textTheme.bodyLarge!.color!),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Directionality(
-                        textDirection: TextDirection.ltr,
-                        child: Text(
-                          '(-) ${PriceConverter.convertPrice(bookingDetails.totalCouponDiscountAmount ?? 0)}',
+                if (bookingDetails.totalCouponDiscountAmount != null &&
+                    bookingDetails.totalCouponDiscountAmount!.toDouble() != 0)
+                  Gaps.verticalGapOf(Dimensions.paddingSizeSmall),
+                if (bookingDetails.totalCouponDiscountAmount != null &&
+                    bookingDetails.totalCouponDiscountAmount!.toDouble() != 0)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: Dimensions.paddingSizeDefault),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'coupon_discount'.tr,
                           style: robotoRegular.copyWith(
                               fontSize: Dimensions.fontSizeSmall,
                               color: Theme.of(context)
                                   .textTheme
                                   .bodyLarge!
                                   .color!),
+                          overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                Gaps.verticalGapOf(Dimensions.paddingSizeSmall),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: Dimensions.paddingSizeDefault),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'campaign_discount'.tr,
-                        style: robotoRegular.copyWith(
-                            fontSize: Dimensions.fontSizeSmall,
-                            color:
-                                Theme.of(context).textTheme.bodyLarge!.color),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Directionality(
-                        textDirection: TextDirection.ltr,
-                        child: Text(
-                            '(-) ${PriceConverter.convertPrice(bookingDetails.totalCampaignDiscountAmount ?? 0)}',
+                        Directionality(
+                          textDirection: TextDirection.ltr,
+                          child: Text(
+                            '(-) ${PriceConverter.convertPrice(bookingDetails.totalCouponDiscountAmount ?? 0)}',
                             style: robotoRegular.copyWith(
                                 fontSize: Dimensions.fontSizeSmall,
                                 color: Theme.of(context)
                                     .textTheme
                                     .bodyLarge!
-                                    .color!)),
-                      ),
-                    ],
+                                    .color!),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
+                if (bookingDetails.totalCampaignDiscountAmount != null &&
+                    bookingDetails.totalCampaignDiscountAmount!.toDouble() != 0)
+                  Gaps.verticalGapOf(Dimensions.paddingSizeSmall),
+                if (bookingDetails.totalCampaignDiscountAmount != null &&
+                    bookingDetails.totalCampaignDiscountAmount!.toDouble() != 0)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: Dimensions.paddingSizeDefault),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'campaign_discount'.tr,
+                          style: robotoRegular.copyWith(
+                              fontSize: Dimensions.fontSizeSmall,
+                              color:
+                                  Theme.of(context).textTheme.bodyLarge!.color),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Directionality(
+                          textDirection: TextDirection.ltr,
+                          child: Text(
+                              '(-) ${PriceConverter.convertPrice(bookingDetails.totalCampaignDiscountAmount ?? 0)}',
+                              style: robotoRegular.copyWith(
+                                  fontSize: Dimensions.fontSizeSmall,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge!
+                                      .color!)),
+                        ),
+                      ],
+                    ),
+                  ),
                 if (bookingDetails.totalReferralDiscountAmount != null &&
                     bookingDetails.totalReferralDiscountAmount! > 0)
                   Gaps.verticalGapOf(Dimensions.paddingSizeSmall),
@@ -339,66 +356,78 @@ class BookingSummeryWidget extends StatelessWidget {
                 //       ],
                 //     ),
                 //   ),
-
-                Gaps.verticalGapOf(Dimensions.paddingSizeSmall),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: Dimensions.paddingSizeDefault),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Sub total'.tr,
-                        style: robotoRegular.copyWith(
-                            fontSize: Dimensions.fontSizeSmall,
-                            color:
-                                Theme.of(context).textTheme.bodyLarge!.color!),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Directionality(
-                        textDirection: TextDirection.ltr,
-                        child: Text(
-                          PriceConverter.convertPrice(sub_Total,
-                              isShowLongPrice: true),
+                if (sub_Total != null && sub_Total!.toDouble() != 0)
+                  Gaps.verticalGapOf(Dimensions.paddingSizeSmall),
+                if (sub_Total != null && sub_Total!.toDouble() != 0)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: Dimensions.paddingSizeDefault),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Sub total'.tr,
                           style: robotoRegular.copyWith(
                               fontSize: Dimensions.fontSizeSmall,
-                              color:
-                                  Theme.of(context).textTheme.bodyLarge!.color),
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge!
+                                  .color!),
+                          overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                Gaps.verticalGapOf(Dimensions.paddingSizeSmall),
-
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: Dimensions.paddingSizeDefault),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'GST'.tr,
-                        style: robotoRegular.copyWith(
-                            fontSize: Dimensions.fontSizeSmall,
-                            color:
-                                Theme.of(context).textTheme.bodyLarge!.color!),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Directionality(
-                        textDirection: TextDirection.ltr,
-                        child: Text(
-                            '(+) ${PriceConverter.convertPrice(bookingDetails.totalTaxAmount!.toDouble(), isShowLongPrice: true)}',
+                        Directionality(
+                          textDirection: TextDirection.ltr,
+                          child: Text(
+                            PriceConverter.convertPrice(sub_Total,
+                                isShowLongPrice: true),
                             style: robotoRegular.copyWith(
                                 fontSize: Dimensions.fontSizeSmall,
                                 color: Theme.of(context)
                                     .textTheme
                                     .bodyLarge!
-                                    .color)),
-                      ),
-                    ],
+                                    .color),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
+                if (bookingDetails.totalTaxAmount != null &&
+                    bookingDetails.totalTaxAmount!.toDouble() != 0)
+                  Gaps.verticalGapOf(Dimensions.paddingSizeSmall),
+                if (bookingDetails.totalTaxAmount != null &&
+                    bookingDetails.totalTaxAmount!.toDouble() != 0)
+                  if (bookingDetails.totalTaxAmount != null &&
+                      bookingDetails.totalTaxAmount!.toDouble() != 0)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: Dimensions.paddingSizeDefault),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'GST'.tr,
+                            style: robotoRegular.copyWith(
+                                fontSize: Dimensions.fontSizeSmall,
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge!
+                                    .color!),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Directionality(
+                            textDirection: TextDirection.ltr,
+                            child: Text(
+                                '(+) ${PriceConverter.convertPrice(bookingDetails.totalTaxAmount!.toDouble(), isShowLongPrice: true)}',
+                                style: robotoRegular.copyWith(
+                                    fontSize: Dimensions.fontSizeSmall,
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge!
+                                        .color)),
+                          ),
+                        ],
+                      ),
+                    ),
                 Gaps.verticalGapOf(Dimensions.paddingSizeSmall),
 
                 if (bookingDetails.additionalCharge != null &&
@@ -720,7 +749,9 @@ class BookingSummeryWidget extends StatelessWidget {
                                                     TextDirection.ltr,
                                                 child: Text(
                                                   PriceConverter.convertPrice(
-                                                      paidAmount,
+                                                      bookingDetails
+                                                              .paidamount ??
+                                                          0,
                                                       isShowLongPrice: true),
                                                   style: robotoRegular.copyWith(
                                                       fontSize: Dimensions

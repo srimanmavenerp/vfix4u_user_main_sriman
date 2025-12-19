@@ -606,20 +606,22 @@ class AuthController extends GetxController implements GetxService {
     update();
   }
 
-  Future<void> registerWithSocialMedia(
-      {String? firstName,
-      String? lastName,
-      String? phone,
-      String? email,
-      String? refcode}) async {
+  Future<void> registerWithSocialMedia({
+    String? firstName,
+    String? lastName,
+    String? phone,
+    String? email,
+    // String? refcode
+  }) async {
     _isLoading = true;
     update();
     Response response = await authRepo.registerWithSocialMedia(
-        firstName: firstName,
-        lastName: lastName,
-        phone: phone,
-        email: email,
-        refcode: refcode);
+      firstName: firstName,
+      lastName: lastName,
+      phone: phone,
+      email: email,
+      // refcode: refcode
+    );
 
     if (response.statusCode == 200) {
       if (response.body['content']['token'] != null) {
@@ -807,16 +809,102 @@ class AuthController extends GetxController implements GetxService {
     update();
   }
 
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  /// 🔑 Web / Server OAuth Client ID (Firebase → OAuth → Web client)
+  static const String _serverClientId =
+      '1059020015260-ijigafl7u6peji5nthqms77n33plar9k.apps.googleusercontent.com';
+
+  late final GoogleSignIn _googleSignIn = kIsWeb
+      ? GoogleSignIn(
+          signInOption: SignInOption.standard,
+          clientId: _serverClientId,
+          scopes: const ['email', 'profile'],
+        )
+      : GoogleSignIn();
 
   GoogleSignInAccount? googleAccount;
   GoogleSignInAuthentication? auth;
+// ---------------------------------------------------------------------------
+// 🔁 Silent Login (call on app start)
+// ---------------------------------------------------------------------------
+  Future<void> trySilentLogin() async {
+    try {
+      googleAccount = await _googleSignIn.signInSilently(
+        suppressErrors: true,
+      );
 
-  Future<void> socialLogin() async {
-    googleAccount = (await _googleSignIn.signIn());
-    auth = await googleAccount?.authentication;
-    update();
+      if (googleAccount != null) {
+        auth = await googleAccount!.authentication;
+        debugPrint('✅ Silent login success: ${googleAccount!.email}');
+      } else {
+        debugPrint('ℹ️ No previous Google session');
+      }
+    } catch (e) {
+      debugPrint('⚠️ Silent login failed: $e');
+    }
   }
+
+  // ---------------------------------------------------------------------------
+  // 👆 User-Triggered Google Sign-In
+  // ---------------------------------------------------------------------------
+  Future<void> socialLogin() async {
+    try {
+      // Reset cached session (important for Play Store builds)
+      // if (kIsWeb) {
+      //   trySilentLogin();
+      // }
+      // await _googleSignIn.signOut();
+
+      googleAccount = await _googleSignIn.signIn();
+      print(googleAccount);
+      if (googleAccount == null) {
+        debugPrint('⚠️ Google Sign-In cancelled by user');
+        return;
+      }
+
+      auth = await googleAccount!.authentication;
+
+      debugPrint('✅ Google Sign-In successful');
+      debugPrint('Email: ${googleAccount!.email}');
+      debugPrint('ID Token: ${auth?.idToken}');
+      debugPrint('Access Token: ${auth?.accessToken}');
+      debugPrint('Auth Headers: ${auth}');
+    } catch (e, stack) {
+      if (e is PlatformException) {
+        // Google Sign-In specific error codes
+        switch (e.code) {
+          case 'sign_in_failed':
+            debugPrint(
+                '❌ Google Sign-In failed: Possibly SHA-1 mismatch or wrong client ID.${e.message}-${e.details}');
+
+            break;
+          case 'network_error':
+            debugPrint('❌ Google Sign-In failed: Check internet connection.');
+            break;
+          case 'canceled':
+            debugPrint('⚠️ Google Sign-In canceled by user.');
+            break;
+          default:
+            debugPrint('❌ Google Sign-In error (${e.code}): ${e.message}');
+        }
+      } else {
+        debugPrint('❌ Unexpected Google Sign-In error: $e');
+      }
+
+      // Always print the stack trace for debugging
+      debugPrintStack(stackTrace: stack);
+    }
+  }
+//old
+  // final GoogleSignIn _googleSignIn = GoogleSignIn();
+
+  // GoogleSignInAccount? googleAccount;
+  // GoogleSignInAuthentication? auth;
+
+  // Future<void> socialLogin() async {
+  //   googleAccount = (await _googleSignIn.signIn());
+  //   auth = await googleAccount?.authentication;
+  //   update();
+  // }
 
   Future<void> googleLogout() async {
     try {

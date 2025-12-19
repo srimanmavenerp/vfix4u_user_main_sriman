@@ -145,8 +145,10 @@ class BookingDetailsContent {
   List<Refund>? refunds;
   PickupInfo? pickupInfo; // NEW FIELD
   String? Bookingcancelreason;
+  double? paidamount;
   BookingDetailsContent(
       {this.id,
+      this.paidamount,
       this.bookingId,
       this.readableId,
       this.customerId,
@@ -209,6 +211,7 @@ class BookingDetailsContent {
 
   BookingDetailsContent.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    paidamount = json['paid_amount'];
     bookingId = json['booking_id'];
     readableId = json['readable_id'].toString();
     customerId = json['customer_id'];
@@ -363,6 +366,7 @@ class BookingDetailsContent {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
+    data['paid_amount'] = paidamount;
     data['booking_id'] = bookingId;
     data['readable_id'] = readableId;
     data['customer_id'] = customerId;
@@ -433,6 +437,7 @@ class BookingDetailsContent {
     if (pickupInfo != null) {
       data['pickup_info'] = pickupInfo!.toJson();
     }
+    print("object to json called ${data}");
     return data;
   }
 }

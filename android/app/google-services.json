@@ -14,12 +14,40 @@
       },
       "oauth_client": [
         {
+          "client_id": "1059020015260-7lacb4trvdsksc34g4991gqrc4m3a36f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vfix4u.com.vfix4u",
+            "certificate_hash": "a6dfb58feb7cbe715ff522046fac527e487e8336"
+          }
+        },
+        {
+          "client_id": "1059020015260-a3onfmeq3dt13mus54565tgumkdhhkqp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vfix4u.com.vfix4u",
+            "certificate_hash": "09fe706fb8a2867689a786a563e903468ea3539b"
+          }
+        },
+        {
           "client_id": "1059020015260-dd20ckavsk0td8fou0o2h0si46onkef0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vfix4u.com.vfix4u",
+            "certificate_hash": "d72bb1ad4a85f0b2a369d904b0b992fad63d2436"
+          }
+        },
+        {
+          "client_id": "1059020015260-vgvvk88cl6m0f90ptpvlkktds77vublt.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.vfix4u.com.vfix4u",
             "certificate_hash": "ed61a7d3d3c4fa5861d74b99e9f3a8a46f0a5434"
           }
+        },
+        {
+          "client_id": "1059020015260-sinlt6buj01c733jsplq3nua23i6uslu.apps.googleusercontent.com",
+          "client_type": 3
         }
       ],
       "api_key": [
@@ -35,7 +63,20 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1059020015260-ijigafl7u6peji5nthqms77n33plar9k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1059020015260-2mojf2nhabt18sd7gfscu7ist50eq10c.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.vfix4u.com.user",
+                "app_store_id": "6747245503"
+              }
+            }
+          ]
         }
       }
     },
@@ -46,7 +87,44 @@
           "package_name": "com.vfix4u.com.vfix4u.provider"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1059020015260-29m1v2sm979gerr4iba54fh17kov9ses.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vfix4u.com.vfix4u.provider",
+            "certificate_hash": "db5ef86399b28529d430c35545193afec9aa8993"
+          }
+        },
+        {
+          "client_id": "1059020015260-3jro32oicohqco8h2a9a7aqdikdmrflu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vfix4u.com.vfix4u.provider",
+            "certificate_hash": "a6dfb58feb7cbe715ff522046fac527e487e8336"
+          }
+        },
+        {
+          "client_id": "1059020015260-gkbs0bdabka4fb30ttnp7hbgbb12063t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vfix4u.com.vfix4u.provider",
+            "certificate_hash": "ed61a7d3d3c4fa5861d74b99e9f3a8a46f0a5434"
+          }
+        },
+        {
+          "client_id": "1059020015260-m76qe753gk2lmfeng0geeo0rrqgssjgd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vfix4u.com.vfix4u.provider",
+            "certificate_hash": "1d7568dc9c2b9381ccef6797e4b42a54269c8e66"
+          }
+        },
+        {
+          "client_id": "1059020015260-sinlt6buj01c733jsplq3nua23i6uslu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyATC9VEWYi6RazSBZ267swyobC7kX9BgqQ"
@@ -60,7 +138,20 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1059020015260-ijigafl7u6peji5nthqms77n33plar9k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1059020015260-2mojf2nhabt18sd7gfscu7ist50eq10c.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.vfix4u.com.user",
+                "app_store_id": "6747245503"
+              }
+            }
+          ]
         }
       }
     },
@@ -71,7 +162,28 @@
           "package_name": "com.vfix4u.com.vfix4u.serviceman"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1059020015260-igev2olrc9m6p1dr7rtdfgevgltb2l1c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vfix4u.com.vfix4u.serviceman",
+            "certificate_hash": "00fda101f801b4a40305a6f6274ed1b2dd7bc24a"
+          }
+        },
+        {
+          "client_id": "1059020015260-s9et48hrpu3sddhje4tqfdk93e1rfc4b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vfix4u.com.vfix4u.serviceman",
+            "certificate_hash": "db5ef86399b28529d430c35545193afec9aa8993"
+          }
+        },
+        {
+          "client_id": "1059020015260-sinlt6buj01c733jsplq3nua23i6uslu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyATC9VEWYi6RazSBZ267swyobC7kX9BgqQ"
@@ -85,7 +197,20 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1059020015260-ijigafl7u6peji5nthqms77n33plar9k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1059020015260-2mojf2nhabt18sd7gfscu7ist50eq10c.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.vfix4u.com.user",
+                "app_store_id": "6747245503"
+              }
+            }
+          ]
         }
       }
     }

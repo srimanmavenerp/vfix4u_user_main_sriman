@@ -42,19 +42,20 @@ class AuthRepo {
         {"email": email, "user_response": userResponse, "medium": medium});
   }
 
-  Future<Response> registerWithSocialMedia(
-      {String? firstName,
-      String? lastName,
-      String? phone,
-      String? email,
-      String? refcode}) async {
+  Future<Response> registerWithSocialMedia({
+    String? firstName,
+    String? lastName,
+    String? phone,
+    String? email,
+    // String? refcode
+  }) async {
     return await apiClient.postData(AppConstants.registerWithSocialMedia, {
       "first_name": firstName,
       "last_name": lastName,
       "email": email,
       "phone": phone,
       "guest_id": Get.find<SplashController>().getGuestId(),
-      "referral_code": refcode,
+      // "referral_code": refcode,
     });
   }
 
