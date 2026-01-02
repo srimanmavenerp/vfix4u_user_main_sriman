@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:demandium/utils/dimensions.dart';
-import 'package:demandium/utils/images.dart';
+import 'package:Vfix4u/utils/dimensions.dart';
+import 'package:Vfix4u/utils/images.dart';
 import 'package:get/get.dart';
 
 class ImageDialog extends StatelessWidget {
   final String imageUrl;
-  const ImageDialog({super.key, required this.imageUrl}) ;
+  const ImageDialog({super.key, required this.imageUrl});
 
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: Get.isDarkMode?Theme.of(context).primaryColorDark:null,
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(Dimensions.radiusSmall))),
+      backgroundColor:
+          Get.isDarkMode ? Theme.of(context).primaryColorDark : null,
+      shape: const RoundedRectangleBorder(
+          borderRadius:
+              BorderRadius.all(Radius.circular(Dimensions.radiusSmall))),
       insetPadding: const EdgeInsets.all(30),
       clipBehavior: Clip.antiAliasWithSaveLayer,
       child: SizedBox(
@@ -28,21 +31,28 @@ class ImageDialog extends StatelessWidget {
                 ),
               ),
               Container(
-                margin: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeLarge),
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Theme.of(context).primaryColor.withValues(alpha: 0.20)),
+                margin: const EdgeInsets.symmetric(
+                    horizontal: Dimensions.paddingSizeLarge),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color:
+                        Theme.of(context).primaryColor.withValues(alpha: 0.20)),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: FadeInImage.assetNetwork(
-                    placeholder: Images.placeholder, image: imageUrl, fit: BoxFit.contain,
+                    placeholder: Images.placeholder,
+                    image: imageUrl,
+                    fit: BoxFit.contain,
                     imageErrorBuilder: (c, o, s) => Image.asset(
-                      Images.placeholder, height: MediaQuery.of(context).size.width - 130,
-                      width: MediaQuery.of(context).size.width, fit: BoxFit.cover,
+                      Images.placeholder,
+                      height: MediaQuery.of(context).size.width - 130,
+                      width: MediaQuery.of(context).size.width,
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
               ),
               const SizedBox(height: Dimensions.paddingSizeLarge),
-
             ],
           ),
         ),

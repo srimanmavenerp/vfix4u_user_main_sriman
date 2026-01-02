@@ -1,8 +1,7 @@
-import 'package:demandium/api/local/cache_response.dart';
-import 'package:demandium/helper/data_sync_helper.dart';
+import 'package:Vfix4u/api/local/cache_response.dart';
+import 'package:Vfix4u/helper/data_sync_helper.dart';
 import 'package:get/get.dart';
-import 'package:demandium/utils/core_export.dart';
-
+import 'package:Vfix4u/utils/core_export.dart';
 
 class AdvertisementController extends GetxController implements GetxService {
   final AdvertisementRepo advertisementRepo;
@@ -19,57 +18,57 @@ class AdvertisementController extends GetxController implements GetxService {
   bool autoPlay = true;
 
   Future<void> getAdvertisementList(bool reload) async {
-
-    if(_advertisementList == null || reload){
+    if (_advertisementList == null || reload) {
       DataSyncHelper.fetchAndSyncData(
-        fetchFromLocal: ()=> advertisementRepo.getAdvertisementList<CacheResponseData>( source: DataSourceEnum.local),
-        fetchFromClient: ()=> advertisementRepo.getAdvertisementList(source: DataSourceEnum.client),
+        fetchFromLocal: () =>
+            advertisementRepo.getAdvertisementList<CacheResponseData>(
+                source: DataSourceEnum.local),
+        fetchFromClient: () => advertisementRepo.getAdvertisementList(
+            source: DataSourceEnum.client),
         onResponse: (data, source) {
-
           _advertisementList = [];
-          data['content']['data'].forEach((banner){
+          data['content']['data'].forEach((banner) {
             _advertisementList!.add(Advertisement.fromJson(banner));
           });
 
-          if(_advertisementList !=null && _advertisementList!.isNotEmpty && _advertisementList![0].type == "video_promotion"){
+          if (_advertisementList != null &&
+              _advertisementList!.isNotEmpty &&
+              _advertisementList![0].type == "video_promotion") {
             autoPlay = false;
           }
           update();
         },
       );
-
     }
-
   }
 
   void setCurrentIndex(int index, bool notify) {
     _currentIndex = index;
-    if(notify) {
+    if (notify) {
       update();
     }
   }
 
-  void updateAutoPlayStatus({bool shouldUpdate = false, bool status = false}){
+  void updateAutoPlayStatus({bool shouldUpdate = false, bool status = false}) {
     autoPlay = status;
-    if(shouldUpdate){
+    if (shouldUpdate) {
       update();
     }
   }
 
-  updateIsFavoriteValue(int status, String providerId, {bool shouldUpdate = false}){
-
-    _advertisementList?.forEach((element){
+  updateIsFavoriteValue(int status, String providerId,
+      {bool shouldUpdate = false}) {
+    _advertisementList?.forEach((element) {
       int? index;
-      if(element.providerData?.id == providerId){
+      if (element.providerData?.id == providerId) {
         index = _advertisementList?.indexOf(element);
       }
-      if(index !=null && index > -1){
+      if (index != null && index > -1) {
         _advertisementList?[index].providerData?.isFavorite = status;
       }
     });
-    if(shouldUpdate){
+    if (shouldUpdate) {
       update();
     }
   }
-
 }

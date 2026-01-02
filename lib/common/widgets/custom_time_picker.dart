@@ -1,7 +1,5 @@
-
-
-// import 'package:demandium/common/widgets/time_picker_snipper.dart';
-// import 'package:demandium/utils/core_export.dart';
+// import 'package:Vfix4u/common/widgets/time_picker_snipper.dart';
+// import 'package:Vfix4u/utils/core_export.dart';
 // import 'package:get/get.dart';
 // import 'package:intl/intl.dart';
 //
@@ -102,9 +100,7 @@
 //   }
 // }
 
-
-
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 import 'package:get/get.dart';
 
 // class CustomTimePicker extends StatelessWidget {
@@ -183,13 +179,16 @@ class CustomTimePicker extends StatelessWidget {
             TimeOfDay? pickedTime = await showTimePicker(
               context: context,
               initialTime: TimeOfDay.now(),
-             // initialTime: time ?? TimeOfDay.now(),
+              // initialTime: time ?? TimeOfDay.now(),
 
               builder: (BuildContext context, Widget? child) {
                 return MediaQuery(
                   data: MediaQuery.of(context).copyWith(
-                    alwaysUse24HourFormat:
-                    Get.find<SplashController>().configModel.content?.timeFormat == "24",
+                    alwaysUse24HourFormat: Get.find<SplashController>()
+                            .configModel
+                            .content
+                            ?.timeFormat ==
+                        "24",
                   ),
                   child: child!,
                 );
@@ -197,19 +196,21 @@ class CustomTimePicker extends StatelessWidget {
             );
 
             if (pickedTime != null) {
-              final int selectedMinutes = pickedTime.hour * 60 + pickedTime.minute;
-              final int minMinutes = 9 * 60;    // 9:00 AM
-              final int maxMinutes = 22 * 60;   // 11:00 PM
+              final int selectedMinutes =
+                  pickedTime.hour * 60 + pickedTime.minute;
+              final int minMinutes = 9 * 60; // 9:00 AM
+              final int maxMinutes = 22 * 60; // 11:00 PM
 
-              if (selectedMinutes < minMinutes || selectedMinutes > maxMinutes) {
-                customSnackBar("Please select a time between 9:00 AM and 11:00 PM",
+              if (selectedMinutes < minMinutes ||
+                  selectedMinutes > maxMinutes) {
+                customSnackBar(
+                    "Please select a time between 9:00 AM and 11:00 PM",
                     type: ToasterMessageType.error);
               } else {
                 // Trigger snackbar if exactly 12:00 PM
                 if (pickedTime.hour == 12 && pickedTime.minute == 0) {
                   customSnackBar("12:00 PM selected",
-                      duration:4,
-                      type: ToasterMessageType.info);
+                      duration: 4, type: ToasterMessageType.info);
                 }
 
                 onTimeChanged(pickedTime);
@@ -237,8 +238,9 @@ class CustomTimePicker extends StatelessWidget {
                 Text(
                   time != null
                       ? DateConverter.convertDateTimeToTime(
-                    DateTime(DateTime.now().year, 1, 1, time!.hour, time!.minute),
-                  )
+                          DateTime(DateTime.now().year, 1, 1, time!.hour,
+                              time!.minute),
+                        )
                       : 'time_hint'.tr,
                   style: robotoRegular.copyWith(
                       color: time != null ? null : Theme.of(context).hintColor),
@@ -247,8 +249,13 @@ class CustomTimePicker extends StatelessWidget {
                 isExpandedRow
                     ? const Expanded(child: SizedBox())
                     : const SizedBox(width: Dimensions.paddingSizeSmall),
-                Icon(Icons.access_time, size: 20,
-                    color: Theme.of(context).textTheme.bodyLarge?.color?.withAlpha(128)),
+                Icon(Icons.access_time,
+                    size: 20,
+                    color: Theme.of(context)
+                        .textTheme
+                        .bodyLarge
+                        ?.color
+                        ?.withAlpha(128)),
               ],
             ),
           ),

@@ -1,4 +1,4 @@
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 
 class ServiceTypesModel {
   int? id;
@@ -11,12 +11,12 @@ class ServiceTypesModel {
 
   ServiceTypesModel(
       {this.id,
-        this.discountId,
-        this.discountType,
-        this.typeWiseId,
-        this.createdAt,
-        this.updatedAt,
-        this.service});
+      this.discountId,
+      this.discountType,
+      this.typeWiseId,
+      this.createdAt,
+      this.updatedAt,
+      this.service});
 
   ServiceTypesModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -26,7 +26,7 @@ class ServiceTypesModel {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     service =
-    json['service'] != null ? Service.fromJson(json['service']) : null;
+        json['service'] != null ? Service.fromJson(json['service']) : null;
   }
 
   Map<String, dynamic> toJson() {

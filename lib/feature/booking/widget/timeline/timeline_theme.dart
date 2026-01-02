@@ -1,5 +1,5 @@
 import 'dart:ui';
-import 'package:demandium/feature/booking/widget/timeline/indicator_theme.dart';
+import 'package:Vfix4u/feature/booking/widget/timeline/indicator_theme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'connector_theme.dart';
@@ -116,10 +116,8 @@ class _InheritedTheme extends InheritedTheme {
   bool updateShouldNotify(_InheritedTheme old) => theme.data != old.theme.data;
 }
 
-
 @immutable
 class TimelineThemeData with Diagnosticable {
-
   factory TimelineThemeData({
     Axis? direction,
     Color? color,
@@ -160,16 +158,13 @@ class TimelineThemeData with Diagnosticable {
     required this.connectorTheme,
   });
 
-
   factory TimelineThemeData.vertical() => TimelineThemeData(
         direction: Axis.vertical,
       );
 
-
   factory TimelineThemeData.horizontal() => TimelineThemeData(
         direction: Axis.horizontal,
       );
-
 
   final Axis direction;
   final Color color;
@@ -216,7 +211,6 @@ class TimelineThemeData with Diagnosticable {
     );
   }
 
-
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
@@ -246,6 +240,4 @@ class TimelineThemeData with Diagnosticable {
         level: DiagnosticLevel.debug,
       ));
   }
-
-
 }

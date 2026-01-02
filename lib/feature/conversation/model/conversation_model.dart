@@ -1,6 +1,4 @@
-
-
-import 'package:demandium/feature/conversation/model/conversation_user.dart';
+import 'package:Vfix4u/feature/conversation/model/conversation_user.dart';
 
 class ConversationModel {
   String? responseCode;
@@ -12,7 +10,9 @@ class ConversationModel {
   ConversationModel.fromJson(Map<String, dynamic> json) {
     responseCode = json['response_code'];
     message = json['message'];
-    content = json['content'] != null ? ConversationContent.fromJson(json['content']) : null;
+    content = json['content'] != null
+        ? ConversationContent.fromJson(json['content'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -42,17 +42,17 @@ class ConversationContent {
 
   ConversationContent(
       {this.currentPage,
-        this.conversationList,
-        this.firstPageUrl,
-        this.from,
-        this.lastPage,
-        this.lastPageUrl,
-        this.nextPageUrl,
-        this.path,
-        this.perPage,
-        this.prevPageUrl,
-        this.to,
-        this.total});
+      this.conversationList,
+      this.firstPageUrl,
+      this.from,
+      this.lastPage,
+      this.lastPageUrl,
+      this.nextPageUrl,
+      this.path,
+      this.perPage,
+      this.prevPageUrl,
+      this.to,
+      this.total});
 
   ConversationContent.fromJson(Map<String, dynamic> json) {
     currentPage = json['current_page'];
@@ -110,15 +110,14 @@ class ConversationData {
 
   ConversationData(
       {this.id,
-        this.channelId,
-        this.message,
-        this.userId,
-        this.deletedAt,
-        this.createdAt,
-        this.updatedAt,
-        this.user,
-        this.conversationFile
-      });
+      this.channelId,
+      this.message,
+      this.userId,
+      this.deletedAt,
+      this.createdAt,
+      this.updatedAt,
+      this.user,
+      this.conversationFile});
 
   ConversationData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -128,7 +127,8 @@ class ConversationData {
     deletedAt = json['deleted_at'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    user = json['user'] != null ? ConversationUser.fromJson(json['user']) : null;
+    user =
+        json['user'] != null ? ConversationUser.fromJson(json['user']) : null;
 
     if (json['conversation_files'] != null) {
       conversationFile = <ConversationFile>[];
@@ -152,7 +152,8 @@ class ConversationData {
     }
 
     if (conversationFile != null) {
-      data['conversation_files'] = conversationFile!.map((v) => v.toJson()).toList();
+      data['conversation_files'] =
+          conversationFile!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -172,16 +173,15 @@ class ConversationFile {
 
   ConversationFile(
       {this.id,
-        this.conversationId,
-        this.storedFileName,
-        this.storedFileNameFullPath,
-        this.originalFileName,
-        this.fileType,
-        this.deletedAt,
-        this.createdAt,
-        this.updatedAt,
-        this.filSize
-      });
+      this.conversationId,
+      this.storedFileName,
+      this.storedFileNameFullPath,
+      this.originalFileName,
+      this.fileType,
+      this.deletedAt,
+      this.createdAt,
+      this.updatedAt,
+      this.filSize});
 
   ConversationFile.fromJson(Map<String, dynamic> json) {
     id = json['id'];

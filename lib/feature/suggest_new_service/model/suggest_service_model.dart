@@ -1,13 +1,13 @@
-import 'package:demandium/feature/category/model/category_model.dart';
+import 'package:Vfix4u/feature/category/model/category_model.dart';
 
 class SuggestedServiceModel {
   Content? content;
-  SuggestedServiceModel({ this.content});
+  SuggestedServiceModel({this.content});
   SuggestedServiceModel.fromJson(Map<String, dynamic> json) {
-    content = json['content'] != null ? Content.fromJson(json['content']) : null;
-
+    content =
+        json['content'] != null ? Content.fromJson(json['content']) : null;
   }
-  
+
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     if (content != null) {
@@ -26,10 +26,10 @@ class Content {
 
   Content(
       {this.currentPage,
-        this.suggestedServiceList,
-        this.lastPage,
-        this.lastPageUrl,
-        this.total});
+      this.suggestedServiceList,
+      this.lastPage,
+      this.lastPageUrl,
+      this.total});
 
   Content.fromJson(Map<String, dynamic> json) {
     currentPage = json['current_page'];
@@ -71,15 +71,15 @@ class SuggestedService {
 
   SuggestedService(
       {this.id,
-        this.categoryId,
-        this.serviceName,
-        this.serviceDescription,
-        this.status,
-        this.adminFeedback,
-        this.userId,
-        this.createdAt,
-        this.updatedAt,
-        this.category});
+      this.categoryId,
+      this.serviceName,
+      this.serviceDescription,
+      this.status,
+      this.adminFeedback,
+      this.userId,
+      this.createdAt,
+      this.updatedAt,
+      this.category});
 
   SuggestedService.fromJson(Map<String, dynamic> json) {
     id = json['id'];

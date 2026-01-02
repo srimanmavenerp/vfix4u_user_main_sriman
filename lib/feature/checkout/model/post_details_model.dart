@@ -1,6 +1,4 @@
-import 'package:demandium/utils/core_export.dart';
-
-
+import 'package:Vfix4u/utils/core_export.dart';
 
 class PostDetailsContent {
   String? id;
@@ -22,29 +20,28 @@ class PostDetailsContent {
   SubCategory? subCategory;
   AddressModel? serviceAddress;
 
-
-  PostDetailsContent(
-      {this.id,
-        this.serviceDescription,
-        this.bookingSchedule,
-        this.isBooked,
-        this.customerUserId,
-        this.serviceId,
-        this.categoryId,
-        this.subCategoryId,
-        this.serviceAddressId,
-        this.bookingId,
-        this.createdAt,
-        this.updatedAt,
-        this.bidsCount,
-        this.additionInstructions,
-        this.service,
-        this.category,
-        this.subCategory,
-        //this.booking,
-        this.serviceAddress,
-        //this.bids
-      });
+  PostDetailsContent({
+    this.id,
+    this.serviceDescription,
+    this.bookingSchedule,
+    this.isBooked,
+    this.customerUserId,
+    this.serviceId,
+    this.categoryId,
+    this.subCategoryId,
+    this.serviceAddressId,
+    this.bookingId,
+    this.createdAt,
+    this.updatedAt,
+    this.bidsCount,
+    this.additionInstructions,
+    this.service,
+    this.category,
+    this.subCategory,
+    //this.booking,
+    this.serviceAddress,
+    //this.bids
+  });
 
   PostDetailsContent.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -68,7 +65,7 @@ class PostDetailsContent {
       });
     }
     service =
-    json['service'] != null ? Service.fromJson(json['service']) : null;
+        json['service'] != null ? Service.fromJson(json['service']) : null;
     category = json['category'] != null
         ? CategoryData.fromJson(json['category'])
         : null;
@@ -111,7 +108,7 @@ class PostDetailsContent {
     if (subCategory != null) {
       data['sub_category'] = subCategory!.toJson();
     }
-   // data['booking'] = booking;
+    // data['booking'] = booking;
     if (serviceAddress != null) {
       data['service_address'] = serviceAddress!.toJson();
     }

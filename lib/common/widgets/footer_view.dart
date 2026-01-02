@@ -1,6 +1,6 @@
-import 'package:demandium/feature/web_landing/model/web_landing_model.dart';
+import 'package:Vfix4u/feature/web_landing/model/web_landing_model.dart';
 import 'package:get/get.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 
 class FooterView extends StatefulWidget {
   const FooterView({super.key});

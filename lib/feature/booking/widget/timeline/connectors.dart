@@ -1,4 +1,4 @@
-import 'package:demandium/feature/booking/widget/timeline/line_painter.dart';
+import 'package:Vfix4u/feature/booking/widget/timeline/line_painter.dart';
 import 'package:flutter/material.dart';
 import 'connector_theme.dart';
 
@@ -259,7 +259,7 @@ class _ConnectorIndent extends StatelessWidget {
     this.indent,
     this.endIndent,
     required this.child,
-  })   : assert(space == null || space >= 0),
+  })  : assert(space == null || space >= 0),
         assert(indent == null || indent >= 0),
         assert(endIndent == null || endIndent >= 0);
 
@@ -278,13 +278,13 @@ class _ConnectorIndent extends StatelessWidget {
         child: Padding(
           padding: direction == Axis.vertical
               ? EdgeInsetsDirectional.only(
-            top: indent ?? 0,
-            bottom: endIndent ?? 0,
-          )
+                  top: indent ?? 0,
+                  bottom: endIndent ?? 0,
+                )
               : EdgeInsetsDirectional.only(
-            start: indent ?? 0,
-            end: endIndent ?? 0,
-          ),
+                  start: indent ?? 0,
+                  end: endIndent ?? 0,
+                ),
           child: child,
         ),
       ),

@@ -1,19 +1,19 @@
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class CustomDateRangePicker extends StatefulWidget {
   final Function(DateTimeRange?) onTimeChanged;
-  final String ? dateTimeRange;
+  final String? dateTimeRange;
   final String? icon;
-  const CustomDateRangePicker({super.key, required this.onTimeChanged, this.dateTimeRange, this.icon});
+  const CustomDateRangePicker(
+      {super.key, required this.onTimeChanged, this.dateTimeRange, this.icon});
 
   @override
   State<CustomDateRangePicker> createState() => _CustomDateRangePickerState();
 }
 
 class _CustomDateRangePickerState extends State<CustomDateRangePicker> {
-
   var dateRangeController = DateRangePickerController();
 
   @override
@@ -23,10 +23,11 @@ class _CustomDateRangePickerState extends State<CustomDateRangePicker> {
         Get.dialog(
           DateRangeWidget(
             onTimeChanged: (PickerDateRange? dateRange) {
-              if(dateRange !=null){
-                widget.onTimeChanged(DateTimeRange(
-                    start: dateRange.startDate ?? DateTime.now(),
-                    end: dateRange.endDate ?? DateTime.now()),
+              if (dateRange != null) {
+                widget.onTimeChanged(
+                  DateTimeRange(
+                      start: dateRange.startDate ?? DateTime.now(),
+                      end: dateRange.endDate ?? DateTime.now()),
                 );
               }
             },
@@ -35,24 +36,28 @@ class _CustomDateRangePickerState extends State<CustomDateRangePicker> {
         );
       },
       child: Container(
-        height: 50, alignment: Alignment.center,
-        padding: const EdgeInsets.symmetric(vertical : Dimensions.paddingSizeSmall , horizontal: Dimensions.paddingSizeDefault),
+        height: 50,
+        alignment: Alignment.center,
+        padding: const EdgeInsets.symmetric(
+            vertical: Dimensions.paddingSizeSmall,
+            horizontal: Dimensions.paddingSizeDefault),
         decoration: BoxDecoration(
             color: Theme.of(context).cardColor,
             borderRadius: BorderRadius.circular(Dimensions.radiusSeven),
-            border: Border.all(color: Theme.of(context).hintColor.withValues(alpha: 0.5), width: 0.5)
-        ),
+            border: Border.all(
+                color: Theme.of(context).hintColor.withValues(alpha: 0.5),
+                width: 0.5)),
         child: Row(children: [
-
           Text(
-            widget.dateTimeRange  ?? 'date_range_hint'.tr,
-            style: robotoRegular.copyWith(color: widget.dateTimeRange != null ? null : Theme.of(context).hintColor),
+            widget.dateTimeRange ?? 'date_range_hint'.tr,
+            style: robotoRegular.copyWith(
+                color: widget.dateTimeRange != null
+                    ? null
+                    : Theme.of(context).hintColor),
             maxLines: 1,
           ),
           const Expanded(child: SizedBox()),
-
-          Image.asset( widget.icon ?? Images.calendar1, width: 17),
-
+          Image.asset(widget.icon ?? Images.calendar1, width: 17),
         ]),
       ),
     );
@@ -62,9 +67,12 @@ class _CustomDateRangePickerState extends State<CustomDateRangePicker> {
 class DateRangeWidget extends StatelessWidget {
   final Function(PickerDateRange?) onTimeChanged;
   final DateRangePickerController dateRangeController;
-  final PickerDateRange ? dateTimeRange;
-  const DateRangeWidget({super.key, required this.onTimeChanged, required  this.dateRangeController, this.dateTimeRange});
-
+  final PickerDateRange? dateTimeRange;
+  const DateRangeWidget(
+      {super.key,
+      required this.onTimeChanged,
+      required this.dateRangeController,
+      this.dateTimeRange});
 
   @override
   Widget build(BuildContext context) {
@@ -72,29 +80,30 @@ class DateRangeWidget extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-            border: Border.all(color: Theme.of(context).hintColor.withValues(alpha: 0.4), width: 0.5),
-            color: Theme.of(context).cardColor
-        ),
+            border: Border.all(
+                color: Theme.of(context).hintColor.withValues(alpha: 0.4),
+                width: 0.5),
+            color: Theme.of(context).cardColor),
         width: Dimensions.webMaxWidth / 2.5,
-        margin: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeLarge),
+        margin:
+            const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeLarge),
         padding: const EdgeInsets.all(Dimensions.paddingSizeLarge),
         child: Column(mainAxisSize: MainAxisSize.min, children: [
-
-          Text("select_date_range".tr, style: robotoBold.copyWith(fontSize: Dimensions.fontSizeLarge)),
+          Text("select_date_range".tr,
+              style: robotoBold.copyWith(fontSize: Dimensions.fontSizeLarge)),
           const SizedBox(height: Dimensions.paddingSizeDefault),
-
           SizedBox(
             height: 320,
             child: SfDateRangePicker(
               controller: dateRangeController,
               backgroundColor: Theme.of(context).cardColor,
               showNavigationArrow: true,
-              onSelectionChanged: (DateRangePickerSelectionChangedArgs args){
-                if(args.value !=null){
+              onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
+                if (args.value != null) {
                   dateRangeController.selectedRange = args.value;
                 }
               },
-              initialSelectedRange : dateTimeRange,
+              initialSelectedRange: dateTimeRange,
               selectionMode: DateRangePickerSelectionMode.range,
               selectionShape: DateRangePickerSelectionShape.rectangle,
               viewSpacing: 10,
@@ -104,8 +113,13 @@ class DateRangeWidget extends StatelessWidget {
               headerStyle: DateRangePickerHeaderStyle(
                 backgroundColor: Theme.of(context).cardColor,
                 textAlign: TextAlign.center,
-                textStyle: robotoMedium.copyWith(fontSize: Dimensions.fontSizeLarge,
-                  color: Theme.of(context).textTheme.bodyLarge!.color!.withValues(alpha: 0.8),
+                textStyle: robotoMedium.copyWith(
+                  fontSize: Dimensions.fontSizeLarge,
+                  color: Theme.of(context)
+                      .textTheme
+                      .bodyLarge!
+                      .color!
+                      .withValues(alpha: 0.8),
                 ),
               ),
             ),
@@ -117,33 +131,33 @@ class DateRangeWidget extends StatelessWidget {
                 buttonText: "cancel".tr,
                 radius: Dimensions.radiusDefault,
                 textColor: Theme.of(context).textTheme.bodyLarge?.color,
-                backgroundColor: Theme.of(context).hintColor.withValues(alpha: 0.2),
-                onPressed: (){
+                backgroundColor:
+                    Theme.of(context).hintColor.withValues(alpha: 0.2),
+                onPressed: () {
                   Get.back();
                 },
               ),
             ),
-
             const SizedBox(width: 20),
-
             Expanded(
               child: CustomButton(
                 radius: Dimensions.radiusDefault,
                 buttonText: "save".tr,
-                onPressed: (){
-
-                  if(dateRangeController.selectedRange == null || dateRangeController.selectedRange?.startDate == null || dateRangeController.selectedRange?.endDate == null){
-                    customSnackBar("select_date_range".tr, type: ToasterMessageType.info, showDefaultSnackBar: false);
-                  }else{
+                onPressed: () {
+                  if (dateRangeController.selectedRange == null ||
+                      dateRangeController.selectedRange?.startDate == null ||
+                      dateRangeController.selectedRange?.endDate == null) {
+                    customSnackBar("select_date_range".tr,
+                        type: ToasterMessageType.info,
+                        showDefaultSnackBar: false);
+                  } else {
                     onTimeChanged(dateRangeController.selectedRange);
                     Get.back();
                   }
                 },
               ),
             ),
-
             const SizedBox(height: Dimensions.paddingSizeDefault),
-
           ])
         ]),
       ),

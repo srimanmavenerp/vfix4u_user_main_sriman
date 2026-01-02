@@ -1,25 +1,28 @@
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 import 'package:get/get.dart';
 
-class WalletRepo{
+class WalletRepo {
   final ApiClient apiClient;
   final SharedPreferences sharedPreferences;
-  WalletRepo({required this.apiClient, required this.sharedPreferences,});
+  WalletRepo({
+    required this.apiClient,
+    required this.sharedPreferences,
+  });
 
   Future<Response> getWalletTransactionData(int offset, String type) async {
-    return await apiClient.getData("${AppConstants.walletTransactionData}?limit=10&offset=$offset&type=$type");
+    return await apiClient.getData(
+        "${AppConstants.walletTransactionData}?limit=10&offset=$offset&type=$type");
   }
 
   Future<Response> getBonusList() async {
     return await apiClient.getData(AppConstants.bonusUri);
   }
 
-  Future<void> setWalletAccessToken(String token){
-    return  sharedPreferences.setString(AppConstants.walletAccessToken, token);
+  Future<void> setWalletAccessToken(String token) {
+    return sharedPreferences.setString(AppConstants.walletAccessToken, token);
   }
 
-  String getWalletAccessToken(){
-    return  sharedPreferences.getString(AppConstants.walletAccessToken) ?? "";
+  String getWalletAccessToken() {
+    return sharedPreferences.getString(AppConstants.walletAccessToken) ?? "";
   }
-
 }

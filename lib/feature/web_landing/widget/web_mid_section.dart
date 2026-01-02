@@ -1,6 +1,6 @@
-import 'package:demandium/common/widgets/custom_image.dart';
-import 'package:demandium/utils/dimensions.dart';
-import 'package:demandium/utils/styles.dart';
+import 'package:Vfix4u/common/widgets/custom_image.dart';
+import 'package:Vfix4u/utils/dimensions.dart';
+import 'package:Vfix4u/utils/styles.dart';
 import 'package:flutter/material.dart';
 import 'web_mid_section_content_item.dart';
 

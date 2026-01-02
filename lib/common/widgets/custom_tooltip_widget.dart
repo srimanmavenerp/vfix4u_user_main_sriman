@@ -1,4 +1,4 @@
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 import 'package:get/get.dart';
 
 class CustomToolTip extends StatefulWidget {
@@ -7,14 +7,19 @@ class CustomToolTip extends StatefulWidget {
   final AxisDirection preferredDirection;
   final double? size;
   final Color? iconColor;
-  const CustomToolTip({super.key, required this.message, this.child, this.preferredDirection = AxisDirection.right, this.size, this.iconColor = Colors.grey});
+  const CustomToolTip(
+      {super.key,
+      required this.message,
+      this.child,
+      this.preferredDirection = AxisDirection.right,
+      this.size,
+      this.iconColor = Colors.grey});
 
   @override
   State<CustomToolTip> createState() => _CustomToolTipState();
 }
 
 class _CustomToolTipState extends State<CustomToolTip> {
-
   final tooltipController = JustTheController();
 
   @override
@@ -26,17 +31,22 @@ class _CustomToolTipState extends State<CustomToolTip> {
       tailLength: 14,
       tailBaseWidth: 20,
       content: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault, vertical: Dimensions.paddingSizeSmall),
-        child: Text(widget.message, style: robotoRegular.copyWith(color: Get.isDarkMode ? Colors.black87 : Colors.white)),
+        padding: const EdgeInsets.symmetric(
+            horizontal: Dimensions.paddingSizeDefault,
+            vertical: Dimensions.paddingSizeSmall),
+        child: Text(widget.message,
+            style: robotoRegular.copyWith(
+                color: Get.isDarkMode ? Colors.black87 : Colors.white)),
       ),
       child: InkWell(
         splashColor: Colors.transparent,
         onTap: () async {
           tooltipController.showTooltip();
         },
-        child: widget.child ?? Icon(Icons.info_outline, size: widget.size ?? 20, color: widget.iconColor),
+        child: widget.child ??
+            Icon(Icons.info_outline,
+                size: widget.size ?? 20, color: widget.iconColor),
       ),
     );
   }
 }
-

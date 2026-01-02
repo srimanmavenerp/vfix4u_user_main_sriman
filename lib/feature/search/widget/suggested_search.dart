@@ -1,5 +1,5 @@
-// import 'package:demandium/components/ripple_button.dart';
-// import 'package:demandium/components/core_export.dart';
+// import 'package:Vfix4u/components/ripple_button.dart';
+// import 'package:Vfix4u/components/core_export.dart';
 // import 'package:get/get.dart';
 //
 // class SuggestedSearch extends StatelessWidget {

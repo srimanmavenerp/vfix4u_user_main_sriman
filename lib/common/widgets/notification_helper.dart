@@ -2,12 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:demandium/common/widgets/demo_reset_dialog_widget.dart';
-import 'package:demandium/feature/booking/widget/booking_ignored_bottom_sheet.dart';
+import 'package:Vfix4u/common/widgets/demo_reset_dialog_widget.dart';
+import 'package:Vfix4u/feature/booking/widget/booking_ignored_bottom_sheet.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 

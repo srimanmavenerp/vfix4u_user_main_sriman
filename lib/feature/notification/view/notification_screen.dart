@@ -1,7 +1,7 @@
-import 'package:demandium/common/widgets/image_dialog.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/common/widgets/image_dialog.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 import 'package:get/get.dart';
-import 'package:demandium/feature/notification/widget/notification_shimmer.dart';
+import 'package:Vfix4u/feature/notification/widget/notification_shimmer.dart';
 
 class NotificationScreen extends StatefulWidget {
   const NotificationScreen({super.key});

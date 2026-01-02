@@ -1,13 +1,13 @@
-import 'package:demandium/common/widgets/footer_base_view.dart';
-import 'package:demandium/feature/splash/controller/theme_controller.dart';
-import 'package:demandium/utils/dimensions.dart';
-import 'package:demandium/utils/styles.dart';
+import 'package:Vfix4u/common/widgets/footer_base_view.dart';
+import 'package:Vfix4u/feature/splash/controller/theme_controller.dart';
+import 'package:Vfix4u/utils/dimensions.dart';
+import 'package:Vfix4u/utils/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 
 class WebLandingShimmer extends StatelessWidget {
-  const WebLandingShimmer({super.key}) ;
+  const WebLandingShimmer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,21 +19,31 @@ class WebLandingShimmer extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: Dimensions.paddingSizeDefault,),
+              const SizedBox(
+                height: Dimensions.paddingSizeDefault,
+              ),
               //web landing search shimmer
               Stack(
                 children: [
                   Shimmer(
                     duration: const Duration(seconds: 2),
                     child: Container(
-                      padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
+                      padding:
+                          const EdgeInsets.all(Dimensions.paddingSizeSmall),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-                        color: Get.isDarkMode ? Theme.of(context).cardColor :Theme.of(context).shadowColor ,
-                        boxShadow: Get.find<ThemeController>().darkTheme ? null :  cardShadow,
+                        borderRadius:
+                            BorderRadius.circular(Dimensions.radiusSmall),
+                        color: Get.isDarkMode
+                            ? Theme.of(context).cardColor
+                            : Theme.of(context).shadowColor,
+                        boxShadow: Get.find<ThemeController>().darkTheme
+                            ? null
+                            : cardShadow,
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.all(Dimensions.paddingSizeDefault).copyWith(left: 300),
+                        padding:
+                            const EdgeInsets.all(Dimensions.paddingSizeDefault)
+                                .copyWith(left: 300),
                         child: Directionality(
                           textDirection: TextDirection.ltr,
                           child: Column(
@@ -44,22 +54,27 @@ class WebLandingShimmer extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     Container(
-                                        decoration: BoxDecoration(
-                                          color: Theme.of(context).shadowColor,
-                                          border: Border.all(color: Colors.white.withValues(alpha: 0.6),width: 2),
-                                        ),
-                                        height: 200,
-                                        width: 370,
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context).shadowColor,
+                                        border: Border.all(
+                                            color: Colors.white
+                                                .withValues(alpha: 0.6),
+                                            width: 2),
+                                      ),
+                                      height: 200,
+                                      width: 370,
                                     ),
                                     Container(
-                                        width: 485,
-                                        height: 200,
-                                        decoration: BoxDecoration(
-                                          color: Theme.of(context).shadowColor,
-                                            borderRadius: const BorderRadius.only(topRight: Radius.circular(12.0)),
-                                            border: Border.all(color: Colors.white70,width: 2),
-                                        ),
-                                        ),
+                                      width: 485,
+                                      height: 200,
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context).shadowColor,
+                                        borderRadius: const BorderRadius.only(
+                                            topRight: Radius.circular(12.0)),
+                                        border: Border.all(
+                                            color: Colors.white70, width: 2),
+                                      ),
+                                    ),
                                   ],
                                 ),
                                 Row(
@@ -73,21 +88,25 @@ class WebLandingShimmer extends StatelessWidget {
                                         width: 200,
                                         decoration: BoxDecoration(
                                           color: Theme.of(context).shadowColor,
-                                            border: Border.all(color: Colors.white70,width: 2),
+                                          border: Border.all(
+                                              color: Colors.white70, width: 2),
                                         ),
-
                                       ),
                                     ),
                                     Expanded(
                                       flex: 4,
                                       child: Container(
                                         height: 200,
-                                          decoration: BoxDecoration(
-                                              color: Theme.of(context).shadowColor,
-                                              border: Border.all(color: Colors.white70,width: 2),
-                                            borderRadius: const BorderRadius.only(bottomRight: Radius.circular(12.0))
-                                        ),
-
+                                        decoration: BoxDecoration(
+                                            color:
+                                                Theme.of(context).shadowColor,
+                                            border: Border.all(
+                                                color: Colors.white70,
+                                                width: 2),
+                                            borderRadius:
+                                                const BorderRadius.only(
+                                                    bottomRight:
+                                                        Radius.circular(12.0))),
                                       ),
                                     ),
                                   ],
@@ -107,13 +126,18 @@ class WebLandingShimmer extends StatelessWidget {
                         height: 260,
                         width: 750,
                         decoration: BoxDecoration(
-                          boxShadow: const [BoxShadow(
-                            offset: Offset(0, 1),
-                            blurRadius: 2,
-                            color: Colors.grey,
-                          )],
-                          borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                          color: Get.isDarkMode ? Theme.of(context).primaryColorDark : Theme.of(context).cardColor,
+                          boxShadow: const [
+                            BoxShadow(
+                              offset: Offset(0, 1),
+                              blurRadius: 2,
+                              color: Colors.grey,
+                            )
+                          ],
+                          borderRadius:
+                              BorderRadius.circular(Dimensions.radiusDefault),
+                          color: Get.isDarkMode
+                              ? Theme.of(context).primaryColorDark
+                              : Theme.of(context).cardColor,
                         ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -121,47 +145,59 @@ class WebLandingShimmer extends StatelessWidget {
                             Container(
                               decoration: BoxDecoration(
                                 color: Colors.grey[400],
-                                borderRadius: const BorderRadius.all(Radius.circular(12.0)),
-                                border: Border.all(color: Colors.white,width: 2),
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(12.0)),
+                                border:
+                                    Border.all(color: Colors.white, width: 2),
                               ),
                               height: 15,
                               width: 500,
                             ),
-                            const SizedBox(height: 20.0,),
+                            const SizedBox(
+                              height: 20.0,
+                            ),
                             Container(
                               decoration: BoxDecoration(
                                 color: Colors.grey[400],
-                                borderRadius: const BorderRadius.all(Radius.circular(12.0)),
-                                border: Border.all(color: Colors.white,width: 2),
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(12.0)),
+                                border:
+                                    Border.all(color: Colors.white, width: 2),
                               ),
                               height: 15,
                               width: 500,
                             ),
-                            const SizedBox(height: 40.0,),
+                            const SizedBox(
+                              height: 40.0,
+                            ),
                             Container(
                               decoration: BoxDecoration(
                                 color: Colors.grey[400],
-                                borderRadius: const BorderRadius.all(Radius.circular(12.0)),
-                                border: Border.all(color: Colors.white,width: 2),
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(12.0)),
+                                border:
+                                    Border.all(color: Colors.white, width: 2),
                               ),
                               height: 60,
                               width: 600,
                             ),
                           ],
                         ),
-
                       ),
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: Dimensions.paddingSizeExtraMoreLarge,),
+              const SizedBox(
+                height: Dimensions.paddingSizeExtraMoreLarge,
+              ),
               //web mid shimmer
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
                   color: Theme.of(context).cardColor,
-                  boxShadow: Get.find<ThemeController>().darkTheme ? null : cardShadow,
+                  boxShadow:
+                      Get.find<ThemeController>().darkTheme ? null : cardShadow,
                 ),
                 child: Shimmer(
                   duration: const Duration(seconds: 2),
@@ -174,12 +210,15 @@ class WebLandingShimmer extends StatelessWidget {
                         Container(
                           decoration: BoxDecoration(
                             color: Theme.of(context).shadowColor,
-                            borderRadius: const BorderRadius.all(Radius.circular(12.0)),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(12.0)),
                           ),
                           height: 60,
                           width: 600,
                         ),
-                        const SizedBox(height: Dimensions.paddingSizeLarge,),
+                        const SizedBox(
+                          height: Dimensions.paddingSizeLarge,
+                        ),
                         SizedBox(
                           height: 400,
                           child: Row(
@@ -190,29 +229,39 @@ class WebLandingShimmer extends StatelessWidget {
                                 width: 400,
                                 decoration: BoxDecoration(
                                     color: Theme.of(context).shadowColor,
-                                    borderRadius: const BorderRadius.all(Radius.circular(12.0))),
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(12.0))),
                               ),
                               SizedBox(
                                 height: 400,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Column(
                                       children: [
                                         Container(
                                           decoration: BoxDecoration(
-                                            color: Theme.of(context).shadowColor,
-                                            borderRadius: const BorderRadius.all(Radius.circular(12.0)),
+                                            color:
+                                                Theme.of(context).shadowColor,
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(12.0)),
                                           ),
                                           height: 15,
                                           width: 500,
                                         ),
-                                        const SizedBox(height: 20,),
+                                        const SizedBox(
+                                          height: 20,
+                                        ),
                                         Container(
                                           decoration: BoxDecoration(
-                                            color: Theme.of(context).shadowColor,
-                                            borderRadius: const BorderRadius.all(Radius.circular(12.0)),
+                                            color:
+                                                Theme.of(context).shadowColor,
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(12.0)),
                                           ),
                                           height: 50,
                                           width: 500,
@@ -223,17 +272,25 @@ class WebLandingShimmer extends StatelessWidget {
                                       children: [
                                         Container(
                                           decoration: BoxDecoration(
-                                            color: Theme.of(context).shadowColor,
-                                            borderRadius: const BorderRadius.all(Radius.circular(12.0)),
+                                            color:
+                                                Theme.of(context).shadowColor,
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(12.0)),
                                           ),
                                           height: 15,
                                           width: 500,
                                         ),
-                                        const SizedBox(height: 20,),
+                                        const SizedBox(
+                                          height: 20,
+                                        ),
                                         Container(
                                           decoration: BoxDecoration(
-                                            color: Theme.of(context).shadowColor,
-                                            borderRadius: const BorderRadius.all(Radius.circular(12.0)),
+                                            color:
+                                                Theme.of(context).shadowColor,
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(12.0)),
                                           ),
                                           height: 50,
                                           width: 500,
@@ -244,17 +301,25 @@ class WebLandingShimmer extends StatelessWidget {
                                       children: [
                                         Container(
                                           decoration: BoxDecoration(
-                                            color: Theme.of(context).shadowColor,
-                                            borderRadius: const BorderRadius.all(Radius.circular(12.0)),
+                                            color:
+                                                Theme.of(context).shadowColor,
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(12.0)),
                                           ),
                                           height: 15,
                                           width: 500,
                                         ),
-                                        const SizedBox(height: 20,),
+                                        const SizedBox(
+                                          height: 20,
+                                        ),
                                         Container(
                                           decoration: BoxDecoration(
-                                            color: Theme.of(context).shadowColor,
-                                            borderRadius: const BorderRadius.all(Radius.circular(12.0)),
+                                            color:
+                                                Theme.of(context).shadowColor,
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(12.0)),
                                           ),
                                           height: 50,
                                           width: 500,
@@ -273,13 +338,16 @@ class WebLandingShimmer extends StatelessWidget {
                 ),
               ),
               //testimonial section
-              const SizedBox(height: Dimensions.paddingSizeExtraMoreLarge,),
+              const SizedBox(
+                height: Dimensions.paddingSizeExtraMoreLarge,
+              ),
               Container(
                 height: 250,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
                   color: Theme.of(context).cardColor,
-                  boxShadow: Get.find<ThemeController>().darkTheme ? null : cardShadow,
+                  boxShadow:
+                      Get.find<ThemeController>().darkTheme ? null : cardShadow,
                 ),
                 child: Shimmer(
                   duration: const Duration(seconds: 2),
@@ -292,30 +360,38 @@ class WebLandingShimmer extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-
-                            const SizedBox(height: 10,),
+                            const SizedBox(
+                              height: 10,
+                            ),
                             Container(
                               decoration: BoxDecoration(
                                 color: Theme.of(context).shadowColor,
-                                borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(8.0)),
                               ),
                               height: 60,
                               width: 600,
                             ),
-                            const SizedBox(height: 10,),
+                            const SizedBox(
+                              height: 10,
+                            ),
                             Container(
                               decoration: BoxDecoration(
                                 color: Theme.of(context).shadowColor,
-                                borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(8.0)),
                               ),
                               height: 20,
                               width: 600,
                             ),
-                            const SizedBox(height: 10,),
+                            const SizedBox(
+                              height: 10,
+                            ),
                             Container(
                               decoration: BoxDecoration(
                                 color: Theme.of(context).shadowColor,
-                                borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(8.0)),
                               ),
                               height: 20,
                               width: 100,
@@ -327,10 +403,10 @@ class WebLandingShimmer extends StatelessWidget {
                           width: 200,
                           decoration: BoxDecoration(
                             color: Theme.of(context).shadowColor,
-                            borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(8.0)),
                           ),
                         )
-
                       ],
                     ),
                   ),

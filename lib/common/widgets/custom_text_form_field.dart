@@ -1,4 +1,4 @@
-import 'package:demandium/utils/dimensions.dart';
+import 'package:Vfix4u/utils/dimensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

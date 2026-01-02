@@ -1,7 +1,7 @@
-import 'package:demandium/feature/home/widget/nearby_provider_listview.dart';
-import 'package:demandium/popupbanneradds.dart';
+import 'package:Vfix4u/feature/home/widget/nearby_provider_listview.dart';
+import 'package:Vfix4u/popupbanneradds.dart';
 import 'package:get/get.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 
 import '../review/view/review_rating_screen.dart';
 
@@ -717,9 +717,9 @@ class RatingPopupDialog extends StatelessWidget {
 ///////
 
 
-// import 'package:demandium/feature/home/widget/nearby_provider_listview.dart';
+// import 'package:Vfix4u/feature/home/widget/nearby_provider_listview.dart';
 // import 'package:get/get.dart';
-// import 'package:demandium/utils/core_export.dart';
+// import 'package:Vfix4u/utils/core_export.dart';
 // import 'package:flutter/foundation.dart';
 // import 'package:flutter/material.dart';
 // import 'package:shared_preferences/shared_preferences.dart';

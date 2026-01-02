@@ -1,20 +1,22 @@
-import 'package:demandium/feature/provider/model/provider_model.dart';
+import 'package:Vfix4u/feature/provider/model/provider_model.dart';
 
 class ProviderOfferModel {
   String? responseCode;
   String? message;
   ProviderOfferContent? content;
 
-
-  ProviderOfferModel(
-      {this.responseCode, this.message, this.content,});
+  ProviderOfferModel({
+    this.responseCode,
+    this.message,
+    this.content,
+  });
 
   ProviderOfferModel.fromJson(Map<String, dynamic> json) {
     responseCode = json['response_code'];
     message = json['message'];
-    content =
-    json['content'] != null ? ProviderOfferContent.fromJson(json['content']) : null;
-
+    content = json['content'] != null
+        ? ProviderOfferContent.fromJson(json['content'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -42,15 +44,15 @@ class ProviderOfferContent {
 
   ProviderOfferContent(
       {this.currentPage,
-        this.data,
-        this.firstPageUrl,
-        this.from,
-        this.lastPage,
-        this.lastPageUrl,
-        this.path,
-        this.perPage,
-        this.to,
-        this.total});
+      this.data,
+      this.firstPageUrl,
+      this.from,
+      this.lastPage,
+      this.lastPageUrl,
+      this.path,
+      this.perPage,
+      this.to,
+      this.total});
 
   ProviderOfferContent.fromJson(Map<String, dynamic> json) {
     currentPage = json['current_page'];
@@ -96,18 +98,18 @@ class ProviderOfferData {
   String? providerId;
   String? createdAt;
   String? updatedAt;
-  ProviderData ? provider;
+  ProviderData? provider;
 
   ProviderOfferData(
       {this.id,
-        this.offeredPrice,
-        this.providerNote,
-        this.status,
-        this.postId,
-        this.providerId,
-        this.createdAt,
-        this.updatedAt,
-        this.provider});
+      this.offeredPrice,
+      this.providerNote,
+      this.status,
+      this.postId,
+      this.providerId,
+      this.createdAt,
+      this.updatedAt,
+      this.provider});
 
   ProviderOfferData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -139,4 +141,3 @@ class ProviderOfferData {
     return data;
   }
 }
-

@@ -1,4 +1,4 @@
-import 'package:demandium/feature/category/model/category_model.dart';
+import 'package:Vfix4u/feature/category/model/category_model.dart';
 
 class CategoryTypesModel {
   int? id;
@@ -11,12 +11,12 @@ class CategoryTypesModel {
 
   CategoryTypesModel(
       {this.id,
-        this.discountId,
-        this.discountType,
-        this.typeWiseId,
-        this.createdAt,
-        this.updatedAt,
-        this.category});
+      this.discountId,
+      this.discountType,
+      this.typeWiseId,
+      this.createdAt,
+      this.updatedAt,
+      this.category});
 
   CategoryTypesModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];

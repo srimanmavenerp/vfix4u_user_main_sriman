@@ -1,4 +1,4 @@
-import 'package:demandium/feature/provider/model/provider_model.dart';
+import 'package:Vfix4u/feature/provider/model/provider_model.dart';
 
 class ConversationUserModel {
   String? id;
@@ -12,13 +12,13 @@ class ConversationUserModel {
 
   ConversationUserModel(
       {this.id,
-        this.channelId,
-        this.userId,
-        this.deletedAt,
-        this.createdAt,
-        this.updatedAt,
-        this.isRead,
-        this.user});
+      this.channelId,
+      this.userId,
+      this.deletedAt,
+      this.createdAt,
+      this.updatedAt,
+      this.isRead,
+      this.user});
 
   ConversationUserModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -28,7 +28,8 @@ class ConversationUserModel {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     isRead = json['is_read'];
-    user = json['user'] != null ? ConversationUser.fromJson(json['user']) : null;
+    user =
+        json['user'] != null ? ConversationUser.fromJson(json['user']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -71,34 +72,33 @@ class ConversationUser {
   String? deletedAt;
   String? createdAt;
   String? updatedAt;
-  ProviderData ? provider;
+  ProviderData? provider;
 
   ConversationUser(
       {this.id,
-        this.roleId,
-        this.firstName,
-        this.lastName,
-        this.email,
-        this.phone,
-        this.identificationNumber,
-        this.identificationType,
-        this.dateOfBirth,
-        this.gender,
-        this.profileImage,
-        this.profileImageFullPath,
-        this.fcmToken,
-        this.isPhoneVerified,
-        this.isEmailVerified,
-        this.phoneVerifiedAt,
-        this.emailVerifiedAt,
-        this.isActive,
-        this.userType,
-        this.rememberToken,
-        this.deletedAt,
-        this.createdAt,
-        this.updatedAt,
-        this.provider
-      });
+      this.roleId,
+      this.firstName,
+      this.lastName,
+      this.email,
+      this.phone,
+      this.identificationNumber,
+      this.identificationType,
+      this.dateOfBirth,
+      this.gender,
+      this.profileImage,
+      this.profileImageFullPath,
+      this.fcmToken,
+      this.isPhoneVerified,
+      this.isEmailVerified,
+      this.phoneVerifiedAt,
+      this.emailVerifiedAt,
+      this.isActive,
+      this.userType,
+      this.rememberToken,
+      this.deletedAt,
+      this.createdAt,
+      this.updatedAt,
+      this.provider});
 
   ConversationUser.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -125,7 +125,9 @@ class ConversationUser {
     deletedAt = json['deleted_at'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    provider = json['provider'] != null ? ProviderData.fromJson(json['provider']) : null;
+    provider = json['provider'] != null
+        ? ProviderData.fromJson(json['provider'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -157,5 +159,3 @@ class ConversationUser {
     return data;
   }
 }
-
-

@@ -1,19 +1,18 @@
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 
 class ServiceModel {
   String? responseCode;
   String? message;
   ServiceContent? content;
 
-
   ServiceModel({this.responseCode, this.message, this.content});
 
   ServiceModel.fromJson(Map<String, dynamic> json) {
     responseCode = json['response_code'];
     message = json['message'];
-    content =
-    json['content'] != null ? ServiceContent.fromJson(json['content']) : null;
-
+    content = json['content'] != null
+        ? ServiceContent.fromJson(json['content'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -96,33 +95,33 @@ class Service {
   List<ServiceDiscount>? campaignDiscount;
   List<Review>? review;
 
-  Service(
-      {this.id,
-        this.name,
-        this.shortDescription,
-        this.description,
-        this.coverImage,
-        this.coverImageFullPath,
-        this.thumbnail,
-        this.thumbnailFullPath,
-        this.categoryId,
-        this.subCategoryId,
-        this.tax,
-        this.orderCount,
-        this.isActive,
-        this.isFavorite,
-        this.ratingCount,
-        this.avgRating,
-        this.createdAt,
-        this.updatedAt,
-        this.category,
-        this.variationsAppFormat,
-        this.variations,
-        this.faqs,
-        this.serviceDiscount,
-        this.campaignDiscount,
-        this.review,
-      });
+  Service({
+    this.id,
+    this.name,
+    this.shortDescription,
+    this.description,
+    this.coverImage,
+    this.coverImageFullPath,
+    this.thumbnail,
+    this.thumbnailFullPath,
+    this.categoryId,
+    this.subCategoryId,
+    this.tax,
+    this.orderCount,
+    this.isActive,
+    this.isFavorite,
+    this.ratingCount,
+    this.avgRating,
+    this.createdAt,
+    this.updatedAt,
+    this.category,
+    this.variationsAppFormat,
+    this.variations,
+    this.faqs,
+    this.serviceDiscount,
+    this.campaignDiscount,
+    this.review,
+  });
 
   Service.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -222,10 +221,12 @@ class Service {
       data['faqs'] = faqs!.map((v) => v.toJson()).toList();
     }
     if (serviceDiscount != null) {
-      data['service_discount'] = serviceDiscount!.map((v) => v.toJson()).toList();
+      data['service_discount'] =
+          serviceDiscount!.map((v) => v.toJson()).toList();
     }
     if (campaignDiscount != null) {
-      data['campaign_discount'] = campaignDiscount!.map((v) => v.toJson()).toList();
+      data['campaign_discount'] =
+          campaignDiscount!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -275,14 +276,14 @@ class Variations {
 
   Variations(
       {this.id,
-        this.variant,
-        this.variantKey,
-        this.serviceId,
-        this.zoneId,
-        this.price,
-        this.createdAt,
-        this.updatedAt,
-        this.zone});
+      this.variant,
+      this.variantKey,
+      this.serviceId,
+      this.zoneId,
+      this.price,
+      this.createdAt,
+      this.updatedAt,
+      this.zone});
 
   Variations.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -314,7 +315,11 @@ class ZoneWiseVariations {
   String? variantName;
   num? price;
 
-  ZoneWiseVariations({this.variantKey, this.variantName, this.price,});
+  ZoneWiseVariations({
+    this.variantKey,
+    this.variantName,
+    this.price,
+  });
 
   ZoneWiseVariations.fromJson(Map<String, dynamic> json) {
     variantKey = json['variant_key'];
@@ -330,6 +335,7 @@ class ZoneWiseVariations {
     return data;
   }
 }
+
 class ServiceCategory {
   String? id;
   String? parentId;
@@ -344,20 +350,19 @@ class ServiceCategory {
   List<ServiceDiscount>? categoryDiscount;
   List<ServiceDiscount>? campaignDiscount;
 
-
-  ServiceCategory(
-      {this.id,
-        this.parentId,
-        this.name,
-        this.image,
-        this.position,
-        this.description,
-        this.isActive,
-        this.createdAt,
-        this.updatedAt,
-        this.categoryDiscount,
-        this.campaignDiscount,
-      });
+  ServiceCategory({
+    this.id,
+    this.parentId,
+    this.name,
+    this.image,
+    this.position,
+    this.description,
+    this.isActive,
+    this.createdAt,
+    this.updatedAt,
+    this.categoryDiscount,
+    this.campaignDiscount,
+  });
 
   ServiceCategory.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -397,14 +402,17 @@ class ServiceCategory {
     data['updated_at'] = updatedAt;
 
     if (categoryDiscount != null) {
-      data['category_discount'] = categoryDiscount!.map((v) => v.toJson()).toList();
+      data['category_discount'] =
+          categoryDiscount!.map((v) => v.toJson()).toList();
     }
     if (campaignDiscount != null) {
-      data['campaign_discount'] = campaignDiscount!.map((v) => v.toJson()).toList();
+      data['campaign_discount'] =
+          campaignDiscount!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
+
 class ZonesBasicInfo {
   String? id;
   String? name;
@@ -416,12 +424,12 @@ class ZonesBasicInfo {
 
   ZonesBasicInfo(
       {this.id,
-        this.name,
-        this.coordinates,
-        this.isActive,
-        this.createdAt,
-        this.updatedAt,
-        this.pivot});
+      this.name,
+      this.coordinates,
+      this.isActive,
+      this.createdAt,
+      this.updatedAt,
+      this.pivot});
 
   ZonesBasicInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -454,6 +462,7 @@ class ZonesBasicInfo {
     return data;
   }
 }
+
 class Faqs {
   String? id;
   String? question;
@@ -465,12 +474,12 @@ class Faqs {
 
   Faqs(
       {this.id,
-        this.question,
-        this.answer,
-        this.serviceId,
-        this.isActive,
-        this.createdAt,
-        this.updatedAt});
+      this.question,
+      this.answer,
+      this.serviceId,
+      this.isActive,
+      this.createdAt,
+      this.updatedAt});
 
   Faqs.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -494,6 +503,7 @@ class Faqs {
     return data;
   }
 }
+
 class ServiceDiscount {
   int? id;
   String? discountId;
@@ -505,12 +515,12 @@ class ServiceDiscount {
 
   ServiceDiscount(
       {this.id,
-        this.discountId,
-        this.discountType,
-        this.typeWiseId,
-        this.createdAt,
-        this.updatedAt,
-        this.discount});
+      this.discountId,
+      this.discountType,
+      this.typeWiseId,
+      this.createdAt,
+      this.updatedAt,
+      this.discount});
 
   ServiceDiscount.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -519,9 +529,8 @@ class ServiceDiscount {
     typeWiseId = json['type_wise_id'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    discount = json['discount'] != null
-        ? Discount.fromJson(json['discount'])
-        : null;
+    discount =
+        json['discount'] != null ? Discount.fromJson(json['discount']) : null;
   }
 
   Map<String, dynamic> toJson() {

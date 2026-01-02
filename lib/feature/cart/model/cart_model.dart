@@ -1,5 +1,5 @@
-// import 'package:demandium/feature/provider/model/provider_model.dart';
-// import 'package:demandium/feature/service/model/service_model.dart';
+// import 'package:Vfix4u/feature/provider/model/provider_model.dart';
+// import 'package:Vfix4u/feature/service/model/service_model.dart';
 //
 // class CartModel {
 //   String? _id;
@@ -144,15 +144,13 @@
 //   }
 // }
 
-
 /////////////////////////////////////////////////////////
 
+import 'package:Vfix4u/feature/provider/model/provider_model.dart';
+import 'package:Vfix4u/feature/service/model/service_model.dart';
 
-import 'package:demandium/feature/provider/model/provider_model.dart';
-import 'package:demandium/feature/service/model/service_model.dart';
-
-import 'package:demandium/feature/provider/model/provider_model.dart';
-import 'package:demandium/feature/service/model/service_model.dart';
+import 'package:Vfix4u/feature/provider/model/provider_model.dart';
+import 'package:Vfix4u/feature/service/model/service_model.dart';
 
 class CartModel {
   String? _id;
@@ -176,26 +174,26 @@ class CartModel {
   String? _lowestAmount;
 
   CartModel(
-      String id,
-      String serviceId,
-      String categoryId,
-      String subCategoryId,
-      String variantKey,
-      num serviceCost,
-      int quantity,
-      num discountAmount,
-      num campaignDiscountAmount,
-      num couponDiscountAmount,
-      num referralDiscountAmount,
-      String? couponCode,
-      int? couponRemainingUses,
-      num taxAmount,
-      num totalCost,
-      Service service,
-      String lowestAmount, {
-        ProviderData? provider,
-        num? itemPrice,
-      }) {
+    String id,
+    String serviceId,
+    String categoryId,
+    String subCategoryId,
+    String variantKey,
+    num serviceCost,
+    int quantity,
+    num discountAmount,
+    num campaignDiscountAmount,
+    num couponDiscountAmount,
+    num referralDiscountAmount,
+    String? couponCode,
+    int? couponRemainingUses,
+    num taxAmount,
+    num totalCost,
+    Service service,
+    String lowestAmount, {
+    ProviderData? provider,
+    num? itemPrice,
+  }) {
     _id = id;
     _serviceId = serviceId;
     _categoryId = categoryId;
@@ -267,15 +265,13 @@ class CartModel {
     _referralDiscountAmount =
         double.tryParse(json['referral_discount'].toString());
     _couponCode = json['coupon_code'];
-    _couponRemainingUses =
-        int.tryParse(json['remaining_uses'].toString());
+    _couponRemainingUses = int.tryParse(json['remaining_uses'].toString());
     _taxAmount = json['tax_amount'];
     _totalCost = json['total_cost'];
     _lowestAmount = json['lowestAmount'];
     _itemPrice = json['item_price'] ?? 0; // Set default value to 0 if null
-    _service = json['service'] != null
-        ? Service.fromJson(json['service'])
-        : null;
+    _service =
+        json['service'] != null ? Service.fromJson(json['service']) : null;
     _provider = json['provider'] != null
         ? ProviderData.fromJson(json['provider'])
         : null;

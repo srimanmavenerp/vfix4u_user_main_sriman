@@ -1,4 +1,4 @@
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 import 'package:get/get.dart';
 
 class CreateAccountWidget extends StatelessWidget {
@@ -6,23 +6,27 @@ class CreateAccountWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<CheckOutController>(builder: (checkoutController){
-
-      return checkoutController.isCheckedCreateAccount ? _CreateAccountInputWidget(checkoutController) : Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: Theme.of(context).hintColor.withValues(alpha: 0.3), width: 0.5),
-          borderRadius: BorderRadius.circular(Dimensions.radiusSeven),
-          color: Theme.of(context).cardColor
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault, vertical: kIsWeb ? 8 : 2),
-        child: CustomCheckBox(
-          title: "create_account_with_existing_info".tr,
-          value: checkoutController.isCheckedCreateAccount,
-          onTap: () {
-           checkoutController.toggleIsCheckedCreateAccount();
-          },
-        ),
-      );
+    return GetBuilder<CheckOutController>(builder: (checkoutController) {
+      return checkoutController.isCheckedCreateAccount
+          ? _CreateAccountInputWidget(checkoutController)
+          : Container(
+              decoration: BoxDecoration(
+                  border: Border.all(
+                      color: Theme.of(context).hintColor.withValues(alpha: 0.3),
+                      width: 0.5),
+                  borderRadius: BorderRadius.circular(Dimensions.radiusSeven),
+                  color: Theme.of(context).cardColor),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: Dimensions.paddingSizeDefault,
+                  vertical: kIsWeb ? 8 : 2),
+              child: CustomCheckBox(
+                title: "create_account_with_existing_info".tr,
+                value: checkoutController.isCheckedCreateAccount,
+                onTap: () {
+                  checkoutController.toggleIsCheckedCreateAccount();
+                },
+              ),
+            );
     });
   }
 }
@@ -32,11 +36,11 @@ class _CreateAccountInputWidget extends StatefulWidget {
   const _CreateAccountInputWidget(this.checkoutController);
 
   @override
-  State<_CreateAccountInputWidget> createState() => _CreateAccountInputWidgetState();
+  State<_CreateAccountInputWidget> createState() =>
+      _CreateAccountInputWidgetState();
 }
 
 class _CreateAccountInputWidgetState extends State<_CreateAccountInputWidget> {
-
   final passwordFocus = FocusNode();
   final confirmPasswordFocus = FocusNode();
 
@@ -45,9 +49,12 @@ class _CreateAccountInputWidgetState extends State<_CreateAccountInputWidget> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-        color: ResponsiveHelper.isDesktop(context) ? Theme.of(context).cardColor : Theme.of(context).hintColor.withValues(alpha: 0.05),
+        color: ResponsiveHelper.isDesktop(context)
+            ? Theme.of(context).cardColor
+            : Theme.of(context).hintColor.withValues(alpha: 0.05),
       ),
-      padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
+      padding:
+          const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
       child: Form(
         autovalidateMode: AutovalidateMode.onUserInteraction,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -58,9 +65,10 @@ class _CreateAccountInputWidgetState extends State<_CreateAccountInputWidget> {
               widget.checkoutController.toggleIsCheckedCreateAccount();
             },
           ),
-
           Text("your_provided_contact_info_user_as".tr, style: robotoLight),
-          const SizedBox(height: Dimensions.paddingSizeDefault,),
+          const SizedBox(
+            height: Dimensions.paddingSizeDefault,
+          ),
           CustomTextField(
             title: 'password'.tr,
             hintText: '****************'.tr,
@@ -74,7 +82,6 @@ class _CreateAccountInputWidgetState extends State<_CreateAccountInputWidget> {
             isPassword: true,
           ),
           const SizedBox(height: Dimensions.paddingSizeLarge),
-
           CustomTextField(
             title: 'confirm_password'.tr,
             hintText: '****************'.tr,
@@ -84,9 +91,9 @@ class _CreateAccountInputWidgetState extends State<_CreateAccountInputWidget> {
             inputAction: TextInputAction.done,
             isPassword: true,
             onValidate: (String? value) {
-              if(value == null || value.isEmpty){
+              if (value == null || value.isEmpty) {
                 return 'this_field_can_not_empty'.tr;
-              }else{
+              } else {
                 return FormValidation().isValidConfirmPassword(
                   widget.checkoutController.passwordController.text,
                   widget.checkoutController.confirmPasswordController.text,
@@ -94,12 +101,9 @@ class _CreateAccountInputWidgetState extends State<_CreateAccountInputWidget> {
               }
             },
           ),
-
           const SizedBox(height: Dimensions.paddingSizeLarge),
-
         ]),
       ),
     );
   }
 }
-

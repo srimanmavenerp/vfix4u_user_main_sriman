@@ -1,9 +1,7 @@
-
-
 import 'package:get/get.dart';
-import 'package:demandium/utils/core_export.dart';
-import 'package:demandium/feature/booking/widget/booking_item_card.dart';
-import 'package:demandium/feature/booking/widget/booking_status_tabs.dart';
+import 'package:Vfix4u/utils/core_export.dart';
+import 'package:Vfix4u/feature/booking/widget/booking_item_card.dart';
+import 'package:Vfix4u/feature/booking/widget/booking_status_tabs.dart';
 
 class BookingListScreen extends StatefulWidget {
   final bool isFromMenu;
@@ -35,8 +33,6 @@ class _BookingListScreenState extends State<BookingListScreen> {
         .updateBookingStatusTabs(widget.initialTab, firstTimeCall: true);
     super.initState();
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -442,9 +438,9 @@ class FilterPopUpMenuWidget extends StatelessWidget {
 
 // import 'package:get/get.dart';
 // import 'package:flutter/material.dart';
-// import 'package:demandium/utils/core_export.dart';
-// import 'package:demandium/feature/booking/widget/booking_item_card.dart';
-// import 'package:demandium/feature/booking/widget/booking_status_tabs.dart';
+// import 'package:Vfix4u/utils/core_export.dart';
+// import 'package:Vfix4u/feature/booking/widget/booking_item_card.dart';
+// import 'package:Vfix4u/feature/booking/widget/booking_status_tabs.dart';
 //
 // class BookingListItemShimmer extends StatelessWidget {
 //   const BookingListItemShimmer({super.key});
@@ -729,9 +725,9 @@ class FilterPopUpMenuWidget extends StatelessWidget {
 
 // import 'package:get/get.dart';
 // import 'package:flutter/material.dart';
-// import 'package:demandium/utils/core_export.dart';
-// import 'package:demandium/feature/booking/widget/booking_item_card.dart';
-// import 'package:demandium/feature/booking/widget/booking_status_tabs.dart';
+// import 'package:Vfix4u/utils/core_export.dart';
+// import 'package:Vfix4u/feature/booking/widget/booking_item_card.dart';
+// import 'package:Vfix4u/feature/booking/widget/booking_status_tabs.dart';
 //
 // class BookingListItemShimmer extends StatelessWidget {
 //   const BookingListItemShimmer({super.key});

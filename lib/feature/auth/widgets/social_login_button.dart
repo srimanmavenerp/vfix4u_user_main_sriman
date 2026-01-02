@@ -1,5 +1,5 @@
-import 'package:demandium/feature/auth/widgets/existing_account_bottom_sheet.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/feature/auth/widgets/existing_account_bottom_sheet.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 import 'package:get/get.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 

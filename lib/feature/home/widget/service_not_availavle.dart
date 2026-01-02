@@ -1,5 +1,6 @@
+import 'package:Vfix4u/feature/location/view/access_location_screen.dart';
 import 'package:get/get.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 
 class ServiceNotAvailableScreen extends StatelessWidget {
   final String fromPage;
@@ -33,7 +34,8 @@ class ServiceNotAvailableScreen extends StatelessWidget {
         fromPage != "search_page"
             ? InkWell(
                 onTap: () {
-                  Get.toNamed(RouteHelper.getServiceArea());
+                  Get.toNamed(RouteHelper.getAccessLocationRoute('home'));
+                  // Get.toNamed(RouteHelper.getServiceArea());
                 },
                 child: Container(
                   decoration: BoxDecoration(

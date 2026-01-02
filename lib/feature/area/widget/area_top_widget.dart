@@ -1,4 +1,4 @@
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 import 'package:get/get.dart';
 
 class AreaTopWidget extends StatelessWidget {
@@ -8,16 +8,23 @@ class AreaTopWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: Dimensions.webMaxWidth,
-      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        const SizedBox(height: Dimensions.paddingSizeLarge),
-        Image.asset(Images.areaTopIcon, height: 60, width: 50),
-        const SizedBox(height: Dimensions.paddingSizeLarge),
-
-        Text("we_are_available_in_these_areas".tr, style: robotoMedium.copyWith( fontSize: Dimensions.fontSizeDefault), textAlign: TextAlign.center),
-        const SizedBox(height: Dimensions.paddingSizeSmall),
-
-        Text("get_you_desired_service".tr, style: robotoMedium.copyWith( fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).hintColor), textAlign: TextAlign.center),
-        const SizedBox(height: Dimensions.paddingSizeLarge),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const SizedBox(height: Dimensions.paddingSizeLarge),
+          Image.asset(Images.areaTopIcon, height: 60, width: 50),
+          const SizedBox(height: Dimensions.paddingSizeLarge),
+          Text("we_are_available_in_these_areas".tr,
+              style:
+                  robotoMedium.copyWith(fontSize: Dimensions.fontSizeDefault),
+              textAlign: TextAlign.center),
+          const SizedBox(height: Dimensions.paddingSizeSmall),
+          Text("get_you_desired_service".tr,
+              style: robotoMedium.copyWith(
+                  fontSize: Dimensions.fontSizeSmall,
+                  color: Theme.of(context).hintColor),
+              textAlign: TextAlign.center),
+          const SizedBox(height: Dimensions.paddingSizeLarge),
         ],
       ),
     );

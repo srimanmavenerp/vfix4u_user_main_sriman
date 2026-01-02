@@ -1,7 +1,7 @@
-import 'package:demandium/api/local/cache_response.dart';
-import 'package:demandium/helper/data_sync_helper.dart';
+import 'package:Vfix4u/api/local/cache_response.dart';
+import 'package:Vfix4u/helper/data_sync_helper.dart';
 import 'package:get/get.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 
 class SplashController extends GetxController implements GetxService {
   final SplashRepo splashRepo;

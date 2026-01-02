@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:get/get.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 
 class AuthRepo {
   final ApiClient apiClient;

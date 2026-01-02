@@ -1,7 +1,7 @@
 // import 'package:flutter/material.dart';
 // import 'package:get/get.dart';
-// import 'package:demandium/utils/core_export.dart';
-// import 'package:demandium/feature/booking/widget/booking_status_tabs.dart';
+// import 'package:Vfix4u/utils/core_export.dart';
+// import 'package:Vfix4u/feature/booking/widget/booking_status_tabs.dart';
 //
 // import '../repo/submit_review_repo.dart';
 //
@@ -582,12 +582,10 @@
 // }
 //
 
-
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:demandium/utils/core_export.dart';
-import 'package:demandium/feature/booking/widget/booking_status_tabs.dart';
+import 'package:Vfix4u/utils/core_export.dart';
+import 'package:Vfix4u/feature/booking/widget/booking_status_tabs.dart';
 
 class RateScreen extends StatefulWidget {
   final bool isFromMenu;
@@ -609,14 +607,17 @@ class _RateScreenState extends State<RateScreen> {
       isFromPagination: false,
       serviceType: "all",
     );
-    Get.find<ServiceBookingController>().updateBookingStatusTabs(BookingStatusTabs.completed, firstTimeCall: false);
+    Get.find<ServiceBookingController>().updateBookingStatusTabs(
+        BookingStatusTabs.completed,
+        firstTimeCall: false);
     Get.find<ServiceBookingController>().updateSelectedServiceType();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      endDrawer: ResponsiveHelper.isDesktop(context) ? const MenuDrawer() : null,
+      endDrawer:
+          ResponsiveHelper.isDesktop(context) ? const MenuDrawer() : null,
       appBar: CustomAppBar(
         isBackButtonExist: true, // Always show back button
         onBackPressed: () => Get.back(),
@@ -625,12 +626,11 @@ class _RateScreenState extends State<RateScreen> {
       ),
       body: GetBuilder<ServiceBookingController>(
         builder: (serviceBookingController) {
-          List<BookingModel>? bookingList = serviceBookingController.bookingList;
+          List<BookingModel>? bookingList =
+              serviceBookingController.bookingList;
           return CustomScrollView(
             controller: _scrollController,
             slivers: [
-
-
               SliverToBoxAdapter(
                 child: SizedBox(
                   height: ResponsiveHelper.isDesktop(context)
@@ -638,72 +638,86 @@ class _RateScreenState extends State<RateScreen> {
                       : Dimensions.paddingSizeSmall,
                 ),
               ),
-
               serviceBookingController.bookingList != null
                   ? SliverToBoxAdapter(
-                child: bookingList!.isNotEmpty
-                    ? Center(
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      maxWidth: Dimensions.webMaxWidth,
-                      minHeight: Get.height * 0.7,
-                    ),
-                    child: PaginatedListView(
-                      scrollController: _scrollController,
-                      totalSize: serviceBookingController.bookingContent!.total!,
-                      onPaginate: (int offset) async =>
-                      await serviceBookingController.getAllBookingService(
-                        offset: offset,
-                        bookingStatus: "completed",
-                        isFromPagination: true,
-                        serviceType: serviceBookingController.selectedServiceType.name,
-                      ),
-                      offset: serviceBookingController.bookingContent?.currentPage,
-                      itemView: GridView.builder(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: ResponsiveHelper.isDesktop(context)
-                              ? 0
-                              : Dimensions.paddingSizeDefault,
-                        ),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: ResponsiveHelper.isDesktop(context) ? 2 : 1,
-                          mainAxisExtent: Get.find<LocalizationController>().isLtr ? 180 : 215,
-                          crossAxisSpacing: Dimensions.paddingSizeDefault,
-                          mainAxisSpacing: Dimensions.paddingSizeDefault,
-                        ),
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: bookingList.length,
-                        itemBuilder: (context, index) {
-                          return BookingItemCard(
-                            bookingModel: bookingList[index],
-                            index: index,
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                )
-                    : Center(
-                  child: SizedBox(
-                    height: Get.height * 0.7,
-                    width: Dimensions.webMaxWidth,
-                    child: NoDataScreen(
-                      text: 'no_completed_booking_available'.tr,
-                      type: NoDataType.bookings,
-                    ),
-                  ),
-                ),
-              )
+                      child: bookingList!.isNotEmpty
+                          ? Center(
+                              child: ConstrainedBox(
+                                constraints: BoxConstraints(
+                                  maxWidth: Dimensions.webMaxWidth,
+                                  minHeight: Get.height * 0.7,
+                                ),
+                                child: PaginatedListView(
+                                  scrollController: _scrollController,
+                                  totalSize: serviceBookingController
+                                      .bookingContent!.total!,
+                                  onPaginate: (int offset) async =>
+                                      await serviceBookingController
+                                          .getAllBookingService(
+                                    offset: offset,
+                                    bookingStatus: "completed",
+                                    isFromPagination: true,
+                                    serviceType: serviceBookingController
+                                        .selectedServiceType.name,
+                                  ),
+                                  offset: serviceBookingController
+                                      .bookingContent?.currentPage,
+                                  itemView: GridView.builder(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal:
+                                          ResponsiveHelper.isDesktop(context)
+                                              ? 0
+                                              : Dimensions.paddingSizeDefault,
+                                    ),
+                                    gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount:
+                                          ResponsiveHelper.isDesktop(context)
+                                              ? 2
+                                              : 1,
+                                      mainAxisExtent:
+                                          Get.find<LocalizationController>()
+                                                  .isLtr
+                                              ? 180
+                                              : 215,
+                                      crossAxisSpacing:
+                                          Dimensions.paddingSizeDefault,
+                                      mainAxisSpacing:
+                                          Dimensions.paddingSizeDefault,
+                                    ),
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount: bookingList.length,
+                                    itemBuilder: (context, index) {
+                                      return BookingItemCard(
+                                        bookingModel: bookingList[index],
+                                        index: index,
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                            )
+                          : Center(
+                              child: SizedBox(
+                                height: Get.height * 0.7,
+                                width: Dimensions.webMaxWidth,
+                                child: NoDataScreen(
+                                  text: 'no_completed_booking_available'.tr,
+                                  type: NoDataType.bookings,
+                                ),
+                              ),
+                            ),
+                    )
                   : const SliverToBoxAdapter(
-                child: Center(
-                  child: SizedBox(
-                    width: Dimensions.webMaxWidth,
-                    child: BookingListItemShimmer(),
-                  ),
-                ),
-              ),
-
+                      child: Center(
+                        child: SizedBox(
+                          width: Dimensions.webMaxWidth,
+                          child: BookingListItemShimmer(),
+                        ),
+                      ),
+                    ),
               SliverToBoxAdapter(
                 child: ResponsiveHelper.isDesktop(context)
                     ? const FooterView()
@@ -751,12 +765,12 @@ class BookingListItemShimmer extends StatelessWidget {
                 boxShadow: Get.isDarkMode
                     ? null
                     : [
-                  BoxShadow(
-                    color: Colors.grey[300]!,
-                    blurRadius: 10,
-                    spreadRadius: 1,
-                  )
-                ],
+                        BoxShadow(
+                          color: Colors.grey[300]!,
+                          blurRadius: 10,
+                          spreadRadius: 1,
+                        )
+                      ],
               ),
               padding: const EdgeInsets.symmetric(
                 horizontal: Dimensions.paddingSizeDefault,
@@ -833,7 +847,8 @@ class BookingListItemShimmer extends StatelessWidget {
 
 class ServiceRequestTopTitle extends SliverPersistentHeaderDelegate {
   @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
     return GetBuilder<ServiceBookingController>(
       builder: (serviceBookingController) {
         return Container(
@@ -841,11 +856,13 @@ class ServiceRequestTopTitle extends SliverPersistentHeaderDelegate {
           padding: const EdgeInsets.symmetric(vertical: 8),
           child: Center(
             child: Text(
-              serviceBookingController.selectedServiceType == ServiceType.regular
+              serviceBookingController.selectedServiceType ==
+                      ServiceType.regular
                   ? "regular_booking".tr
-                  : serviceBookingController.selectedServiceType == ServiceType.repeat
-                  ? "repeat_booking".tr
-                  : "all_booking".tr,
+                  : serviceBookingController.selectedServiceType ==
+                          ServiceType.repeat
+                      ? "repeat_booking".tr
+                      : "all_booking".tr,
               style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeLarge),
             ),
           ),
@@ -868,10 +885,12 @@ class ServiceRequestTopTitle extends SliverPersistentHeaderDelegate {
 
 class ServiceRequestSectionMenu extends SliverPersistentHeaderDelegate {
   @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
       color: Theme.of(context).scaffoldBackgroundColor,
-      padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault, vertical: 8),
+      padding: const EdgeInsets.symmetric(
+          horizontal: Dimensions.paddingSizeDefault, vertical: 8),
       child: GetBuilder<ServiceBookingController>(
         builder: (controller) {
           return SingleChildScrollView(
@@ -880,9 +899,11 @@ class ServiceRequestSectionMenu extends SliverPersistentHeaderDelegate {
               children: [
                 _buildTab(context, controller, "all_booking", ServiceType.all),
                 const SizedBox(width: Dimensions.paddingSizeSmall),
-                _buildTab(context, controller, "regular_booking", ServiceType.regular),
+                _buildTab(context, controller, "regular_booking",
+                    ServiceType.regular),
                 const SizedBox(width: Dimensions.paddingSizeSmall),
-                _buildTab(context, controller, "repeat_booking", ServiceType.repeat),
+                _buildTab(
+                    context, controller, "repeat_booking", ServiceType.repeat),
               ],
             ),
           );
@@ -891,7 +912,8 @@ class ServiceRequestSectionMenu extends SliverPersistentHeaderDelegate {
     );
   }
 
-  Widget _buildTab(BuildContext context, ServiceBookingController controller, String label, ServiceType type) {
+  Widget _buildTab(BuildContext context, ServiceBookingController controller,
+      String label, ServiceType type) {
     bool isSelected = controller.selectedServiceType == type;
     return InkWell(
       onTap: () {
@@ -914,13 +936,17 @@ class ServiceRequestSectionMenu extends SliverPersistentHeaderDelegate {
               : Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
           border: Border.all(
-            color: isSelected ? Theme.of(context).colorScheme.primary : Theme.of(context).hintColor.withOpacity(0.3),
+            color: isSelected
+                ? Theme.of(context).colorScheme.primary
+                : Theme.of(context).hintColor.withOpacity(0.3),
           ),
         ),
         child: Text(
           label.tr,
           style: robotoMedium.copyWith(
-            color: isSelected ? Theme.of(context).colorScheme.primary : Theme.of(context).hintColor,
+            color: isSelected
+                ? Theme.of(context).colorScheme.primary
+                : Theme.of(context).hintColor,
             fontSize: Dimensions.fontSizeDefault,
           ),
         ),
@@ -955,8 +981,10 @@ class FilterPopUpMenuWidget extends StatelessWidget {
 
         return PopupMenuButton<String>(
           shape: RoundedRectangleBorder(
-            borderRadius: const BorderRadius.all(Radius.circular(Dimensions.radiusSmall)),
-            side: BorderSide(color: Theme.of(context).hintColor.withValues(alpha: 0.1)),
+            borderRadius:
+                const BorderRadius.all(Radius.circular(Dimensions.radiusSmall)),
+            side: BorderSide(
+                color: Theme.of(context).hintColor.withValues(alpha: 0.1)),
           ),
           surfaceTintColor: Theme.of(context).cardColor,
           position: PopupMenuPosition.under,
@@ -969,50 +997,57 @@ class FilterPopUpMenuWidget extends StatelessWidget {
               ServiceType type = option == "regular_booking"
                   ? ServiceType.regular
                   : option == "repeat_booking"
-                  ? ServiceType.repeat
-                  : ServiceType.all;
+                      ? ServiceType.repeat
+                      : ServiceType.all;
               return PopupMenuItem<String>(
                 value: option,
                 padding: EdgeInsets.zero,
                 height: 45,
                 child: serviceBookingController.selectedServiceType == type
                     ? Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: Theme.of(context).colorScheme.primary.withValues(alpha: Get.isDarkMode ? 0.2 : 0.08),
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: Dimensions.paddingSizeDefault,
-                    vertical: 12,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        option.tr,
-                        style: robotoRegular.copyWith(color: Theme.of(context).colorScheme.primary),
-                      ),
-                    ],
-                  ),
-                )
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: Theme.of(context)
+                              .colorScheme
+                              .primary
+                              .withValues(alpha: Get.isDarkMode ? 0.2 : 0.08),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: Dimensions.paddingSizeDefault,
+                          vertical: 12,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              option.tr,
+                              style: robotoRegular.copyWith(
+                                  color: Theme.of(context).colorScheme.primary),
+                            ),
+                          ],
+                        ),
+                      )
                     : Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
-                  child: Text(option.tr, style: robotoRegular),
-                ),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: Dimensions.paddingSizeDefault),
+                        child: Text(option.tr, style: robotoRegular),
+                      ),
                 onTap: () {
-                  Get.find<ServiceBookingController>().updateSelectedServiceType(
+                  Get.find<ServiceBookingController>()
+                      .updateSelectedServiceType(
                     type: option == "regular_booking"
                         ? ServiceType.regular
                         : option == "repeat_booking"
-                        ? ServiceType.repeat
-                        : ServiceType.all,
+                            ? ServiceType.repeat
+                            : ServiceType.all,
                   );
                 },
               );
             }).toList();
           },
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
+            padding: const EdgeInsets.symmetric(
+                horizontal: Dimensions.paddingSizeDefault),
             child: Stack(
               alignment: AlignmentDirectional.center,
               clipBehavior: Clip.none,
@@ -1023,7 +1058,8 @@ class FilterPopUpMenuWidget extends StatelessWidget {
                       ? Theme.of(context).colorScheme.primary
                       : null,
                 ),
-                if (serviceBookingController.selectedServiceType != ServiceType.all)
+                if (serviceBookingController.selectedServiceType !=
+                    ServiceType.all)
                   Positioned(
                     right: -5,
                     bottom: ResponsiveHelper.isDesktop(context) ? 0 : 13,
@@ -1093,9 +1129,11 @@ class _BookingItemCardState extends State<BookingItemCard> {
     print('Booking ID: ${widget.bookingModel.id}');
     print('Service ID: ${widget.bookingModel.customerId}');
     print('Rating: $_rating');
-    print('Comment: ${widget.showCommentField ? _commentController.text.trim() : ''}');
+    print(
+        'Comment: ${widget.showCommentField ? _commentController.text.trim() : ''}');
 
-    final response = await Get.find<new_SubmitReviewRepo>().submitReview(reviewBody: reviewBody);
+    final response = await Get.find<new_SubmitReviewRepo>()
+        .submitReview(reviewBody: reviewBody);
 
     print('Response status code: ${response.statusCode}');
     print('Response body: ${response.body}');
@@ -1141,42 +1179,52 @@ class _BookingItemCardState extends State<BookingItemCard> {
                 children: [
                   Row(
                     children: [
-                      Text('${'booking'.tr}# ${widget.bookingModel.readableId}', style: robotoBold.copyWith()),
+                      Text('${'booking'.tr}# ${widget.bookingModel.readableId}',
+                          style: robotoBold.copyWith()),
                       if (widget.bookingModel.isRepeatBooking == 1)
                         Container(
-                          decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.green),
+                          decoration: const BoxDecoration(
+                              shape: BoxShape.circle, color: Colors.green),
                           padding: const EdgeInsets.all(2),
-                          margin: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeExtraSmall),
-                          child: const Icon(Icons.repeat, color: Colors.white, size: 10),
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: Dimensions.paddingSizeExtraSmall),
+                          child: const Icon(Icons.repeat,
+                              color: Colors.white, size: 10),
                         ),
                     ],
                   ),
-                  SizedBox(height:12),
+                  SizedBox(height: 12),
 
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Text(
                       DateConverter.dateMonthYearTimeTwentyFourFormat(
-                        DateConverter.isoUtcStringToLocalDate(widget.bookingModel.createdAt.toString()),
+                        DateConverter.isoUtcStringToLocalDate(
+                            widget.bookingModel.createdAt.toString()),
                       ),
                       textDirection: TextDirection.ltr,
                       style: robotoRegular.copyWith(
                         fontSize: Dimensions.fontSizeSmall,
-                        color: Theme.of(context).textTheme.bodyLarge!.color!.withOpacity(0.6),
+                        color: Theme.of(context)
+                            .textTheme
+                            .bodyLarge!
+                            .color!
+                            .withOpacity(0.6),
                       ),
                     ),
                   ),
-                  SizedBox(height:12),
-              
+                  SizedBox(height: 12),
+
                   Text(
-                    PriceConverter.convertPrice(widget.bookingModel.totalBookingAmount ?? 0),
+                    PriceConverter.convertPrice(
+                        widget.bookingModel.totalBookingAmount ?? 0),
                     style: robotoMedium.copyWith(
                       fontSize: Dimensions.fontSizeDefault,
                       color: Theme.of(context).colorScheme.primary,
                     ),
                   ),
-                  const SizedBox(height:6),
-              
+                  const SizedBox(height: 6),
+
                   /// ⭐ Star Rating Row
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
@@ -1188,8 +1236,12 @@ class _BookingItemCardState extends State<BookingItemCard> {
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
                               icon: Icon(
-                                index < _rating ? Icons.star : Icons.star_border,
-                                color: Theme.of(context).colorScheme.primary, // Fixed color issue
+                                index < _rating
+                                    ? Icons.star
+                                    : Icons.star_border,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .primary, // Fixed color issue
                                 size: 18,
                               ),
                               onPressed: () {
@@ -1204,13 +1256,15 @@ class _BookingItemCardState extends State<BookingItemCard> {
                         ElevatedButton(
                           onPressed: _submitReview,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Theme.of(context).colorScheme.primary,
+                            backgroundColor:
+                                Theme.of(context).colorScheme.primary,
                             padding: const EdgeInsets.symmetric(
                               horizontal: Dimensions.paddingSizeSmall,
                               vertical: Dimensions.paddingSizeExtraSmall,
                             ),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
+                              borderRadius:
+                                  BorderRadius.circular(Dimensions.radiusSmall),
                             ),
                             minimumSize: const Size(60, 30),
                           ),
@@ -1225,7 +1279,7 @@ class _BookingItemCardState extends State<BookingItemCard> {
                       ],
                     ),
                   ),
-              
+
                   if (widget.showCommentField) ...[
                     const SizedBox(height: Dimensions.paddingSizeSmall),
                     TextField(
@@ -1233,7 +1287,8 @@ class _BookingItemCardState extends State<BookingItemCard> {
                       decoration: InputDecoration(
                         hintText: 'Write your review',
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
+                          borderRadius:
+                              BorderRadius.circular(Dimensions.radiusSmall),
                           borderSide: const BorderSide(color: Colors.grey),
                         ),
                         contentPadding: const EdgeInsets.symmetric(
@@ -1252,27 +1307,26 @@ class _BookingItemCardState extends State<BookingItemCard> {
               ),
             ),
           ),
-
         ],
       ),
     );
   }
 }
 
-
-class new_SubmitReviewRepo{
+class new_SubmitReviewRepo {
   final SharedPreferences sharedPreferences;
   final ApiClient apiClient;
 
-  new_SubmitReviewRepo({required this.sharedPreferences,required this.apiClient});
+  new_SubmitReviewRepo(
+      {required this.sharedPreferences, required this.apiClient});
 
   Future<Response> submitReview({required ReviewBody reviewBody}) async {
-    return await apiClient.postData(AppConstants.serviceReview, reviewBody.toJson());
+    return await apiClient.postData(
+        AppConstants.serviceReview, reviewBody.toJson());
   }
+
   Future<Response> getReviewList({required String bookingId}) async {
-    return await apiClient.getData('${AppConstants.bookingReviewList}?booking_id=$bookingId');
+    return await apiClient
+        .getData('${AppConstants.bookingReviewList}?booking_id=$bookingId');
   }
 }
-
-
-

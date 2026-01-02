@@ -1,4 +1,4 @@
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 import 'package:get/get.dart';
 
 class UpdateProfileScreen extends StatefulWidget {
@@ -253,12 +253,12 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
       // String refcode = refcontroller.text.toString();
       if (widget.tempToken != "") {
         await authController.registerWithSocialMedia(
-            firstName: firstName,
-            lastName: lastName,
-            email: widget.email,
-            phone: phone,
-            // refcode: refcode
-            );
+          firstName: firstName,
+          lastName: lastName,
+          email: widget.email,
+          phone: phone,
+          // refcode: refcode
+        );
       } else {
         await authController.updateNewUserProfileAndLogin(
             firstName: firstName,

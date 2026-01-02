@@ -1,18 +1,18 @@
 // import 'dart:async';
-// import 'package:demandium/common/widgets/custom_image.dart';
-// import 'package:demandium/common/widgets/custom_shaking_widget.dart';
-// import 'package:demandium/common/widgets/footer_base_view.dart';
-// import 'package:demandium/feature/language/controller/localization_controller.dart';
-// import 'package:demandium/common/models/config_model.dart';
-// import 'package:demandium/feature/splash/controller/splash_controller.dart';
-// import 'package:demandium/feature/web_landing/controller/web_landing_controller.dart';
-// import 'package:demandium/feature/web_landing/widget/live_chat_button.dart';
-// import 'package:demandium/feature/web_landing/widget/web_landing_search_box.dart';
-// import 'package:demandium/feature/web_landing/widget/web_landing_shimmer.dart';
-// import 'package:demandium/feature/web_landing/widget/web_mid_section.dart';
-// import 'package:demandium/utils/dimensions.dart';
-// import 'package:demandium/utils/images.dart';
-// import 'package:demandium/utils/styles.dart';
+// import 'package:Vfix4u/common/widgets/custom_image.dart';
+// import 'package:Vfix4u/common/widgets/custom_shaking_widget.dart';
+// import 'package:Vfix4u/common/widgets/footer_base_view.dart';
+// import 'package:Vfix4u/feature/language/controller/localization_controller.dart';
+// import 'package:Vfix4u/common/models/config_model.dart';
+// import 'package:Vfix4u/feature/splash/controller/splash_controller.dart';
+// import 'package:Vfix4u/feature/web_landing/controller/web_landing_controller.dart';
+// import 'package:Vfix4u/feature/web_landing/widget/live_chat_button.dart';
+// import 'package:Vfix4u/feature/web_landing/widget/web_landing_search_box.dart';
+// import 'package:Vfix4u/feature/web_landing/widget/web_landing_shimmer.dart';
+// import 'package:Vfix4u/feature/web_landing/widget/web_mid_section.dart';
+// import 'package:Vfix4u/utils/dimensions.dart';
+// import 'package:Vfix4u/utils/images.dart';
+// import 'package:Vfix4u/utils/styles.dart';
 // import 'package:flutter/material.dart';
 // import 'package:get/get.dart';
 // import 'package:url_launcher/url_launcher_string.dart';
@@ -468,9 +468,9 @@
 //     return true;
 //   }
 // }import 'package:flutter/material.dart';
-import 'package:demandium/common/widgets/custom_app_bar.dart';
-import 'package:demandium/helper/route_helper.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/common/widgets/custom_app_bar.dart';
+import 'package:Vfix4u/helper/route_helper.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 import 'package:flutter/foundation.dart';
 // import 'dart:html' as html; // Only for Web
 import 'package:flutter/material.dart';
@@ -1129,73 +1129,77 @@ class VFix4UHomePage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Phone
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset("assets/landingservices/call.png",
-                        height: iconSize, width: iconSize),
-                    const SizedBox(height: 6),
-                    Text(
-                      'VFix4U\n'
-                      '+91 84999 55909',
-                      style: TextStyle(
-                          fontSize: isMobile ? 14 : 18,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
+                GestureDetector(
+                  onTap: _launchPhone,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset("assets/landingservices/call.png",
+                          height: iconSize, width: iconSize),
+                      const SizedBox(height: 6),
+                      Text(
+                        'VFix4U\n+91 84999 55909',
+                        style: TextStyle(
+                            fontSize: isMobile ? 14 : 18,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(width: 100),
 
                 // Location
                 Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Image.asset("assets/landingservices/map.png",
-                          height: iconSize, width: iconSize),
-                      const SizedBox(height: 6),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 25),
-                        child: Text(
-                          'VFix4U\n'
-                          '4th Floor, Church Colony Rd, beside Heritage Food Limited, \n'
-                          'beside Sai Baba Temple Industrial Park, Laxmi Narayan \nNagar Colony, '
-                          'Uppal, Hyderabad, Telangana 500039',
-                          style: TextStyle(
-                              fontSize: isMobile ? 12 : 18,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold),
-                          softWrap: true,
-                          textAlign: TextAlign.center,
+                  child: GestureDetector(
+                    onTap: _launchMap,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Image.asset("assets/landingservices/map.png",
+                            height: iconSize, width: iconSize),
+                        const SizedBox(height: 6),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 25),
+                          child: Text(
+                            'VFix4U\n4th Floor, Church Colony Rd, beside Heritage Food Limited, \nbeside Sai Baba Temple Industrial Park, Laxmi Narayan \nNagar Colony, Uppal, Hyderabad, Telangana 500039',
+                            style: TextStyle(
+                                fontSize: isMobile ? 12 : 18,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
+                            softWrap: true,
+                            textAlign: TextAlign.center,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-
                 const SizedBox(width: 100),
 
                 // Email
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset("assets/landingservices/msg.png",
-                        height: iconSize, width: iconSize),
-                    const SizedBox(height: 6),
-                    Text('contact@vfix4u.com',
-                        style: TextStyle(
-                            fontSize: isMobile ? 14 : 18,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold)),
-                  ],
+                GestureDetector(
+                  onTap: _launchEmail,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset("assets/landingservices/msg.png",
+                          height: iconSize, width: iconSize),
+                      const SizedBox(height: 6),
+                      Text('contact@vfix4u.com',
+                          style: TextStyle(
+                              fontSize: isMobile ? 14 : 18,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold)),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -1203,21 +1207,54 @@ class VFix4UHomePage extends StatelessWidget {
           const SizedBox(height: 24),
 
           // Social Media Icons
-          const Center(
+          Center(
             child: Wrap(
               spacing: 16,
               children: [
-                ImageIcon(AssetImage("assets/landingservices/linkedin.png"),
-                    size: 24),
-                ImageIcon(AssetImage("assets/landingservices/insta.png"),
-                    size: 24),
-                ImageIcon(AssetImage("assets/landingservices/facebook.png"),
-                    size: 24),
-                ImageIcon(AssetImage("assets/landingservices/x.png"), size: 24),
-                ImageIcon(AssetImage("assets/landingservices/whatsapp.png"),
-                    size: 24),
-                ImageIcon(AssetImage("assets/landingservices/youtube.png"),
-                    size: 24),
+                GestureDetector(
+                  onTap: () => openLink(
+                      "https://www.linkedin.com/company/vfix4u/posts/?feedView=all"),
+                  child: ImageIcon(
+                    AssetImage("assets/landingservices/linkedin.png"),
+                    size: 24,
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () => openLink("https://www.instagram.com/vfix.4u/"),
+                  child: ImageIcon(
+                    AssetImage("assets/landingservices/insta.png"),
+                    size: 24,
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () => openLink(
+                      "https://www.facebook.com/profile.php?id=61560558600643"),
+                  child: ImageIcon(
+                    AssetImage("assets/landingservices/facebook.png"),
+                    size: 24,
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () => openLink("https://x.com/vfix4uapp"),
+                  child: ImageIcon(
+                    AssetImage("assets/landingservices/x.png"),
+                    size: 24,
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () => openLink("https://wa.me/918499955909"),
+                  child: ImageIcon(
+                    AssetImage("assets/landingservices/whatsapp.png"),
+                    size: 24,
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () => openLink("https://www.youtube.com/@VFix4u"),
+                  child: ImageIcon(
+                    AssetImage("assets/landingservices/youtube.png"),
+                    size: 24,
+                  ),
+                ),
               ],
             ),
           ),
@@ -1257,5 +1294,29 @@ class VFix4UHomePage extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+void openLink(String url) async {
+  final Uri uri = Uri.parse(url);
+  if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+    throw 'Could not launch $url';
+  }
+}
+
+void _launchPhone() async {
+  final Uri uri = Uri.parse('tel:+918499955909');
+  if (!await launchUrl(uri)) throw 'Could not launch $uri';
+}
+
+void _launchEmail() async {
+  final Uri uri = Uri.parse('mailto:contact@vfix4u.com');
+  if (!await launchUrl(uri)) throw 'Could not launch $uri';
+}
+
+void _launchMap() async {
+  final Uri uri = Uri.parse('https://maps.app.goo.gl/TUjNSi2ksUrbX5Jk9');
+  if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+    throw 'Could not launch $uri';
   }
 }

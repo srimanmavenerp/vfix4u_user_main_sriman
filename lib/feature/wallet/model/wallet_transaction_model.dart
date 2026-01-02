@@ -1,13 +1,13 @@
-import 'package:demandium/feature/loyalty_point/model/loyalty_point_model.dart';
+import 'package:Vfix4u/feature/loyalty_point/model/loyalty_point_model.dart';
 
 class WalletTransactionModel {
-
   WalletTransactionContent? content;
   WalletTransactionModel({this.content});
 
   WalletTransactionModel.fromJson(Map<String, dynamic> json) {
-    content = json['content'] != null ? WalletTransactionContent.fromJson(json['content']) : null;
-
+    content = json['content'] != null
+        ? WalletTransactionContent.fromJson(json['content'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -41,4 +41,3 @@ class WalletTransactionContent {
     return data;
   }
 }
-

@@ -1,17 +1,22 @@
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 
 class ServiceBookingList {
   String? responseCode;
   String? message;
   BookingContent? content;
 
-  ServiceBookingList({this.responseCode, this.message, this.content,});
+  ServiceBookingList({
+    this.responseCode,
+    this.message,
+    this.content,
+  });
 
   ServiceBookingList.fromJson(Map<String, dynamic> json) {
     responseCode = json['response_code'];
     message = json['message'];
-    content = json['content'] != null ? BookingContent.fromJson(json['content']) : null;
-
+    content = json['content'] != null
+        ? BookingContent.fromJson(json['content'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -40,15 +45,15 @@ class BookingContent {
 
   BookingContent(
       {this.currentPage,
-        this.bookingModel,
-        this.firstPageUrl,
-        this.from,
-        this.lastPage,
-        this.lastPageUrl,
-        this.path,
-        this.perPage,
-        this.to,
-        this.total});
+      this.bookingModel,
+      this.firstPageUrl,
+      this.from,
+      this.lastPage,
+      this.lastPageUrl,
+      this.path,
+      this.perPage,
+      this.to,
+      this.total});
 
   BookingContent.fromJson(Map<String, dynamic> json) {
     currentPage = json['current_page'];
@@ -108,7 +113,8 @@ class BookingModel {
   int? isRepeatBooking;
   List<RepeatBooking>? repeatBookingList;
 
-  BookingModel({this.id,
+  BookingModel({
+    this.id,
     this.readableId,
     this.customerId,
     this.providerId,
@@ -141,9 +147,11 @@ class BookingModel {
     isPaid = json['is_paid'];
     paymentMethod = json['payment_method'];
     transactionId = json['transaction_id'];
-    totalBookingAmount = double.tryParse(json['total_booking_amount'].toString());
-    totalTaxAmount = double.tryParse( json['total_tax_amount'].toString());
-    totalDiscountAmount = double.tryParse(json['total_discount_amount'].toString());
+    totalBookingAmount =
+        double.tryParse(json['total_booking_amount'].toString());
+    totalTaxAmount = double.tryParse(json['total_tax_amount'].toString());
+    totalDiscountAmount =
+        double.tryParse(json['total_discount_amount'].toString());
     serviceSchedule = json['service_schedule'];
     serviceAddressId = json['service_address_id'];
     createdAt = json['created_at'];
@@ -212,14 +220,14 @@ class RepeatBooking {
   ServiceAddress? serviceAddress;
   Serviceman? serviceman;
   ProviderData? provider;
-  String ? totalCampaignDiscountAmount;
-  String ? totalCouponDiscountAmount;
-  double ? additionalCharge;
+  String? totalCampaignDiscountAmount;
+  String? totalCouponDiscountAmount;
+  double? additionalCharge;
   List<String>? photoEvidence;
   List<String>? photoEvidenceFullPath;
   double? extraFee;
   int? isGuest;
-  double ? totalReferralDiscountAmount;
+  double? totalReferralDiscountAmount;
 
   RepeatBooking({
     this.id,
@@ -267,9 +275,11 @@ class RepeatBooking {
     isPaid = json['is_paid'];
     paymentMethod = json['payment_method'];
     transactionId = json['transaction_id'];
-    totalBookingAmount = double.tryParse(json['total_booking_amount'].toString());
+    totalBookingAmount =
+        double.tryParse(json['total_booking_amount'].toString());
     totalTaxAmount = double.tryParse(json['total_tax_amount'].toString());
-    totalDiscountAmount = double.tryParse(json['total_discount_amount'].toString());
+    totalDiscountAmount =
+        double.tryParse(json['total_discount_amount'].toString());
     serviceSchedule = json['service_schedule'];
     serviceAddressId = json['service_address_id'];
     createdAt = json['created_at'];
@@ -292,7 +302,6 @@ class RepeatBooking {
     if (json['status_histories'] != null) {
       statusHistories = <StatusHistories>[];
       json['status_histories'].forEach((v) {
-
         statusHistories!.add(StatusHistories.fromJson(v));
       });
     }
@@ -310,12 +319,18 @@ class RepeatBooking {
     serviceman = json['serviceman'] != null
         ? Serviceman.fromJson(json['serviceman'])
         : null;
-    totalCampaignDiscountAmount = json['total_campaign_discount_amount'].toString();
-    totalCouponDiscountAmount =json['total_coupon_discount_amount'].toString();
+    totalCampaignDiscountAmount =
+        json['total_campaign_discount_amount'].toString();
+    totalCouponDiscountAmount = json['total_coupon_discount_amount'].toString();
     additionalCharge = double.tryParse(json['additional_charge'].toString());
-    totalReferralDiscountAmount = double.tryParse(json['total_referral_discount_amount'].toString());
-    photoEvidence = json["evidence_photos"]!=null? json["evidence_photos"].cast<String>(): [];
-    photoEvidenceFullPath = json["evidence_photos_full_path"]!=null? json["evidence_photos_full_path"].cast<String>(): [];
+    totalReferralDiscountAmount =
+        double.tryParse(json['total_referral_discount_amount'].toString());
+    photoEvidence = json["evidence_photos"] != null
+        ? json["evidence_photos"].cast<String>()
+        : [];
+    photoEvidenceFullPath = json["evidence_photos_full_path"] != null
+        ? json["evidence_photos_full_path"].cast<String>()
+        : [];
     extraFee = double.tryParse(json["extra_fee"].toString());
     isGuest = int.tryParse(json["is_guest"].toString());
   }

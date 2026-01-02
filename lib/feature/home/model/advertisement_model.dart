@@ -1,4 +1,4 @@
-import 'package:demandium/feature/provider/model/provider_model.dart';
+import 'package:Vfix4u/feature/provider/model/provider_model.dart';
 
 class AdvertisementModel {
   String? responseCode;
@@ -10,8 +10,9 @@ class AdvertisementModel {
   AdvertisementModel.fromJson(Map<String, dynamic> json) {
     responseCode = json['response_code'];
     message = json['message'];
-    content =
-    json['content'] != null ? AdvertisementContent.fromJson(json['content']) : null;
+    content = json['content'] != null
+        ? AdvertisementContent.fromJson(json['content'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -33,13 +34,13 @@ class AdvertisementContent {
   int? lastPage;
   int? total;
 
-  AdvertisementContent({this.currentPage,
-    this.data,
-    this.firstPageUrl,
-    this.from,
-    this.lastPage,
-    this.total
-  });
+  AdvertisementContent(
+      {this.currentPage,
+      this.data,
+      this.firstPageUrl,
+      this.from,
+      this.lastPage,
+      this.total});
 
   AdvertisementContent.fromJson(Map<String, dynamic> json) {
     currentPage = json['current_page'];
@@ -95,28 +96,27 @@ class Advertisement {
 
   Advertisement(
       {this.id,
-        this.readableId,
-        this.title,
-        this.description,
-        this.providerId,
-        this.priority,
-        this.type,
-        this.isPaid,
-        this.startDate,
-        this.endDate,
-        this.status,
-        this.createdAt,
-        this.updatedAt,
-        this.promotionalVideo,
-        this.promotionalVideoFullPath,
-        this.providerCoverImage,
-        this.providerCoverImageFullPath,
-        this.providerProfileImage,
-        this.providerProfileImageFullPath,
-        this.providerReview,
-        this.providerRating,
-        this.providerData
-      });
+      this.readableId,
+      this.title,
+      this.description,
+      this.providerId,
+      this.priority,
+      this.type,
+      this.isPaid,
+      this.startDate,
+      this.endDate,
+      this.status,
+      this.createdAt,
+      this.updatedAt,
+      this.promotionalVideo,
+      this.promotionalVideoFullPath,
+      this.providerCoverImage,
+      this.providerCoverImageFullPath,
+      this.providerProfileImage,
+      this.providerProfileImageFullPath,
+      this.providerReview,
+      this.providerRating,
+      this.providerData});
 
   Advertisement.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -140,7 +140,9 @@ class Advertisement {
     providerProfileImageFullPath = json['provider_profile_image_full_path'];
     providerReview = json['provider_review'];
     providerRating = json['provider_rating'];
-    providerData = json['provider'] != null ? ProviderData.fromJson(json['provider']) : null;
+    providerData = json['provider'] != null
+        ? ProviderData.fromJson(json['provider'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -172,4 +174,3 @@ class Advertisement {
     return data;
   }
 }
-

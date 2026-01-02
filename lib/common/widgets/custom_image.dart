@@ -1,4 +1,4 @@
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 
 class CustomImage extends StatelessWidget {
   final String? image;
@@ -7,16 +7,38 @@ class CustomImage extends StatelessWidget {
   final BoxFit? fit;
   final BoxFit? placeHolderBoxFit;
   final String? placeholder;
-  const CustomImage({super.key, @required this.image, this.height, this.width, this.fit = BoxFit.cover, this.placeholder, this.placeHolderBoxFit });
+  const CustomImage(
+      {super.key,
+      @required this.image,
+      this.height,
+      this.width,
+      this.fit = BoxFit.cover,
+      this.placeholder,
+      this.placeHolderBoxFit});
 
   @override
   Widget build(BuildContext context) {
-    return kIsWeb ? Image.network(image!, height: height, width: width, fit: fit, errorBuilder: (context, error, stackTrace) {
-      return Image.asset(placeholder ?? Images.placeholder, height: height, width: width, fit: placeHolderBoxFit ?? fit);
-    }) : CachedNetworkImage(
-      imageUrl: image! , height: height, width: width, fit: fit,
-      placeholder: (context, url) => Image.asset(placeholder ?? Images.placeholder, height: height, width: width, fit: placeHolderBoxFit ?? fit),
-      errorWidget: (context, url, error) => Image.asset(placeholder ?? Images.placeholder, height: height, width: width, fit: placeHolderBoxFit ?? fit),
-    );
+    return kIsWeb
+        ? Image.network(image!, height: height, width: width, fit: fit,
+            errorBuilder: (context, error, stackTrace) {
+            return Image.asset(placeholder ?? Images.placeholder,
+                height: height, width: width, fit: placeHolderBoxFit ?? fit);
+          })
+        : CachedNetworkImage(
+            imageUrl: image!,
+            height: height,
+            width: width,
+            fit: fit,
+            placeholder: (context, url) => Image.asset(
+                placeholder ?? Images.placeholder,
+                height: height,
+                width: width,
+                fit: placeHolderBoxFit ?? fit),
+            errorWidget: (context, url, error) => Image.asset(
+                placeholder ?? Images.placeholder,
+                height: height,
+                width: width,
+                fit: placeHolderBoxFit ?? fit),
+          );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'utils/core_export.dart';
 import 'helper/get_di.dart' as di;
+// import 'dart:html' as html;
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -36,6 +37,32 @@ Future<void> main() async {
   } else {
     await Firebase.initializeApp();
   }
+//   if (kIsWeb) {
+//     // Request browser notification permission
+//     final permission = await html.Notification.requestPermission();
+//     if (permission != 'granted') {
+//       print("User denied notification permission");
+//     }
+//   }
+// // Web FCM listener (foreground)
+//   if (kIsWeb) {
+//     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+//       final title = message.notification?.title ?? 'Notification';
+//       final body = message.notification?.body ?? '';
+
+//       if (html.Notification.supported) {
+//         // Display notification popup
+//         html.Notification(
+//           title,
+//           body: body, // must be named parameter
+//           icon: '/favicon.png', // optional
+//         );
+
+//         // Play sound (foreground only)
+//         final audio = html.AudioElement('assets/notification.mp3')..play();
+//       }
+//     });
+//   }
 
   if (defaultTargetPlatform == TargetPlatform.android) {
     await FirebaseMessaging.instance.requestPermission();
@@ -61,11 +88,26 @@ Future<void> main() async {
       print("");
     }
   }
-  if (kIsWeb) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Get.find<LocationController>().updateLocationIfNull();
-    });
-  }
+  // if (kIsWeb) {
+  //   WidgetsBinding.instance.addPostFrameCallback((_) async {
+  //     await Get.find<LocationController>().updateLocationIfNull();
+  //   });
+  // }
+  // if (!Get.isRegistered<LocationController>()) {
+  //   Get.put(
+  //     LocationController(
+  //       locationRepo: LocationRepo(
+  //         apiClient: Get.find(),
+  //         sharedPreferences: Get.find(),
+  //       ),
+  //     ),
+  //     permanent: true,
+  //   );
+  // }
+
+  // if (kIsWeb) {
+  //   await Get.find<LocationController>().updateLocationIfNull();
+  // }
   runApp(MyApp(
     languages: languages,
     body: body,

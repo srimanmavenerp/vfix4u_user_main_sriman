@@ -1,10 +1,10 @@
 import 'dart:convert';
-import 'package:demandium/feature/auth/view/update_profile_screen.dart';
-import 'package:demandium/feature/booking/view/repeat_booking_details_screen.dart';
-import 'package:demandium/feature/checkout/view/offline_payment_screen.dart';
-import 'package:demandium/feature/provider/view/nearby_provider/near_by_provider_screen.dart';
+import 'package:Vfix4u/feature/auth/view/update_profile_screen.dart';
+import 'package:Vfix4u/feature/booking/view/repeat_booking_details_screen.dart';
+import 'package:Vfix4u/feature/checkout/view/offline_payment_screen.dart';
+import 'package:Vfix4u/feature/provider/view/nearby_provider/near_by_provider_screen.dart';
 import 'package:get/get.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 
 import '../feature/location/view/access_location_screen.dart';
 

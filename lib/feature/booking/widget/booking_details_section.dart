@@ -1,11 +1,11 @@
-import 'package:demandium/feature/booking/widget/booking_otp_widget.dart';
-import 'package:demandium/feature/booking/widget/booking_photo_evidence.dart';
-import 'package:demandium/feature/booking/widget/payment_info_widget.dart';
+import 'package:Vfix4u/feature/booking/widget/booking_otp_widget.dart';
+import 'package:Vfix4u/feature/booking/widget/booking_photo_evidence.dart';
+import 'package:Vfix4u/feature/booking/widget/payment_info_widget.dart';
 import 'package:get/get.dart';
-import 'package:demandium/utils/core_export.dart';
-import 'package:demandium/feature/booking/widget/regular/booking_summery_widget.dart';
-import 'package:demandium/feature/booking/widget/provider_info.dart';
-import 'package:demandium/feature/booking/widget/service_man_info.dart';
+import 'package:Vfix4u/utils/core_export.dart';
+import 'package:Vfix4u/feature/booking/widget/regular/booking_summery_widget.dart';
+import 'package:Vfix4u/feature/booking/widget/provider_info.dart';
+import 'package:Vfix4u/feature/booking/widget/service_man_info.dart';
 import 'package:intl/intl.dart';
 import 'booking_screen_shimmer.dart';
 

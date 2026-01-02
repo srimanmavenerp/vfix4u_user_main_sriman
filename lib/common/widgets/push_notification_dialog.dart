@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 
 class PushNotificationDialog extends StatefulWidget {
   final String? title;

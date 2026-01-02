@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'package:demandium/common/models/api_response_model.dart';
-import 'package:demandium/common/repo/data_sync_repo.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/common/models/api_response_model.dart';
+import 'package:Vfix4u/common/repo/data_sync_repo.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

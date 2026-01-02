@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 
 class EditProfileAccountInfo extends StatefulWidget {
-  const EditProfileAccountInfo({super.key}) ;
+  const EditProfileAccountInfo({super.key});
 
   @override
   State<EditProfileAccountInfo> createState() => _EditProfileAccountInfoState();
@@ -19,7 +19,7 @@ class _EditProfileAccountInfoState extends State<EditProfileAccountInfo> {
 
   @override
   Widget build(BuildContext context) {
-    if(accountInfoKey.currentState != null){
+    if (accountInfoKey.currentState != null) {
       accountInfoKey.currentState!.validate();
     }
 
@@ -27,7 +27,7 @@ class _EditProfileAccountInfoState extends State<EditProfileAccountInfo> {
       key: accountInfoKey,
       child: Padding(
         padding: const EdgeInsets.all(15.0),
-        child: GetBuilder<UserController>(builder: (editProfileTabController){
+        child: GetBuilder<UserController>(builder: (editProfileTabController) {
           return Column(
             children: [
               Expanded(
@@ -36,7 +36,7 @@ class _EditProfileAccountInfoState extends State<EditProfileAccountInfo> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                       SizedBox(height: Dimensions.paddingSizeSmall),
+                      SizedBox(height: Dimensions.paddingSizeSmall),
                       CustomTextField(
                         title: 'new_password'.tr,
                         hintText: '**************',
@@ -45,12 +45,13 @@ class _EditProfileAccountInfoState extends State<EditProfileAccountInfo> {
                         nextFocus: _confirmPasswordFocus,
                         inputType: TextInputType.visiblePassword,
                         isPassword: true,
-                        onValidate: (String? value){
-                          return  FormValidation().isValidPassword(value!);
+                        onValidate: (String? value) {
+                          return FormValidation().isValidPassword(value!);
                         },
                       ),
 
-                      const SizedBox(height: Dimensions.paddingSizeTextFieldGap),
+                      const SizedBox(
+                          height: Dimensions.paddingSizeTextFieldGap),
                       CustomTextField(
                         title: 'confirm_new_password'.tr,
                         hintText: '**************',
@@ -59,11 +60,12 @@ class _EditProfileAccountInfoState extends State<EditProfileAccountInfo> {
                         inputType: TextInputType.visiblePassword,
                         isPassword: true,
                         onValidate: (String? value) {
-                          if(value == null || value.isEmpty){
+                          if (value == null || value.isEmpty) {
                             return 'this_field_can_not_empty'.tr;
-                          }else{
+                          } else {
                             return FormValidation().isValidConfirmPassword(
-                              passwordController.text, confirmPasswordController.text,
+                              passwordController.text,
+                              confirmPasswordController.text,
                             );
                           }
                         },
@@ -73,25 +75,33 @@ class _EditProfileAccountInfoState extends State<EditProfileAccountInfo> {
                   ),
                 ),
               ),
-
-
               Padding(
                 padding: const EdgeInsets.all(40.0),
                 child: CustomButton(
                   isLoading: editProfileTabController.isLoading,
                   buttonText: 'change_password'.tr,
                   onPressed: () async {
-                    if(accountInfoKey.currentState!.validate()){
+                    if (accountInfoKey.currentState!.validate()) {
                       UserInfoModel userInfoModel = UserInfoModel(
-                        fName: editProfileTabController.userInfoModel?.fName ??"",
-                        lName: editProfileTabController.userInfoModel?.lName ??"",
-                        email: editProfileTabController.userInfoModel?.email ?? "",
-                        phone: (editProfileTabController.userInfoModel?.phone ??""),
-                        password: passwordController.text.trim(),
-                        confirmPassword: confirmPasswordController.text.trim()
-                      );
-                      await editProfileTabController.updateUserProfile(userInfoModel: userInfoModel);
-                    }},
+                          fName:
+                              editProfileTabController.userInfoModel?.fName ??
+                                  "",
+                          lName:
+                              editProfileTabController.userInfoModel?.lName ??
+                                  "",
+                          email:
+                              editProfileTabController.userInfoModel?.email ??
+                                  "",
+                          phone:
+                              (editProfileTabController.userInfoModel?.phone ??
+                                  ""),
+                          password: passwordController.text.trim(),
+                          confirmPassword:
+                              confirmPasswordController.text.trim());
+                      await editProfileTabController.updateUserProfile(
+                          userInfoModel: userInfoModel);
+                    }
+                  },
                 ),
               )
             ],
@@ -106,7 +116,9 @@ class _EditProfileAccountInfoState extends State<EditProfileAccountInfo> {
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: RichText(
           text: TextSpan(children: <TextSpan>[
-        TextSpan(text: title, style: robotoRegular.copyWith(color: const Color(0xff2C3439))),
+        TextSpan(
+            text: title,
+            style: robotoRegular.copyWith(color: const Color(0xff2C3439))),
         TextSpan(text: ' *', style: robotoRegular.copyWith(color: Colors.red)),
       ])),
     );

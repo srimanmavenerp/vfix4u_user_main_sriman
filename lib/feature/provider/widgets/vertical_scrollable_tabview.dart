@@ -1,7 +1,5 @@
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 import 'package:get/get.dart';
-
-
 
 class VerticalScrollableTabBarStatus {
   static bool isOnTap = false;
@@ -16,7 +14,6 @@ class VerticalScrollableTabBarStatus {
 enum VerticalScrollPosition { begin, middle, end }
 
 class VerticalScrollableTabView extends StatefulWidget {
-
   final TabController _tabController;
 
   final List<dynamic> _listItemData;
@@ -26,7 +23,8 @@ class VerticalScrollableTabView extends StatefulWidget {
 
   final List<Widget> _slivers;
 
-  const VerticalScrollableTabView({super.key, 
+  const VerticalScrollableTabView({
+    super.key,
     required TabController tabController,
     required List<dynamic> listItemData,
     required Widget Function(dynamic aaa, int index) eachItemChild,
@@ -35,17 +33,17 @@ class VerticalScrollableTabView extends StatefulWidget {
     required List<Widget> slivers,
   })  : _tabController = tabController,
         _listItemData = listItemData,
-
         _eachItemChild = eachItemChild,
         _verticalScrollPosition = verticalScrollPosition,
         _slivers = slivers;
 
   @override
-  VerticalScrollableTabViewState createState() => VerticalScrollableTabViewState();
+  VerticalScrollableTabViewState createState() =>
+      VerticalScrollableTabViewState();
 }
 
-class VerticalScrollableTabViewState extends State<VerticalScrollableTabView> with SingleTickerProviderStateMixin {
-
+class VerticalScrollableTabViewState extends State<VerticalScrollableTabView>
+    with SingleTickerProviderStateMixin {
   late AutoScrollController scrollController;
 
   bool pauseRectGetterIndex = false;
@@ -76,7 +74,6 @@ class VerticalScrollableTabViewState extends State<VerticalScrollableTabView> wi
   Widget build(BuildContext context) {
     return RectGetter(
       key: listViewKey,
-
       child: NotificationListener<ScrollNotification>(
         onNotification: onScrollNotification,
         child: CustomScrollView(
@@ -89,13 +86,11 @@ class VerticalScrollableTabViewState extends State<VerticalScrollableTabView> wi
     );
   }
 
-
   SliverList buildVerticalSliverList() {
     return SliverList(
       delegate: SliverChildListDelegate(List.generate(
         widget._listItemData.length,
-            (index) {
-
+        (index) {
           itemsKeys[index] = RectGetter.createGlobalKey();
           return buildItem(index);
         },
@@ -106,7 +101,6 @@ class VerticalScrollableTabViewState extends State<VerticalScrollableTabView> wi
   Widget buildItem(int index) {
     dynamic category = widget._listItemData[index];
     return RectGetter(
-
       key: itemsKeys[index],
       child: AutoScrollTag(
         key: ValueKey(index),
@@ -140,40 +134,32 @@ class VerticalScrollableTabViewState extends State<VerticalScrollableTabView> wi
   }
 
   bool onScrollNotification(ScrollNotification notification) {
-
     List<int> visibleItems = getVisibleItemsIndex();
-    if(notification is UserScrollNotification){
-
-      if(Get.find<ProviderBookingController>().categoryItemList.length == 2){
-        if(notification.metrics.pixels <= 5){
+    if (notification is UserScrollNotification) {
+      if (Get.find<ProviderBookingController>().categoryItemList.length == 2) {
+        if (notification.metrics.pixels <= 5) {
           widget._tabController.animateTo(visibleItems[0]);
-        }else{
+        } else {
           widget._tabController.animateTo(visibleItems[1]);
         }
-      }
-      else if(Get.find<ProviderBookingController>().categoryItemList.length > 2){
-          double previousPixels = (notification.metrics).pixels;
+      } else if (Get.find<ProviderBookingController>().categoryItemList.length >
+          2) {
+        double previousPixels = (notification.metrics).pixels;
 
-
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            double currentPixels = (notification.metrics).pixels;
-            if(currentPixels <= 5){
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          double currentPixels = (notification.metrics).pixels;
+          if (currentPixels <= 5) {
+            widget._tabController.animateTo(visibleItems[0]);
+          } else {
+            if (currentPixels < previousPixels) {
               widget._tabController.animateTo(visibleItems[0]);
-            }else{
-              if (currentPixels < previousPixels) {
-                widget._tabController.animateTo(visibleItems[0]);
-              } else {
-                widget._tabController.animateTo(visibleItems[1]);
-              }
+            } else {
+              widget._tabController.animateTo(visibleItems[1]);
             }
-
-
-          });
-
+          }
+        });
       }
-
     }
-
 
     return false;
   }
@@ -182,7 +168,6 @@ class VerticalScrollableTabViewState extends State<VerticalScrollableTabView> wi
     Rect? rect = RectGetter.getRectFromKey(listViewKey);
     List<int> items = [];
     if (rect == null) return items;
-
 
     bool isHoriontalScroll = false;
     itemsKeys.forEach((index, key) {
@@ -199,7 +184,8 @@ class VerticalScrollableTabViewState extends State<VerticalScrollableTabView> wi
           if (itemRect.bottom <
               rect.top +
                   MediaQuery.of(context).viewPadding.top +
-                  kToolbarHeight+200) {
+                  kToolbarHeight +
+                  200) {
             return;
           }
       }

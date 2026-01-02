@@ -1,6 +1,6 @@
-import 'package:demandium/helper/booking_helper.dart';
+import 'package:Vfix4u/helper/booking_helper.dart';
 import 'package:get/get.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 
 class BookingSummeryWidget extends StatelessWidget {
   final BookingDetailsContent bookingDetails;

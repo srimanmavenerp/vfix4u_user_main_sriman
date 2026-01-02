@@ -1,5 +1,5 @@
 // import 'package:get/get.dart';
-// import 'package:demandium/utils/core_export.dart';
+// import 'package:Vfix4u/utils/core_export.dart';
 //
 // class ServiceWidgetHorizontal extends StatelessWidget {
 //   final List<Service> serviceList;
@@ -273,7 +273,7 @@
 // }
 
 import 'package:get/get.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 
 class ServiceWidgetHorizontal extends StatelessWidget {
   final List<Service> serviceList;

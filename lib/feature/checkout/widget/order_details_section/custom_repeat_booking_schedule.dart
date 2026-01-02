@@ -1,6 +1,6 @@
-import 'package:demandium/common/widgets/custom_time_picker.dart';
-import 'package:demandium/feature/checkout/widget/order_details_section/custom_repeat_booking_expansion_tile.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/common/widgets/custom_time_picker.dart';
+import 'package:Vfix4u/feature/checkout/widget/order_details_section/custom_repeat_booking_expansion_tile.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 

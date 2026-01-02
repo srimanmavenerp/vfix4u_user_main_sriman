@@ -1,10 +1,9 @@
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 
 class SearchServiceModel {
   String? responseCode;
   String? message;
   Content? content;
-
 
   SearchServiceModel({this.responseCode, this.message, this.content});
 
@@ -12,8 +11,7 @@ class SearchServiceModel {
     responseCode = json['response_code'];
     message = json['message'];
     content =
-    json['content'] != null ? Content.fromJson(json['content']) : null;
-
+        json['content'] != null ? Content.fromJson(json['content']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -57,4 +55,3 @@ class Content {
     return data;
   }
 }
-

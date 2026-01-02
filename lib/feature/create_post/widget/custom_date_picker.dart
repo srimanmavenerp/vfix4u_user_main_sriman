@@ -1,4 +1,4 @@
-// import 'package:demandium/utils/core_export.dart';
+// import 'package:Vfix4u/utils/core_export.dart';
 // import 'package:get/get.dart';
 // import 'package:intl/intl.dart';
 // import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -70,8 +70,7 @@
 //   }
 // }
 
-
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -143,9 +142,6 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 //   }
 // }
 
-
-
-
 class CustomDatePicker extends StatelessWidget {
   final DateRangePickerController dateRangePickerController;
 
@@ -168,11 +164,13 @@ class CustomDatePicker extends StatelessWidget {
 
                 if (scheduleController.selectedDate == clickedDate) {
                   // Toggle to ASAP if same date clicked again
-                  scheduleController.updateScheduleType(scheduleType: ScheduleType.asap);
+                  scheduleController.updateScheduleType(
+                      scheduleType: ScheduleType.asap);
                   scheduleController.selectedDate = '';
                 } else {
                   scheduleController.selectedDate = clickedDate;
-                  scheduleController.updateScheduleType(scheduleType: ScheduleType.schedule);
+                  scheduleController.updateScheduleType(
+                      scheduleType: ScheduleType.schedule);
                 }
               } else {
                 scheduleController.selectedDate = '';
@@ -203,8 +201,3 @@ class CustomDatePicker extends StatelessWidget {
     );
   }
 }
-
-
-
-
-

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:demandium/utils/dimensions.dart';
+import 'package:Vfix4u/utils/dimensions.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 
 class InboxShimmer extends StatelessWidget {
@@ -20,16 +20,23 @@ class InboxShimmer extends StatelessWidget {
           colorOpacity: 0,
           enabled: true,
           child: Padding(
-            padding: const EdgeInsets.only(bottom: Dimensions.paddingSizeDefault),
+            padding:
+                const EdgeInsets.only(bottom: Dimensions.paddingSizeDefault),
             child: Row(children: [
-              CircleAvatar(backgroundColor: Theme.of(context).shadowColor, radius: 20, child: const Icon(Icons.person)),
+              CircleAvatar(
+                  backgroundColor: Theme.of(context).shadowColor,
+                  radius: 20,
+                  child: const Icon(Icons.person)),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: Dimensions.paddingSizeSmall),
                   child: Column(children: [
-                    Container(height: 50,
+                    Container(
+                      height: 50,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+                          borderRadius:
+                              BorderRadius.circular(Dimensions.radiusDefault),
                           color: Theme.of(context).shadowColor),
                     ),
                   ]),

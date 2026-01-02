@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:get/get.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 
 enum Address { service, billing }
 
@@ -89,8 +89,8 @@ class LocationController extends GetxController implements GetxService {
     if (address == null) {
       // 1️⃣ Get current location
       address = AddressModel(
-        latitude: "17.4105", // Habsiguda latitude
-        longitude: "78.5458", // Habsiguda longitude
+        latitude: "17.3932544", // Habsiguda latitude
+        longitude: "78.5907712", // Habsiguda longitude
         addressType: 'others',
         zoneId: 'f2747d7d-3f29-4af1-93ea-0099c901f79e',
         address: 'Habsiguda, Hyderabad',
@@ -150,6 +150,7 @@ class LocationController extends GetxController implements GetxService {
           altitudeAccuracy: 1,
           headingAccuracy: 1,
         );
+        print("3333${myPosition}");
       } else if (defaultLatLng != null) {
         myPosition = Position(
             latitude: defaultLatLng.latitude,

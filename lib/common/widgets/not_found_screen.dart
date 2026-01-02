@@ -1,4 +1,4 @@
-// import 'package:demandium/utils/core_export.dart';
+// import 'package:Vfix4u/utils/core_export.dart';
 // import 'package:get/get.dart';
 // import 'package:universal_html/html.dart' as html;
 //
@@ -113,10 +113,7 @@
 //   }
 // }
 
-
-
-
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 import 'package:get/get.dart';
 import 'package:universal_html/html.dart' as html;
 
@@ -128,7 +125,6 @@ class NotFoundScreen extends StatefulWidget {
 }
 
 class _NotFoundScreenState extends State<NotFoundScreen> {
-
   bool isLoading = true;
 
   @override
@@ -137,7 +133,7 @@ class _NotFoundScreenState extends State<NotFoundScreen> {
 
     String currentUrl = _saveErrorUrlIntoServer();
 
-    Future.delayed(const Duration(milliseconds:0), () {
+    Future.delayed(const Duration(milliseconds: 0), () {
       String redirectUrl = _hasRedirectionUrl(currentUrl);
 
       if (redirectUrl.isNotEmpty) {
@@ -166,7 +162,9 @@ class _NotFoundScreenState extends State<NotFoundScreen> {
   String _hasRedirectionUrl(String currentUrl) {
     var config = Get.find<SplashController>().configModel.content;
     String redirectUrl = "";
-    if (config != null && config.errorLogs != null && config.errorLogs!.isNotEmpty) {
+    if (config != null &&
+        config.errorLogs != null &&
+        config.errorLogs!.isNotEmpty) {
       config.errorLogs!.any((element) {
         if (element.url == currentUrl) {
           redirectUrl = element.redirectUrl ?? "";

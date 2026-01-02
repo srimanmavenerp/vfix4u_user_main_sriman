@@ -1,10 +1,10 @@
-import 'package:demandium/common/models/popup_menu_model.dart';
-import 'package:demandium/feature/booking/view/repeat_booking_details_screen.dart';
-import 'package:demandium/feature/booking/view/web_booking_details_screen.dart';
-import 'package:demandium/feature/booking/widget/booking_screen_shimmer.dart';
-import 'package:demandium/feature/booking/widget/booking_status_widget.dart';
-import 'package:demandium/helper/booking_helper.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/common/models/popup_menu_model.dart';
+import 'package:Vfix4u/feature/booking/view/repeat_booking_details_screen.dart';
+import 'package:Vfix4u/feature/booking/view/web_booking_details_screen.dart';
+import 'package:Vfix4u/feature/booking/widget/booking_screen_shimmer.dart';
+import 'package:Vfix4u/feature/booking/widget/booking_status_widget.dart';
+import 'package:Vfix4u/helper/booking_helper.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 import 'package:get/get.dart';
 
 class RepeatBookingServiceLogWidget extends StatelessWidget {

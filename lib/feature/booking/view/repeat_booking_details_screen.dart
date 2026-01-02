@@ -1,8 +1,8 @@
-import 'package:demandium/common/models/popup_menu_model.dart';
-import 'package:demandium/feature/booking/widget/repeat/repeat_booking_details_widget.dart';
-import 'package:demandium/feature/booking/widget/repeat/repeat_booking_service_log_widget.dart';
+import 'package:Vfix4u/common/models/popup_menu_model.dart';
+import 'package:Vfix4u/feature/booking/widget/repeat/repeat_booking_details_widget.dart';
+import 'package:Vfix4u/feature/booking/widget/repeat/repeat_booking_service_log_widget.dart';
 import 'package:get/get.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 
 class RepeatBookingDetailsScreen extends StatefulWidget {
   final String? bookingId;

@@ -1,7 +1,7 @@
-import 'package:demandium/api/local/cache_response.dart';
-import 'package:demandium/helper/data_sync_helper.dart';
+import 'package:Vfix4u/api/local/cache_response.dart';
+import 'package:Vfix4u/helper/data_sync_helper.dart';
 import 'package:get/get.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 
 class BannerController extends GetxController implements GetxService {
   final BannerRepo bannerRepo;
@@ -14,12 +14,12 @@ class BannerController extends GetxController implements GetxService {
   int? get currentIndex => _currentIndex;
 
   Future<void> getBannerList(bool reload) async {
-
-
-    if(_banners == null || reload){
+    if (_banners == null || reload) {
       DataSyncHelper.fetchAndSyncData(
-        fetchFromLocal: ()=> bannerRepo.getBannerList<CacheResponseData>( source: DataSourceEnum.local),
-        fetchFromClient: ()=> bannerRepo.getBannerList(source: DataSourceEnum.client),
+        fetchFromLocal: () => bannerRepo.getBannerList<CacheResponseData>(
+            source: DataSourceEnum.local),
+        fetchFromClient: () =>
+            bannerRepo.getBannerList(source: DataSourceEnum.client),
         onResponse: (data, source) {
           _banners = [];
           data['content']['data'].forEach((banner) {
@@ -29,21 +29,22 @@ class BannerController extends GetxController implements GetxService {
         },
       );
     }
-
   }
 
   void setCurrentIndex(int index, bool notify) {
     _currentIndex = index;
-    if(notify) {
+    if (notify) {
       update();
     }
   }
 
-
-  Future<void> navigateFromBanner(String resourceType, String bannerID, String link, String resourceID, {String categoryName = ''})async {
-    switch (resourceType){
+  Future<void> navigateFromBanner(
+      String resourceType, String bannerID, String link, String resourceID,
+      {String categoryName = ''}) async {
+    switch (resourceType) {
       case 'category':
-        Get.toNamed(RouteHelper.subCategoryScreenRoute(categoryName,bannerID,0));
+        Get.toNamed(
+            RouteHelper.subCategoryScreenRoute(categoryName, bannerID, 0));
         break;
 
       case 'link':

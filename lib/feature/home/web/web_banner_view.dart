@@ -1,6 +1,6 @@
-import 'package:demandium/feature/home/web/web_banner_shimmer.dart';
+import 'package:Vfix4u/feature/home/web/web_banner_shimmer.dart';
 import 'package:get/get.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 
 class WebBannerView extends GetView<BannerController> {
   final PageController _pageController = PageController();
@@ -45,7 +45,7 @@ class WebBannerView extends GetView<BannerController> {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
         child: AspectRatio(
-          aspectRatio: 19 / 8,
+          aspectRatio: 18 / 8,
           child: CustomImage(
             image: '${controller.banners![index].bannerImageFullPath}',
             fit: BoxFit.cover,
@@ -55,63 +55,70 @@ class WebBannerView extends GetView<BannerController> {
     );
   }
 
-  // Multi-banner PageView
+// Multi-banner PageView (2 banners per page)
   Widget _multiBanner(BannerController controller, bool isLtr) {
+    // Calculate total pages (2 banners per page)
     final int totalPages = (controller.banners!.length / 2).ceil();
 
-    return Stack(
-      clipBehavior: Clip.none,
-      fit: StackFit.expand,
-      children: [
-        PageView.builder(
-          onPageChanged: (int index) => controller.setCurrentIndex(index, true),
-          controller: _pageController,
-          itemCount: totalPages,
-          itemBuilder: (context, pageIndex) {
-            int index1 = pageIndex * 2;
-            int index2 = (pageIndex * 2) + 1;
-            bool hasSecond = index2 < controller.banners!.length;
+    return SizedBox(
+      height: 260, // FIXED height to prevent infinite height
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          PageView.builder(
+            onPageChanged: (int index) =>
+                controller.setCurrentIndex(index, true),
+            controller: _pageController,
+            itemCount: totalPages,
+            itemBuilder: (context, pageIndex) {
+              int index1 = pageIndex * 2;
+              int index2 = index1 + 1;
 
-            return Row(
-              children: [
-                Expanded(child: _singleBanner(controller, index1)),
-                const SizedBox(width: Dimensions.paddingSizeLarge),
-                Expanded(
-                  child: hasSecond
-                      ? _singleBanner(controller, index2)
-                      : (controller.banners!.length > 2
-                          ? _singleBanner(controller, 0)
-                          : const SizedBox()),
-                ),
-              ],
-            );
-          },
-        ),
-        // Left Arrow
-        if (controller.currentIndex != 0)
-          Positioned(
-            left: Dimensions.paddingSizeExtraLarge,
-            child: _navigationButton(
-              isLeft: true,
-              onTap: () => _pageController.previousPage(
-                  duration: const Duration(seconds: 1),
-                  curve: Curves.easeInOut),
-              isLtr: isLtr,
-            ),
+              bool hasSecond = index2 < controller.banners!.length;
+
+              return Row(
+                children: [
+                  Expanded(child: _singleBanner(controller, index1)),
+                  const SizedBox(width: Dimensions.paddingSizeLarge),
+                  Expanded(
+                    child: hasSecond
+                        ? _singleBanner(controller, index2)
+                        : const SizedBox(), // show nothing if no second banner
+                  ),
+                ],
+              );
+            },
           ),
-        // Right Arrow
-        if (controller.currentIndex != totalPages - 1)
-          Positioned(
-            right: Dimensions.paddingSizeExtraLarge,
-            child: _navigationButton(
-              isLeft: false,
-              onTap: () => _pageController.nextPage(
-                  duration: const Duration(seconds: 1),
-                  curve: Curves.easeInOut),
-              isLtr: isLtr,
+          // Left Arrow
+          if (controller.currentIndex! > 0)
+            Positioned(
+              left: Dimensions.paddingSizeExtraLarge,
+              top: 0,
+              bottom: 0,
+              child: _navigationButton(
+                isLeft: true,
+                onTap: () => _pageController.previousPage(
+                    duration: const Duration(milliseconds: 400),
+                    curve: Curves.easeInOut),
+                isLtr: isLtr,
+              ),
             ),
-          ),
-      ],
+          // Right Arrow
+          if (controller.currentIndex! < totalPages - 1)
+            Positioned(
+              right: Dimensions.paddingSizeExtraLarge,
+              top: 0,
+              bottom: 0,
+              child: _navigationButton(
+                isLeft: false,
+                onTap: () => _pageController.nextPage(
+                    duration: const Duration(milliseconds: 400),
+                    curve: Curves.easeInOut),
+                isLtr: isLtr,
+              ),
+            ),
+        ],
+      ),
     );
   }
 

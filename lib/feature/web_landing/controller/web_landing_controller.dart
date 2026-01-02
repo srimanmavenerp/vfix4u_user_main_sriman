@@ -1,7 +1,7 @@
-import 'package:demandium/api/local/cache_response.dart';
-import 'package:demandium/helper/data_sync_helper.dart';
-import 'package:demandium/utils/core_export.dart';
-import 'package:demandium/feature/web_landing/model/web_landing_model.dart';
+import 'package:Vfix4u/api/local/cache_response.dart';
+import 'package:Vfix4u/helper/data_sync_helper.dart';
+import 'package:Vfix4u/utils/core_export.dart';
+import 'package:Vfix4u/feature/web_landing/model/web_landing_model.dart';
 import 'package:get/get.dart';
 
 class WebLandingController extends GetxController implements GetxService {
@@ -11,26 +11,27 @@ class WebLandingController extends GetxController implements GetxService {
 
   WebLandingContent? _webLandingContent;
   List<SocialMedia>? _socialMedia;
-  Map<String, dynamic>? _textContent ;
+  Map<String, dynamic>? _textContent;
 
   int _currentPage = 0;
   int get currentPage => _currentPage;
 
-  WebLandingContent? get webLandingContent=> _webLandingContent;
-  List<SocialMedia>? get socialMedia=> _socialMedia;
-  Map<String, dynamic>? get textContent=> _textContent;
+  WebLandingContent? get webLandingContent => _webLandingContent;
+  List<SocialMedia>? get socialMedia => _socialMedia;
+  Map<String, dynamic>? get textContent => _textContent;
 
   Future<void> getWebLandingContent({bool reload = true}) async {
-
-    if(_webLandingContent == null || reload){
+    if (_webLandingContent == null || reload) {
       DataSyncHelper.fetchAndSyncData(
-        fetchFromLocal: ()=> webLandingRepo.getWebLandingContents<CacheResponseData>( source: DataSourceEnum.local),
-        fetchFromClient: ()=> webLandingRepo.getWebLandingContents(source: DataSourceEnum.client),
+        fetchFromLocal: () =>
+            webLandingRepo.getWebLandingContents<CacheResponseData>(
+                source: DataSourceEnum.local),
+        fetchFromClient: () =>
+            webLandingRepo.getWebLandingContents(source: DataSourceEnum.client),
         onResponse: (data, source) {
-
           _webLandingContent = WebLandingContent.fromJson(data['content']);
 
-          if(_webLandingContent?.socialMedia!=null){
+          if (_webLandingContent?.socialMedia != null) {
             _socialMedia = _webLandingContent?.socialMedia;
           }
           update();
@@ -39,9 +40,8 @@ class WebLandingController extends GetxController implements GetxService {
     }
   }
 
-  void setPageIndex(int index){
+  void setPageIndex(int index) {
     _currentPage = index;
     update();
   }
-
 }

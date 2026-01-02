@@ -1,49 +1,59 @@
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 import 'package:get/get.dart';
 
 class WebRecentlyServiceView extends StatelessWidget {
-  final GlobalKey<CustomShakingWidgetState>?  signInShakeKey;
-  const WebRecentlyServiceView({super.key, this.signInShakeKey}) ;
+  final GlobalKey<CustomShakingWidgetState>? signInShakeKey;
+  const WebRecentlyServiceView({super.key, this.signInShakeKey});
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<ServiceController>(
-        builder: (serviceController){
-      if(serviceController.recentlyViewServiceList != null && serviceController.recentlyViewServiceList!.isEmpty){
+    return GetBuilder<ServiceController>(builder: (serviceController) {
+      if (serviceController.recentlyViewServiceList != null &&
+          serviceController.recentlyViewServiceList!.isEmpty) {
         return const SizedBox();
-      }else{
-        if(serviceController.recentlyViewServiceList != null){
-          return  Column(
+      } else {
+        if (serviceController.recentlyViewServiceList != null) {
+          return Column(
             children: [
-
               const SizedBox(height: Dimensions.paddingSizeTextFieldGap),
               TitleWidget(
                 textDecoration: TextDecoration.underline,
                 title: 'recently_view_services'.tr,
-                onTap: () => Get.toNamed(RouteHelper.allServiceScreenRoute("recently_view_services")),
+                onTap: () => Get.toNamed(RouteHelper.allServiceScreenRoute(
+                    "recently_view_services")),
               ),
-              const SizedBox(height: Dimensions.paddingSizeDefault,),
-
+              const SizedBox(
+                height: Dimensions.paddingSizeDefault,
+              ),
               GridView.builder(
                 key: UniqueKey(),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisSpacing: Dimensions.paddingSizeDefault,
-                  mainAxisSpacing:  Dimensions.paddingSizeDefault,
-                  mainAxisExtent: ResponsiveHelper.isMobile(context) ?  240 : 270 ,
-                  crossAxisCount: ResponsiveHelper.isMobile(context) ? 2 : ResponsiveHelper.isTab(context) ? 3 : 5,
+                  mainAxisSpacing: Dimensions.paddingSizeDefault,
+                  mainAxisExtent:
+                      ResponsiveHelper.isMobile(context) ? 240 : 270,
+                  crossAxisCount: ResponsiveHelper.isMobile(context)
+                      ? 2
+                      : ResponsiveHelper.isTab(context)
+                          ? 3
+                          : 5,
                 ),
-                physics:const NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: serviceController.recentlyViewServiceList!.length>5?5:serviceController.recentlyViewServiceList!.length,
+                itemCount: serviceController.recentlyViewServiceList!.length > 5
+                    ? 5
+                    : serviceController.recentlyViewServiceList!.length,
                 itemBuilder: (context, index) {
-                  return ServiceWidgetVertical(service: serviceController.recentlyViewServiceList![index],fromType: '', signInShakeKey: signInShakeKey,);
+                  return ServiceWidgetVertical(
+                    service: serviceController.recentlyViewServiceList![index],
+                    fromType: '',
+                    signInShakeKey: signInShakeKey,
+                  );
                 },
               ),
-
             ],
           );
-        }
-        else{
+        } else {
           return const SizedBox();
         }
       }

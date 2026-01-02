@@ -1,7 +1,7 @@
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 import 'package:get/get.dart';
 
-class OnBoardController extends GetxController implements GetxService{
+class OnBoardController extends GetxController implements GetxService {
   int pageIndex = 0;
   final PageController pageController = PageController();
 
@@ -10,25 +10,24 @@ class OnBoardController extends GetxController implements GetxService{
       "text": "${'welcome_to'.tr} ${AppConstants.appName}!",
       "subTitle": 'on_boarding_data_1'.tr,
       "image": "assets/images/onboarding_one.png",
-      "top_image" : Images.onBoardTopOne
+      "top_image": Images.onBoardTopOne
     },
     {
       "text": 'on_boarding_2_title'.tr,
       "subTitle": 'on_boarding_data_2'.tr,
       "image": "assets/images/onboarding_two.png",
-      "top_image" : Images.onBoardTopTwo
+      "top_image": Images.onBoardTopTwo
     },
     {
       "text": 'on_boarding_3_title'.tr,
       "subTitle": 'on_boarding_data_3'.tr,
       "image": "assets/images/onboarding_three.png",
-      "top_image" : ""
+      "top_image": ""
     }
   ];
 
-  void onPageChanged(int index){
+  void onPageChanged(int index) {
     pageIndex = index;
     update();
   }
-
 }

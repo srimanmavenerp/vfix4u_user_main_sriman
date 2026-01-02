@@ -1,18 +1,17 @@
 import 'dart:math';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 
-
-abstract class AnimationControllerState<T extends StatefulWidget> extends State<T> with SingleTickerProviderStateMixin {
+abstract class AnimationControllerState<T extends StatefulWidget>
+    extends State<T> with SingleTickerProviderStateMixin {
   AnimationControllerState();
-  late final animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 400));
+  late final animationController = AnimationController(
+      vsync: this, duration: const Duration(milliseconds: 400));
   @override
   void dispose() {
     animationController.dispose();
     super.dispose();
   }
 }
-
-
 
 class CustomShakingWidget extends StatefulWidget {
   final Widget child;
@@ -31,7 +30,8 @@ class CustomShakingWidget extends StatefulWidget {
   CustomShakingWidgetState createState() => CustomShakingWidgetState();
 }
 
-class CustomShakingWidgetState extends AnimationControllerState<CustomShakingWidget> {
+class CustomShakingWidgetState
+    extends AnimationControllerState<CustomShakingWidget> {
   CustomShakingWidgetState();
 
   @override
@@ -62,7 +62,8 @@ class CustomShakingWidgetState extends AnimationControllerState<CustomShakingWid
       animation: animationController,
       child: widget.child,
       builder: (context, child) {
-        final sineValue = sin(widget.shakeCount * 2 * pi * animationController.value);
+        final sineValue =
+            sin(widget.shakeCount * 2 * pi * animationController.value);
         return Transform.translate(
           offset: Offset(sineValue * widget.shakeOffset, 0),
           child: child,
@@ -71,4 +72,3 @@ class CustomShakingWidgetState extends AnimationControllerState<CustomShakingWid
     );
   }
 }
-

@@ -1,10 +1,11 @@
-import 'package:demandium/feature/suggest_new_service/controller/suggest_service_controller.dart';
-import 'package:demandium/feature/suggest_new_service/repository/suggest_service_repo.dart';
+import 'package:Vfix4u/feature/suggest_new_service/controller/suggest_service_controller.dart';
+import 'package:Vfix4u/feature/suggest_new_service/repository/suggest_service_repo.dart';
 import 'package:get/get.dart';
 
-class SuggestServiceBinding extends Bindings{
+class SuggestServiceBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => SuggestServiceController(suggestServiceRepo: SuggestServiceRepo(apiClient: Get.find())));
+    Get.lazyPut(() => SuggestServiceController(
+        suggestServiceRepo: SuggestServiceRepo(apiClient: Get.find())));
   }
 }

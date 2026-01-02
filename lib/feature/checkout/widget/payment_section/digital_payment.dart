@@ -1,12 +1,13 @@
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 
 class DigitalPayment extends StatelessWidget {
   final String paymentGateway;
   final bool redirectDirectlyPaymentScreen;
 
-  const DigitalPayment({super.key, required this.paymentGateway,
-    this.redirectDirectlyPaymentScreen = true})
-      ;
+  const DigitalPayment(
+      {super.key,
+      required this.paymentGateway,
+      this.redirectDirectlyPaymentScreen = true});
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +19,13 @@ class DigitalPayment extends StatelessWidget {
       ),
       child: Center(
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeSmall,horizontal: Dimensions.paddingSizeSmall),
-          child: Image.asset( Images.address, fit: BoxFit.cover,),
+          padding: const EdgeInsets.symmetric(
+              vertical: Dimensions.paddingSizeSmall,
+              horizontal: Dimensions.paddingSizeSmall),
+          child: Image.asset(
+            Images.address,
+            fit: BoxFit.cover,
+          ),
         ),
       ),
     );

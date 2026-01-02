@@ -1,5 +1,5 @@
 // ignore_for_file: deprecated_member_use
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 import 'package:get/get.dart';
 
 class CheckoutScreen extends StatefulWidget {
@@ -7,9 +7,11 @@ class CheckoutScreen extends StatefulWidget {
   final String addressId;
   final bool? reload;
   final String? token;
-  const CheckoutScreen(this.pageState, this.addressId, {super.key,this.reload = true, this.token}) ;
+  const CheckoutScreen(this.pageState, this.addressId,
+      {super.key, this.reload = true, this.token});
   @override
-  State<CheckoutScreen> createState() => _CheckoutScreenState();}
+  State<CheckoutScreen> createState() => _CheckoutScreenState();
+}
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
   final tooltipController = JustTheController();
@@ -17,7 +19,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   @override
   void initState() {
     if (widget.pageState == 'complete') {
-      Get.find<CheckOutController>().updateState(PageState.complete, shouldUpdate: false);
+      Get.find<CheckOutController>()
+          .updateState(PageState.complete, shouldUpdate: false);
     }
     Get.find<CheckOutController>().getOfflinePaymentMethod(true);
     Get.find<CheckOutController>().changePaymentMethod(shouldUpdate: false);
@@ -25,47 +28,56 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       Get.find<CartController>().getCartListFromServer(shouldUpdate: false);
       Get.find<ScheduleController>().resetScheduleData(shouldUpdate: false);
       Get.find<CheckOutController>().resetCreateAccountWithExistingInfo();
-      Get.find<CheckOutController>().toggleTerms(value: false, shouldUpdate: false);
+      Get.find<CheckOutController>()
+          .toggleTerms(value: false, shouldUpdate: false);
       Get.find<ScheduleController>().resetSchedule();
     } else {
-      Get.find<CheckOutController>().toggleTerms(value: true, shouldUpdate: false);
+      Get.find<CheckOutController>()
+          .toggleTerms(value: true, shouldUpdate: false);
     }
     if (widget.token != null && widget.token != "null" && widget.token != "") {
       Get.find<CheckOutController>().parseToken(widget.token!);
     }
-    Get.find<CartController>().updateWalletPaymentStatus(false, shouldUpdate: false);
+    Get.find<CartController>()
+        .updateWalletPaymentStatus(false, shouldUpdate: false);
     Get.find<CouponController>().getCouponList();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final userPhoneNumber = Get.find<UserController>().userInfoModel?.phone; // Assuming you're storing user data in a controller
+    final userPhoneNumber = Get.find<UserController>()
+        .userInfoModel
+        ?.phone; // Assuming you're storing user data in a controller
 
     return WillPopScope(
       onWillPop: () => _exitApp(),
       child: GetBuilder<CheckOutController>(builder: (checkoutController) {
         return Scaffold(
           resizeToAvoidBottomInset: false,
-          endDrawer: ResponsiveHelper.isDesktop(context) ? const MenuDrawer() : null,
+          endDrawer:
+              ResponsiveHelper.isDesktop(context) ? const MenuDrawer() : null,
           appBar: CustomAppBar(
-            title: 'checkout'.tr,
-            onBackPressed: () {
-              if (widget.pageState == 'payment' || checkoutController.currentPageState == PageState.payment) {
-                checkoutController.changePaymentMethod();
-                checkoutController.updateState(PageState.orderDetails);
-                if (ResponsiveHelper.isWeb()) {
-                  Get.toNamed(RouteHelper.getCheckoutRoute('cart', 'orderDetails', 'null'));
+              title: 'checkout'.tr,
+              onBackPressed: () {
+                if (widget.pageState == 'payment' ||
+                    checkoutController.currentPageState == PageState.payment) {
+                  checkoutController.changePaymentMethod();
+                  checkoutController.updateState(PageState.orderDetails);
+                  if (ResponsiveHelper.isWeb()) {
+                    Get.toNamed(RouteHelper.getCheckoutRoute(
+                        'cart', 'orderDetails', 'null'));
+                  }
+                } else if (widget.pageState == 'complete' ||
+                    Get.find<CheckOutController>().currentPageState ==
+                        PageState.complete) {
+                  Get.offAllNamed(RouteHelper.getMainRoute('home'));
+                  return false;
+                } else {
+                  checkoutController.updateState(PageState.orderDetails);
+                  Get.back();
                 }
-              } else if (widget.pageState == 'complete' || Get.find<CheckOutController>().currentPageState == PageState.complete) {
-                Get.offAllNamed(RouteHelper.getMainRoute('home'));
-                return false;
-              } else {
-                checkoutController.updateState(PageState.orderDetails);
-                Get.back();
-              }
-            }
-          ),
+              }),
           body: SafeArea(
             child: FooterBaseView(
               child: WebShadowWrap(
@@ -76,13 +88,16 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     children: [
                       const SizedBox(height: Dimensions.paddingSizeDefault),
                       CheckoutHeaderWidget(pageState: widget.pageState),
-
-                      checkoutController.currentPageState == PageState.orderDetails &&
+                      checkoutController.currentPageState ==
+                                  PageState.orderDetails &&
                               PageState.orderDetails.name == widget.pageState
                           ? ResponsiveHelper.isDesktop(context)
-                              ? OrderDetailsPageWeb(pageState: widget.pageState, addressId: widget.addressId)
+                              ? OrderDetailsPageWeb(
+                                  pageState: widget.pageState,
+                                  addressId: widget.addressId)
                               : const OrderDetailsPage()
-                          : checkoutController.currentPageState == PageState.payment ||
+                          : checkoutController.currentPageState ==
+                                      PageState.payment ||
                                   PageState.payment.name == widget.pageState
                               ? PaymentPage(
                                   addressId: widget.addressId,
@@ -91,11 +106,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 )
                               : CompletePage(
                                   token: widget.token,
-                                  phoneNumber: userPhoneNumber, showServiceNotAvailableDialog: false, // Pass phone number here
+                                  phoneNumber: userPhoneNumber,
+                                  showServiceNotAvailableDialog:
+                                      false, // Pass phone number here
                                 ),
-
                       !ResponsiveHelper.isMobile(context) &&
-                              (checkoutController.currentPageState == PageState.payment || widget.pageState == 'payment')
+                              (checkoutController.currentPageState ==
+                                      PageState.payment ||
+                                  widget.pageState == 'payment')
                           ? ProceedToCheckoutButtonWidget(
                               pageState: widget.pageState,
                               addressId: widget.addressId,
@@ -110,8 +128,13 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           bottomSheet: (ResponsiveHelper.isMobile(context))
               ? SafeArea(
                   child: SizedBox(
-                    height: checkoutController.currentPageState.name == "complete" ? 70 : 100,
-                    child: (checkoutController.currentPageState == PageState.complete || widget.pageState == 'complete')
+                    height:
+                        checkoutController.currentPageState.name == "complete"
+                            ? 70
+                            : 100,
+                    child: (checkoutController.currentPageState ==
+                                PageState.complete ||
+                            widget.pageState == 'complete')
                         ? const SizedBox()
                         : ProceedToCheckoutButtonWidget(
                             pageState: widget.pageState,
@@ -126,16 +149,19 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   }
 
   Future<bool> _exitApp() async {
-    if (widget.pageState == 'payment' || Get.find<CheckOutController>().currentPageState == PageState.payment) {
+    if (widget.pageState == 'payment' ||
+        Get.find<CheckOutController>().currentPageState == PageState.payment) {
       Get.find<CheckOutController>().changePaymentMethod();
       Get.find<CheckOutController>().updateState(PageState.orderDetails);
       Get.find<CheckOutController>().getOfflinePaymentMethod(true);
       Get.find<CheckOutController>().changePaymentMethod(shouldUpdate: true);
       if (ResponsiveHelper.isWeb()) {
-        Get.toNamed(RouteHelper.getCheckoutRoute('cart', 'orderDetails', 'null', reload: false));
+        Get.toNamed(RouteHelper.getCheckoutRoute('cart', 'orderDetails', 'null',
+            reload: false));
       }
       return false;
-    } else if (widget.pageState == 'complete' || Get.find<CheckOutController>().currentPageState == PageState.complete) {
+    } else if (widget.pageState == 'complete' ||
+        Get.find<CheckOutController>().currentPageState == PageState.complete) {
       Get.offAllNamed(RouteHelper.getMainRoute('home'));
       return false;
     } else {
@@ -143,6 +169,3 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     }
   }
 }
-
-
-

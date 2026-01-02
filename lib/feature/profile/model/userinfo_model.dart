@@ -1,4 +1,4 @@
-import 'package:demandium/feature/booking/model/booking_details_model.dart';
+import 'package:Vfix4u/feature/booking/model/booking_details_model.dart';
 
 class UserInfoModel {
   String? id;
@@ -19,26 +19,25 @@ class UserInfoModel {
   double? walletBalance;
   BookingDetailsContent? lastIncompleteOfflineBooking;
 
-
-  UserInfoModel(
-      {this.id,
-        this.fName,
-        this.lName,
-        this.email,
-        this.image,
-        this.imageFullPath,
-        this.phone,
-        this.password,
-        this.confirmPassword,
-        this.createdAt,
-        this.bookingsCount,
-        this.referCode,
-        this.referredBy,
-        this.isEmailVerified,
-        this.isPhoneVerified,
-        this.walletBalance,
-        this.lastIncompleteOfflineBooking,
-      });
+  UserInfoModel({
+    this.id,
+    this.fName,
+    this.lName,
+    this.email,
+    this.image,
+    this.imageFullPath,
+    this.phone,
+    this.password,
+    this.confirmPassword,
+    this.createdAt,
+    this.bookingsCount,
+    this.referCode,
+    this.referredBy,
+    this.isEmailVerified,
+    this.isPhoneVerified,
+    this.walletBalance,
+    this.lastIncompleteOfflineBooking,
+  });
 
   UserInfoModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -51,13 +50,15 @@ class UserInfoModel {
     createdAt = json['created_at'];
     referCode = json['ref_code'];
     referredBy = json['referred_by'];
-    bookingsCount =  int.tryParse(json['bookings_count'].toString());
-    isEmailVerified =  int.tryParse(json['is_email_verified'].toString());
-    isPhoneVerified =  int.tryParse(json['is_phone_verified'].toString());
-    walletBalance =  double.tryParse(json['wallet_balance'].toString());
-    lastIncompleteOfflineBooking = json['last_incomplete_offline_booking'] != null
-        ? BookingDetailsContent.fromJson(json['last_incomplete_offline_booking'])
-        : null;
+    bookingsCount = int.tryParse(json['bookings_count'].toString());
+    isEmailVerified = int.tryParse(json['is_email_verified'].toString());
+    isPhoneVerified = int.tryParse(json['is_phone_verified'].toString());
+    walletBalance = double.tryParse(json['wallet_balance'].toString());
+    lastIncompleteOfflineBooking =
+        json['last_incomplete_offline_booking'] != null
+            ? BookingDetailsContent.fromJson(
+                json['last_incomplete_offline_booking'])
+            : null;
   }
 
   Map<String, dynamic> toJson() {

@@ -1,10 +1,9 @@
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 
 class BannerContentModel {
-
   List<BannerModel>? _data;
 
-  BannerContentModel( {List<BannerModel>? data}) {
+  BannerContentModel({List<BannerModel>? data}) {
     if (data != null) {
       _data = data;
     }
@@ -13,7 +12,6 @@ class BannerContentModel {
   List<BannerModel>? get data => _data;
 
   BannerContentModel.fromJson(Map<String, dynamic> json) {
-
     if (json['data'] != null) {
       _data = <BannerModel>[];
       json['data'].forEach((v) {
@@ -46,16 +44,16 @@ class BannerModel {
 
   BannerModel(
       {String? id,
-        String? bannerTitle,
-        String? resourceType,
-        String? resourceId,
-        String? redirectLink,
-        String? bannerImage,
-        String? bannerImageFullPath,
-        String? createdAt,
-        String? updatedAt,
-        Service? service,
-        CategoryModel? category}) {
+      String? bannerTitle,
+      String? resourceType,
+      String? resourceId,
+      String? redirectLink,
+      String? bannerImage,
+      String? bannerImageFullPath,
+      String? createdAt,
+      String? updatedAt,
+      Service? service,
+      CategoryModel? category}) {
     if (id != null) {
       _id = id;
     }
@@ -103,7 +101,6 @@ class BannerModel {
   Service? get service => _service;
   CategoryModel? get category => _category;
 
-
   BannerModel.fromJson(Map<String, dynamic> json) {
     _id = json['id'];
     _bannerTitle = json['banner_title'];
@@ -114,7 +111,8 @@ class BannerModel {
     _bannerImageFullPath = json['banner_image_full_path'];
     _createdAt = json['created_at'];
     _updatedAt = json['updated_at'];
-    _service = json['service'] != null ? Service.fromJson(json['service']) : null;
+    _service =
+        json['service'] != null ? Service.fromJson(json['service']) : null;
     _category = json['category'] != null
         ? CategoryModel.fromJson(json['category'])
         : null;

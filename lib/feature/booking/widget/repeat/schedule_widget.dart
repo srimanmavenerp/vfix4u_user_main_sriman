@@ -1,5 +1,5 @@
-import 'package:demandium/feature/booking/widget/repeat/custom_repeat_booking_bottom_sheet.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/feature/booking/widget/repeat/custom_repeat_booking_bottom_sheet.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 import 'package:get/get.dart';
 
 class ScheduleWidget extends StatelessWidget {

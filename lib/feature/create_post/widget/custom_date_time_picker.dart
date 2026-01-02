@@ -1,6 +1,6 @@
-// import 'package:demandium/utils/core_export.dart';
-// import 'package:demandium/feature/create_post/widget/custom_date_picker.dart';
-// import 'package:demandium/feature/create_post/widget/custom_time_picker.dart';
+// import 'package:Vfix4u/utils/core_export.dart';
+// import 'package:Vfix4u/feature/create_post/widget/custom_date_picker.dart';
+// import 'package:Vfix4u/feature/create_post/widget/custom_time_picker.dart';
 // import 'package:get/get.dart';
 // import 'package:intl/intl.dart';
 // import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -261,9 +261,9 @@
 
 ///new code
 
-import 'package:demandium/utils/core_export.dart';
-import 'package:demandium/feature/create_post/widget/custom_date_picker.dart';
-import 'package:demandium/feature/create_post/widget/custom_time_picker.dart';
+import 'package:Vfix4u/utils/core_export.dart';
+import 'package:Vfix4u/feature/create_post/widget/custom_date_picker.dart';
+import 'package:Vfix4u/feature/create_post/widget/custom_time_picker.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';

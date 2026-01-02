@@ -1,6 +1,6 @@
-import 'package:demandium/feature/provider/model/provider_model.dart';
-import 'package:demandium/feature/service/model/service_model.dart';
-import 'package:demandium/feature/service/model/service_review_model.dart';
+import 'package:Vfix4u/feature/provider/model/provider_model.dart';
+import 'package:Vfix4u/feature/service/model/service_model.dart';
+import 'package:Vfix4u/feature/service/model/service_review_model.dart';
 
 class ProviderDetails {
   ProviderDetailsContent? content;
@@ -8,7 +8,9 @@ class ProviderDetails {
   ProviderDetails({this.content});
 
   ProviderDetails.fromJson(Map<String, dynamic> json) {
-    content = json['content'] != null ? ProviderDetailsContent.fromJson(json['content']) : null;
+    content = json['content'] != null
+        ? ProviderDetailsContent.fromJson(json['content'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -27,7 +29,11 @@ class ProviderDetailsContent {
   ProviderReview? providerReview;
   Rating? providerRating;
 
-  ProviderDetailsContent({this.provider, this.subCategories, this.providerReview, this.providerRating});
+  ProviderDetailsContent(
+      {this.provider,
+      this.subCategories,
+      this.providerReview,
+      this.providerRating});
 
   ProviderDetailsContent.fromJson(Map<String, dynamic> json) {
     provider = json['provider'] != null
@@ -42,7 +48,8 @@ class ProviderDetailsContent {
     providerReview = json['reviews'] != null
         ? ProviderReview.fromJson(json['reviews'])
         : null;
-    providerRating = json['rating'] != null ? Rating.fromJson(json['rating']) : null;
+    providerRating =
+        json['rating'] != null ? Rating.fromJson(json['rating']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -51,8 +58,7 @@ class ProviderDetailsContent {
       data['provider'] = provider!.toJson();
     }
     if (subCategories != null) {
-      data['sub_categories'] =
-          subCategories!.map((v) => v.toJson()).toList();
+      data['sub_categories'] = subCategories!.map((v) => v.toJson()).toList();
     }
     if (providerRating != null) {
       data['rating'] = providerRating!.toJson();
@@ -76,16 +82,16 @@ class SubCategories {
 
   SubCategories(
       {this.id,
-        this.parentId,
-        this.name,
-        this.image,
-        this.position,
-        this.description,
-        this.isActive,
-        this.isFeatured,
-        this.createdAt,
-        this.updatedAt,
-        this.services});
+      this.parentId,
+      this.name,
+      this.image,
+      this.position,
+      this.description,
+      this.isActive,
+      this.isFeatured,
+      this.createdAt,
+      this.updatedAt,
+      this.services});
 
   SubCategories.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -150,11 +156,8 @@ class ProviderReview {
   int? currentPage;
   int? total;
 
-  ProviderReview({this.reviewList,
-    this.lastPage,
-    this.total,
-    this.currentPage
-  });
+  ProviderReview(
+      {this.reviewList, this.lastPage, this.total, this.currentPage});
 
   ProviderReview.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
@@ -179,9 +182,3 @@ class ProviderReview {
     return data;
   }
 }
-
-
-
-
-
-

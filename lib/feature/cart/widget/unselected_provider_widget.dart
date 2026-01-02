@@ -1,4 +1,4 @@
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 
 class UnselectedProductWidget extends StatelessWidget {
   const UnselectedProductWidget({super.key});

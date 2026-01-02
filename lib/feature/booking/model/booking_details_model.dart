@@ -1,5 +1,5 @@
-import 'package:demandium/common/models/user_model.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/common/models/user_model.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 import 'dart:convert';
 
 class BookingDetailsModel {
@@ -210,32 +210,86 @@ class BookingDetailsContent {
       });
 
   BookingDetailsContent.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    paidamount = json['paid_amount'];
-    bookingId = json['booking_id'];
-    readableId = json['readable_id'].toString();
-    customerId = json['customer_id'];
-    providerId = json['provider_id'];
-    refundStatus = json['refund_status'];
-    zoneId = json['zone_id'];
-    bookingStatus = json['booking_status'];
-    smanReview = json['sman_review'];
-    isPaid = json['is_paid'];
-    paymentMethod = json['payment_method'];
-    transactionId = json['transaction_id'];
-    totalBookingAmount =
-        double.tryParse(json['total_booking_amount'].toString());
-    totalTaxAmount = double.tryParse(json['total_tax_amount'].toString());
-    totalDiscountAmount =
-        double.tryParse(json['total_discount_amount'].toString());
-    serviceSchedule = json['service_schedule'];
-    serviceAddressId = json['service_address_id'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
-    categoryId = json['category_id'];
-    subCategoryId = json['sub_category_id'];
-    if (json['cancelled_reason'] != null || json['cancelled_reason'] != "")
-      Bookingcancelreason = json['cancelled_reason'];
+    // Helper functions
+    double? parseDouble(dynamic value) {
+      if (value == null) return null;
+      if (value is num) return value.toDouble();
+      if (value is String) return double.tryParse(value);
+      return null;
+    }
+
+    int? parseInt(dynamic value) {
+      if (value == null) return null;
+      if (value is int) return value;
+      if (value is String) return int.tryParse(value);
+      if (value is double) return value.toInt();
+      return null;
+    }
+
+    // Basic fields
+    id = json['id']?.toString();
+    paidamount = parseDouble(json['paid_amount']);
+    bookingId = json['booking_id']?.toString();
+    readableId = json['readable_id']?.toString();
+    customerId = json['customer_id']?.toString();
+    providerId = json['provider_id']?.toString();
+    refundStatus = json['refund_status']?.toString();
+    zoneId = json['zone_id']?.toString();
+    bookingStatus = json['booking_status']?.toString();
+    smanReview = json['sman_review']?.toString();
+    isPaid = parseInt(json['is_paid']);
+    paymentMethod = json['payment_method']?.toString();
+    transactionId = json['transaction_id']?.toString();
+
+    // Double fields
+    totalBookingAmount = parseDouble(json['total_booking_amount']);
+    totalTaxAmount = parseDouble(json['total_tax_amount']);
+    totalDiscountAmount = parseDouble(json['total_discount_amount']);
+    totalCampaignDiscountAmount =
+        parseDouble(json['total_campaign_discount_amount']);
+    totalCouponDiscountAmount =
+        parseDouble(json['total_coupon_discount_amount']);
+    extraFee = parseDouble(json['extra_fee']);
+    additionalCharge = parseDouble(json['additional_charge']);
+    totalReferralDiscountAmount =
+        parseDouble(json['total_referral_discount_amount']);
+
+    // Strings
+    serviceSchedule = json['service_schedule']?.toString();
+    serviceAddressId = json['service_address_id']?.toString();
+    createdAt = json['created_at']?.toString();
+    updatedAt = json['updated_at']?.toString();
+    categoryId = json['category_id']?.toString();
+    subCategoryId = json['sub_category_id']?.toString();
+    bookingOtp = json["booking_otp"]?.toString();
+    Bookingcancelreason = json['cancelled_reason']?.toString();
+    time = json['time']?.toString();
+    startDate = json['startDate']?.toString();
+    endDate = json['endDate']?.toString();
+    bookingType = json['bookingType']?.toString();
+    offlinePaymentId = json['offline_payment_id']?.toString();
+    offlinePaymentStatus = json['offline_payment_status']?.toString();
+    offlinePaymentDeniedNote = json['offline_payment_denied_note']?.toString();
+    offlinePaymentMethodName =
+        json['booking_offline_payment_method']?.toString();
+
+    // Int fields
+    isRepeatBooking = parseInt(json['is_repeated']);
+    totalCount = parseInt(json['totalCount']);
+    completedCount = parseInt(json['completedCount']);
+    canceledCount = parseInt(json['canceledCount']);
+
+    // Lists
+    weekNames =
+        json['weekNames'] != null ? List<String>.from(json['weekNames']) : [];
+    photoEvidence = json["evidence_photos"] != null
+        ? List<String>.from(json["evidence_photos"])
+        : [];
+    photoEvidenceFullPath = json["evidence_photos_full_path"] != null
+        ? List<String>.from(json["evidence_photos_full_path"])
+        : [];
+
+    // bookingDetails
     if (json['detail'] != null) {
       bookingDetails = <ItemService>[];
       json['detail'].forEach((v) {
@@ -243,30 +297,28 @@ class BookingDetailsContent {
       });
     }
 
+    // serviceData
     if (json['service_data'] != null) {
-      // Check if 'service_data' is a string
       if (json['service_data'] is String) {
-        // Decode the string into a list of maps
-        List<dynamic> decodedList = jsonDecode(json['service_data']);
-        // Now convert the list of maps into a list of ServiceData objects
-        serviceData =
-            decodedList.map((item) => ServiceData.fromJson(item)).toList();
+        serviceData = (jsonDecode(json['service_data']) as List)
+            .map((item) => ServiceData.fromJson(item))
+            .toList();
       } else if (json['service_data'] is List) {
-        // If it's already a list, just map it
         serviceData = (json['service_data'] as List)
             .map((item) => ServiceData.fromJson(item))
             .toList();
       }
-    } else {
-      json['service_data'] = null;
     }
 
+    // scheduleHistories
     if (json['schedule_histories'] != null) {
       scheduleHistories = <ScheduleHistories>[];
       json['schedule_histories'].forEach((v) {
         scheduleHistories!.add(ScheduleHistories.fromJson(v));
       });
     }
+
+    // statusHistories
     if (json['status_histories'] != null) {
       statusHistories = <StatusHistories>[];
       json['status_histories'].forEach((v) {
@@ -274,6 +326,7 @@ class BookingDetailsContent {
       });
     }
 
+    // partialPayments
     if (json['booking_partial_payments'] != null) {
       partialPayments = <PartialPayment>[];
       json['booking_partial_payments'].forEach((v) {
@@ -281,7 +334,7 @@ class BookingDetailsContent {
       });
     }
 
-// Parse cancelReasons (ensure that it is a list)
+    // cancelReasons
     if (json['cancelReasons'] != null) {
       cancelReasons = <CancelReason>[];
       json['cancelReasons'].forEach((v) {
@@ -289,6 +342,49 @@ class BookingDetailsContent {
       });
     }
 
+    // refunds
+    if (json['refunds'] != null) {
+      refunds =
+          (json['refunds'] as List).map((e) => Refund.fromJson(e)).toList();
+    } else {
+      refunds = [];
+    }
+
+    // nextService
+    nextService = json['nextService'] != null
+        ? RepeatBooking.fromJson(json['nextService'])
+        : null;
+
+    // repeatBookingList
+    if (json['repeats'] != null) {
+      repeatBookingList = <RepeatBooking>[];
+      json['repeats'].forEach((v) {
+        repeatBookingList!.add(RepeatBooking.fromJson(v));
+      });
+    }
+
+    // repeatEditHistory
+    if (json['repeatHistory'] != null) {
+      repeatEditHistory = <RepeatHistory>[];
+      json['repeatHistory'].forEach((v) {
+        repeatEditHistory!.add(RepeatHistory.fromJson(v));
+      });
+    }
+
+    // subBooking
+    subBooking = json['booking'] != null
+        ? BookingDetailsContent.fromJson(json['booking'])
+        : null;
+
+    // bookingOfflinePayment
+    if (json['booking_offline_payment'] != null) {
+      bookingOfflinePayment = <BookingOfflinePayment>[];
+      json['booking_offline_payment'].forEach((v) {
+        bookingOfflinePayment!.add(BookingOfflinePayment.fromJson(v));
+      });
+    }
+
+    // Nested objects
     serviceAddress = json['service_address'] != null
         ? ServiceAddress.fromJson(json['service_address'])
         : null;
@@ -300,64 +396,6 @@ class BookingDetailsContent {
     serviceman = json['serviceman'] != null
         ? Serviceman.fromJson(json['serviceman'])
         : null;
-    totalCampaignDiscountAmount =
-        double.tryParse(json['total_campaign_discount_amount'].toString());
-    totalCouponDiscountAmount =
-        double.tryParse(json['total_coupon_discount_amount'].toString());
-    bookingOtp = json["booking_otp"].toString();
-    photoEvidence = json["evidence_photos"] != null
-        ? json["evidence_photos"].cast<String>()
-        : [];
-    photoEvidenceFullPath = json["evidence_photos_full_path"] != null
-        ? json["evidence_photos_full_path"].cast<String>()
-        : [];
-    extraFee = double.tryParse(json["extra_fee"].toString());
-    additionalCharge = double.tryParse(json['additional_charge'].toString());
-    totalReferralDiscountAmount =
-        double.tryParse(json['total_referral_discount_amount'].toString());
-    isRepeatBooking = int.tryParse(json['is_repeated'].toString());
-    time = json['time'];
-    startDate = json['startDate'];
-    endDate = json['endDate'];
-    totalCount = json['totalCount'];
-    bookingType = json['bookingType'];
-    weekNames = json['weekNames']?.cast<String>();
-    completedCount = json['completedCount'];
-    canceledCount = json['canceledCount'];
-    nextService = json['nextService'] != null
-        ? RepeatBooking.fromJson(json['nextService'])
-        : null;
-    if (json['repeats'] != null) {
-      repeatBookingList = <RepeatBooking>[];
-      json['repeats'].forEach((v) {
-        repeatBookingList!.add(RepeatBooking.fromJson(v));
-      });
-    }
-    if (json['repeatHistory'] != null) {
-      repeatEditHistory = <RepeatHistory>[];
-      json['repeatHistory'].forEach((v) {
-        repeatEditHistory!.add(RepeatHistory.fromJson(v));
-      });
-    }
-    subBooking = json['booking'] != null
-        ? BookingDetailsContent.fromJson(json['booking'])
-        : null;
-    if (json['booking_offline_payment'] != null) {
-      bookingOfflinePayment = <BookingOfflinePayment>[];
-      json['booking_offline_payment'].forEach((v) {
-        bookingOfflinePayment!.add(BookingOfflinePayment.fromJson(v));
-      });
-    }
-    offlinePaymentId = json['offline_payment_id'];
-    offlinePaymentStatus = json['offline_payment_status'];
-    offlinePaymentDeniedNote = json['offline_payment_denied_note'];
-    offlinePaymentMethodName = json['booking_offline_payment_method'];
-    if (json['refunds'] != null) {
-      refunds =
-          (json['refunds'] as List).map((e) => Refund.fromJson(e)).toList();
-    } else {
-      refunds = [];
-    }
     pickupInfo = json['pickup_info'] != null
         ? PickupInfo.fromJson(json['pickup_info'])
         : null;

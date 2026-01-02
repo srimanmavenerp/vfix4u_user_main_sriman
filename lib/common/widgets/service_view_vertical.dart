@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 
 class ServiceViewVertical extends GetView<ServiceController> {
   final List<Service>? service;
@@ -9,12 +9,22 @@ class ServiceViewVertical extends GetView<ServiceController> {
   final String? noDataText;
   final String? type;
   final NoDataType? noDataType;
-  final GlobalKey<CustomShakingWidgetState>?  signInShakeKey;
+  final GlobalKey<CustomShakingWidgetState>? signInShakeKey;
   final String? fromPage;
 
   final Function(String type)? onVegFilterTap;
-  const ServiceViewVertical( {super.key, this.fromPage="", required this.service, this.isScrollable = false, this.shimmerLength = 20,
-    this.padding = const EdgeInsets.all(Dimensions.paddingSizeSmall), this.noDataText, this.type, this.onVegFilterTap, this.noDataType, this.signInShakeKey});
+  const ServiceViewVertical(
+      {super.key,
+      this.fromPage = "",
+      required this.service,
+      this.isScrollable = false,
+      this.shimmerLength = 20,
+      this.padding = const EdgeInsets.all(Dimensions.paddingSizeSmall),
+      this.noDataText,
+      this.type,
+      this.onVegFilterTap,
+      this.noDataType,
+      this.signInShakeKey});
 
   @override
   Widget build(BuildContext context) {
@@ -22,53 +32,82 @@ class ServiceViewVertical extends GetView<ServiceController> {
     int length = 1;
 
     isNull = service == null;
-    if(!isNull){
+    if (!isNull) {
       length = service!.length;
     }
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-        children: [
-          isNull == false &&  length != 0 ?
-          GridView.builder(
-            key: UniqueKey(),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisSpacing: Dimensions.paddingSizeDefault,
-              mainAxisSpacing:  Dimensions.paddingSizeDefault,
-              mainAxisExtent: ResponsiveHelper.isDesktop(context) ?  270 : 240 ,
-              crossAxisCount: ResponsiveHelper.isDesktop(context) ? 5 : ResponsiveHelper.isTab(context) ? 3 : 2 ),
-            physics: isScrollable! ? const BouncingScrollPhysics() : const NeverScrollableScrollPhysics(),
-            shrinkWrap: isScrollable! ? false : true,
-            itemCount: service!.length,
-            padding: padding,
-            itemBuilder: (context, index) {
-              return ServiceWidgetVertical(service: service![index], fromType: '',fromPage: fromPage??"", signInShakeKey: signInShakeKey,);
-            },
-          ) : length == 0 ? Center(
-            child: SizedBox(height: ResponsiveHelper.isDesktop(context) ?  MediaQuery.of(context).size.height * 0.7 : MediaQuery.of(context).size.height * 0.55,
-              child: noDataType == NoDataType.offers ? WebShadowWrap(
-                child: NoDataScreen(
-                  text: "no_offer_found".tr,
-                  type:  NoDataType.offers,
+    return Column(mainAxisSize: MainAxisSize.min, children: [
+      isNull == false && length != 0
+          ? GridView.builder(
+              key: UniqueKey(),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisSpacing: Dimensions.paddingSizeDefault,
+                  mainAxisSpacing: Dimensions.paddingSizeDefault,
+                  mainAxisExtent:
+                      ResponsiveHelper.isDesktop(context) ? 270 : 240,
+                  crossAxisCount: ResponsiveHelper.isDesktop(context)
+                      ? 5
+                      : ResponsiveHelper.isTab(context)
+                          ? 3
+                          : 2),
+              physics: isScrollable!
+                  ? const BouncingScrollPhysics()
+                  : const NeverScrollableScrollPhysics(),
+              shrinkWrap: isScrollable! ? false : true,
+              itemCount: service!.length,
+              padding: padding,
+              itemBuilder: (context, index) {
+                return ServiceWidgetVertical(
+                  service: service![index],
+                  fromType: '',
+                  fromPage: fromPage ?? "",
+                  signInShakeKey: signInShakeKey,
+                );
+              },
+            )
+          : length == 0
+              ? Center(
+                  child: SizedBox(
+                    height: ResponsiveHelper.isDesktop(context)
+                        ? MediaQuery.of(context).size.height * 0.7
+                        : MediaQuery.of(context).size.height * 0.55,
+                    child: noDataType == NoDataType.offers
+                        ? WebShadowWrap(
+                            child: NoDataScreen(
+                              text: "no_offer_found".tr,
+                              type: NoDataType.offers,
+                            ),
+                          )
+                        : ServiceNotAvailableScreen(
+                            fromPage: fromPage ?? "",
+                          ),
+                  ),
+                )
+              : GridView.builder(
+                  key: UniqueKey(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisSpacing: Dimensions.paddingSizeDefault,
+                    mainAxisSpacing: Dimensions.paddingSizeDefault,
+                    mainAxisExtent:
+                        ResponsiveHelper.isDesktop(context) ? 270 : 240,
+                    crossAxisCount: ResponsiveHelper.isDesktop(context)
+                        ? 5
+                        : ResponsiveHelper.isTab(context)
+                            ? 3
+                            : 2,
+                  ),
+                  physics: isScrollable!
+                      ? const BouncingScrollPhysics()
+                      : const NeverScrollableScrollPhysics(),
+                  shrinkWrap: isScrollable! ? false : true,
+                  itemCount: shimmerLength,
+                  padding: padding,
+                  itemBuilder: (context, index) {
+                    return ServiceShimmer(
+                        isEnabled: true,
+                        hasDivider: index != shimmerLength! - 1);
+                  },
                 ),
-              ) : ServiceNotAvailableScreen(fromPage: fromPage ?? "",),
-            ),
-          ) : GridView.builder(
-            key: UniqueKey(),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisSpacing: Dimensions.paddingSizeDefault,
-              mainAxisSpacing:  Dimensions.paddingSizeDefault,
-              mainAxisExtent: ResponsiveHelper.isDesktop(context) ?  270 : 240 ,
-              crossAxisCount: ResponsiveHelper.isDesktop(context) ? 5 : ResponsiveHelper.isTab(context) ? 3 : 2,
-            ),
-            physics: isScrollable! ? const BouncingScrollPhysics() : const NeverScrollableScrollPhysics(),
-            shrinkWrap: isScrollable! ? false : true,
-            itemCount: shimmerLength,
-            padding: padding,
-            itemBuilder: (context, index) {
-              return ServiceShimmer(isEnabled: true, hasDivider: index != shimmerLength! - 1);
-        },
-      ),
     ]);
   }
 }

@@ -1,6 +1,6 @@
-import 'package:demandium/feature/booking/widget/repeat/repeat_booking_edit_history_widget.dart';
-import 'package:demandium/helper/booking_helper.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/feature/booking/widget/repeat/repeat_booking_edit_history_widget.dart';
+import 'package:Vfix4u/helper/booking_helper.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 import 'package:get/get.dart';
 
 class RepeatBookingSummeryWidget extends StatelessWidget {

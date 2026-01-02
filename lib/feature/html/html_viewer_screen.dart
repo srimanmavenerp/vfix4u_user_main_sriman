@@ -1,6 +1,6 @@
 import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 
 class HtmlViewerScreen extends StatefulWidget {
   final HtmlType? htmlType;

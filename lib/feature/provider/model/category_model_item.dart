@@ -1,4 +1,4 @@
-import 'package:demandium/feature/service/controller/service_controller.dart';
+import 'package:Vfix4u/feature/service/controller/service_controller.dart';
 import 'package:get/get.dart';
 import '../../service/model/service_model.dart';
 
@@ -12,12 +12,10 @@ class CategoryModelItem {
   });
 }
 
-
 class ExampleData {
   ExampleData._internal();
 
-  static List<CategoryModelItem> data =
-  [
+  static List<CategoryModelItem> data = [
     category1,
     category2,
     category3,
@@ -26,21 +24,17 @@ class ExampleData {
 
   static CategoryModelItem category1 = CategoryModelItem(
       title: "popular",
-      serviceList: Get.find<ServiceController>().popularServiceList??[]
-  );
+      serviceList: Get.find<ServiceController>().popularServiceList ?? []);
 
   static CategoryModelItem category2 = CategoryModelItem(
       title: "Category 2",
-      serviceList: Get.find<ServiceController>().recommendedServiceList??[]
-  );
+      serviceList: Get.find<ServiceController>().recommendedServiceList ?? []);
 
   static CategoryModelItem category3 = CategoryModelItem(
       title: "Category 3",
-      serviceList: Get.find<ServiceController>().allService??[]
-  );
+      serviceList: Get.find<ServiceController>().allService ?? []);
 
   static CategoryModelItem category4 = CategoryModelItem(
       title: "Category 4",
-      serviceList: Get.find<ServiceController>().trendingServiceList??[]
-  );
+      serviceList: Get.find<ServiceController>().trendingServiceList ?? []);
 }

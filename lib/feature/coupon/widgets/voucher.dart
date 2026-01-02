@@ -1,5 +1,5 @@
 // import 'package:get/get.dart';
-// import 'package:demandium/utils/core_export.dart';
+// import 'package:Vfix4u/utils/core_export.dart';
 //
 //
 // class Voucher extends StatelessWidget {
@@ -175,10 +175,8 @@
 //   }
 // }
 
-
 import 'package:get/get.dart';
-import 'package:demandium/utils/core_export.dart';
-
+import 'package:Vfix4u/utils/core_export.dart';
 
 class Voucher extends StatelessWidget {
   final bool isExpired;
@@ -186,19 +184,26 @@ class Voucher extends StatelessWidget {
   final int index;
   final bool fromCheckout;
   final Function(CouponModel couponData)? onTap;
-  const Voucher({super.key,required this.couponModel,required this.isExpired, required this.index, this.fromCheckout = false, this.onTap}) ;
+  const Voucher(
+      {super.key,
+      required this.couponModel,
+      required this.isExpired,
+      required this.index,
+      this.fromCheckout = false,
+      this.onTap});
 
   @override
   Widget build(BuildContext context) {
-
-    return GetBuilder<CouponController>(builder: (couponController){
+    return GetBuilder<CouponController>(builder: (couponController) {
       return Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
           color: Theme.of(context).hoverColor,
           boxShadow: Get.find<ThemeController>().darkTheme ? null : cardShadow,
         ),
-        margin: EdgeInsets.symmetric(horizontal: fromCheckout ? 0 : Dimensions.paddingSizeDefault,),
+        margin: EdgeInsets.symmetric(
+          horizontal: fromCheckout ? 0 : Dimensions.paddingSizeDefault,
+        ),
         padding: const EdgeInsets.only(right: Dimensions.paddingSizeSmall),
         width: context.width,
         child: Row(
@@ -207,137 +212,216 @@ class Voucher extends StatelessWidget {
           children: [
             Expanded(
                 flex: 2,
-                child: Image.network(couponModel.image ?? " ",fit: BoxFit.fitWidth,)),
+                child: Image.network(
+                  couponModel.image ?? " ",
+                  fit: BoxFit.fitWidth,
+                )),
             const SizedBox(width: Dimensions.paddingSizeExtraSmall),
             Expanded(
               flex: 3,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Text(
-                    couponModel.couponCode ?? "",
-                    style: robotoBold.copyWith(
-                      fontSize: Dimensions.fontSizeExtraLarge,
-                      color: Theme.of(context).colorScheme.tertiary.withValues(alpha: 0.8),
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                  ),
-
-                  Wrap(runAlignment: WrapAlignment.start,children: [
-
-
-                    // Directionality(
-                    //   textDirection: TextDirection.ltr,
-                    //   child: Text(
-                    //     "${PriceConverter.convertPrice(couponModel.discount!.discountAmountType == 'amount'?
-                    //     couponModel.discount!.discountAmount!.toDouble() : couponModel.discount!.maxDiscountAmount!.toDouble())} ",
-                    //     style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall,color: Theme.of(context).textTheme.bodyLarge!.color!.withValues(alpha: .5)),
-                    //   ),
-                    // ),
-
-                    // Text(
-                    //   "${'description'.tr} ${couponModel.description!} ",
-                    //   style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeLarge,color: Theme.of(context).textTheme.bodyLarge!.color!.withValues(alpha: .5)),
-                    // ),
-
-                    Directionality(
-                      textDirection: TextDirection.ltr,
-                      child: Text(
-                        couponModel.description != null
-                            ? couponModel.description!
-                            : "No description available",
-                        style: robotoRegular.copyWith(
-                          fontSize: Dimensions.fontSizeSmall,
-                          color: Theme.of(context).textTheme.bodyLarge!.color!.withOpacity(0.5),
-                        ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      couponModel.couponCode ?? "",
+                      style: robotoBold.copyWith(
+                        fontSize: Dimensions.fontSizeExtraLarge,
+                        color: Theme.of(context)
+                            .colorScheme
+                            .tertiary
+                            .withValues(alpha: 0.8),
                       ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
                     ),
+                    Wrap(
+                      runAlignment: WrapAlignment.start,
+                      children: [
+                        // Directionality(
+                        //   textDirection: TextDirection.ltr,
+                        //   child: Text(
+                        //     "${PriceConverter.convertPrice(couponModel.discount!.discountAmountType == 'amount'?
+                        //     couponModel.discount!.discountAmount!.toDouble() : couponModel.discount!.maxDiscountAmount!.toDouble())} ",
+                        //     style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall,color: Theme.of(context).textTheme.bodyLarge!.color!.withValues(alpha: .5)),
+                        //   ),
+                        // ),
 
+                        // Text(
+                        //   "${'description'.tr} ${couponModel.description!} ",
+                        //   style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeLarge,color: Theme.of(context).textTheme.bodyLarge!.color!.withValues(alpha: .5)),
+                        // ),
 
-                  ],),
-
-                  const Divider(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("valid_till".tr,
+                        Directionality(
+                          textDirection: TextDirection.ltr,
+                          child: Text(
+                            couponModel.description != null
+                                ? couponModel.description!
+                                : "No description available",
                             style: robotoRegular.copyWith(
-                                color: Theme.of(context).textTheme.bodyLarge!.color!.withValues(alpha: .6),
-                                fontSize: Dimensions.fontSizeSmall),),
-                          const SizedBox(height: Dimensions.paddingSizeExtraSmall,),
-                          Text(couponModel.discount!.endDate.toString(),
-                              style: robotoBold.copyWith(color: Theme.of(context).colorScheme.primary, fontSize: 12))
-                        ],
-                      ),
-                      couponController.isLoading && index == couponController.selectedCouponIndex && !fromCheckout ?
-                      const Padding(padding: EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
-                        child: SizedBox(height: 20,width: 20,child: CircularProgressIndicator()),
-                      ) : InkWell(
-                        onTap: fromCheckout ? (){
-                          if(couponModel.isUsed != 1){
-                            onTap!(couponModel);
-                          }
-                        }: !isExpired ? ()async {
-                          couponController.updateSelectedCouponIndex(index: index);
-
-                          if(Get.find<AuthController>().isLoggedIn()){
-
-                            if( Get.find<CartController>().cartList.isNotEmpty){
-                              bool addCoupon = false;
-                              Get.find<CartController>().cartList.forEach((cart) {
-                                if(cart.totalCost >= couponModel.discount!.minPurchase!.toDouble()) {
-                                  addCoupon = true;
-                                }
-                              });
-                              if(addCoupon)  {
-
-                                await Get.find<CouponController>().applyCoupon(couponModel.couponCode!).then((value) async {
-                                  if(value.isSuccess!){
-                                    Get.find<CartController>().getCartListFromServer();
-                                    if(fromCheckout){
-                                      Get.back();
-                                    }
-
-                                    customCouponSnackBar("coupon_applied_successfully".tr, subtitle : "review_your_cart_for_applied_discounts".tr, isError: false);
-
-                                  }else{
-                                    customCouponSnackBar("can_not_apply_coupon", subtitle :"${value.message}");
-                                  }
-                                },);
-
-                              }else{
-                                customCouponSnackBar("can_not_apply_coupon", subtitle : "${'valid_for_minimum_booking_amount_of'.tr} ${PriceConverter.convertPrice(couponModel.discount?.minPurchase ?? 0)} ");
-                              }
-                            }else{
-                              customCouponSnackBar("oops", subtitle :"looks_like_no_service_is_added_to_your_cart");
-                            }
-                          }else{
-                            customCouponSnackBar("sorry_you_can_not_use_coupon",  subtitle :"please_login_to_use_coupon" );
-                          }
-                        } : null,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault,vertical: Dimensions.paddingSizeExtraSmall),
-                          decoration: BoxDecoration(
-                              color: isExpired || couponModel.isUsed == 1 ? Theme.of(context).disabledColor : Theme.of(context).colorScheme.primary,
-                              borderRadius: const BorderRadius.all(Radius.circular(Dimensions.radiusSmall))
-                          ),
-                          child: Center(
-                            child: Text(
-                              isExpired ?'expired'.tr : couponModel.isUsed == 1 ? "used".tr.toUpperCase() :'apply'.tr.toUpperCase(),
-                              style: robotoRegular.copyWith(
-                                color: Theme.of(context).primaryColorLight,
-                                fontSize: Dimensions.fontSizeDefault,),
+                              fontSize: Dimensions.fontSizeSmall,
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge!
+                                  .color!
+                                  .withOpacity(0.5),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  )
-                ],
+                      ],
+                    ),
+                    const Divider(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "valid_till".tr,
+                              style: robotoRegular.copyWith(
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge!
+                                      .color!
+                                      .withValues(alpha: .6),
+                                  fontSize: Dimensions.fontSizeSmall),
+                            ),
+                            const SizedBox(
+                              height: Dimensions.paddingSizeExtraSmall,
+                            ),
+                            Text(couponModel.discount!.endDate.toString(),
+                                style: robotoBold.copyWith(
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                    fontSize: 12))
+                          ],
+                        ),
+                        couponController.isLoading &&
+                                index == couponController.selectedCouponIndex &&
+                                !fromCheckout
+                            ? const Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: Dimensions.paddingSizeDefault),
+                                child: SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator()),
+                              )
+                            : InkWell(
+                                onTap: fromCheckout
+                                    ? () {
+                                        if (couponModel.isUsed != 1) {
+                                          onTap!(couponModel);
+                                        }
+                                      }
+                                    : !isExpired
+                                        ? () async {
+                                            couponController
+                                                .updateSelectedCouponIndex(
+                                                    index: index);
+
+                                            if (Get.find<AuthController>()
+                                                .isLoggedIn()) {
+                                              if (Get.find<CartController>()
+                                                  .cartList
+                                                  .isNotEmpty) {
+                                                bool addCoupon = false;
+                                                Get.find<CartController>()
+                                                    .cartList
+                                                    .forEach((cart) {
+                                                  if (cart.totalCost >=
+                                                      couponModel.discount!
+                                                          .minPurchase!
+                                                          .toDouble()) {
+                                                    addCoupon = true;
+                                                  }
+                                                });
+                                                if (addCoupon) {
+                                                  await Get.find<
+                                                          CouponController>()
+                                                      .applyCoupon(couponModel
+                                                          .couponCode!)
+                                                      .then(
+                                                    (value) async {
+                                                      if (value.isSuccess!) {
+                                                        Get.find<
+                                                                CartController>()
+                                                            .getCartListFromServer();
+                                                        if (fromCheckout) {
+                                                          Get.back();
+                                                        }
+
+                                                        customCouponSnackBar(
+                                                            "coupon_applied_successfully"
+                                                                .tr,
+                                                            subtitle:
+                                                                "review_your_cart_for_applied_discounts"
+                                                                    .tr,
+                                                            isError: false);
+                                                      } else {
+                                                        customCouponSnackBar(
+                                                            "can_not_apply_coupon",
+                                                            subtitle:
+                                                                "${value.message}");
+                                                      }
+                                                    },
+                                                  );
+                                                } else {
+                                                  customCouponSnackBar(
+                                                      "can_not_apply_coupon",
+                                                      subtitle:
+                                                          "${'valid_for_minimum_booking_amount_of'.tr} ${PriceConverter.convertPrice(couponModel.discount?.minPurchase ?? 0)} ");
+                                                }
+                                              } else {
+                                                customCouponSnackBar("oops",
+                                                    subtitle:
+                                                        "looks_like_no_service_is_added_to_your_cart");
+                                              }
+                                            } else {
+                                              customCouponSnackBar(
+                                                  "sorry_you_can_not_use_coupon",
+                                                  subtitle:
+                                                      "please_login_to_use_coupon");
+                                            }
+                                          }
+                                        : null,
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: Dimensions.paddingSizeDefault,
+                                      vertical:
+                                          Dimensions.paddingSizeExtraSmall),
+                                  decoration: BoxDecoration(
+                                      color:
+                                          isExpired || couponModel.isUsed == 1
+                                              ? Theme.of(context).disabledColor
+                                              : Theme.of(context)
+                                                  .colorScheme
+                                                  .primary,
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(
+                                              Dimensions.radiusSmall))),
+                                  child: Center(
+                                    child: Text(
+                                      isExpired
+                                          ? 'expired'.tr
+                                          : couponModel.isUsed == 1
+                                              ? "used".tr.toUpperCase()
+                                              : 'apply'.tr.toUpperCase(),
+                                      style: robotoRegular.copyWith(
+                                        color:
+                                            Theme.of(context).primaryColorLight,
+                                        fontSize: Dimensions.fontSizeDefault,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                      ],
+                    )
+                  ],
                 ),
               ),
             ),
@@ -347,4 +431,3 @@ class Voucher extends StatelessWidget {
     });
   }
 }
-

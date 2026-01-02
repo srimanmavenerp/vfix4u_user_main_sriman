@@ -1,13 +1,11 @@
 import 'dart:convert';
-import 'package:demandium/api/local/cache_response.dart';
-import 'package:demandium/common/models/api_response_model.dart';
-import 'package:demandium/helper/db_helper.dart';
-import 'package:demandium/helper/get_di.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/api/local/cache_response.dart';
+import 'package:Vfix4u/common/models/api_response_model.dart';
+import 'package:Vfix4u/helper/db_helper.dart';
+import 'package:Vfix4u/helper/get_di.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 import 'package:drift/drift.dart';
 import 'package:get/get_connect/http/src/response/response.dart';
-
-
 
 class DataSyncRepo {
   final ApiClient apiClient;
@@ -15,9 +13,12 @@ class DataSyncRepo {
 
   DataSyncRepo({required this.apiClient, required this.sharedPreferences});
 
-  Future<ApiResponseModel<T>> fetchData<T>(String uri, DataSourceEnum source, {dynamic body, ApiMethodType method = ApiMethodType.get} ) async {
+  Future<ApiResponseModel<T>> fetchData<T>(String uri, DataSourceEnum source,
+      {dynamic body, ApiMethodType method = ApiMethodType.get}) async {
     try {
-      return source == DataSourceEnum.client || _isACachesDisable() ? await _fetchFromClient<T>(uri, method: method, body: body) : await _fetchFromLocalCache<T>(uri);
+      return source == DataSourceEnum.client || _isACachesDisable()
+          ? await _fetchFromClient<T>(uri, method: method, body: body)
+          : await _fetchFromLocalCache<T>(uri);
     } catch (e) {
       debugPrint('DataSyncRepo: ===> $source $e ($uri)');
 
@@ -25,9 +26,11 @@ class DataSyncRepo {
     }
   }
 
-  Future<ApiResponseModel<T>> _fetchFromClient<T>(String uri, {dynamic body,ApiMethodType method = ApiMethodType.get}) async {
-    final response = await _fetchResponseFromClient(uri, body: body, method: method);
-    if(response.statusCode == 200) {
+  Future<ApiResponseModel<T>> _fetchFromClient<T>(String uri,
+      {dynamic body, ApiMethodType method = ApiMethodType.get}) async {
+    final response =
+        await _fetchResponseFromClient(uri, body: body, method: method);
+    if (response.statusCode == 200) {
       final cacheData = CacheResponseCompanion(
         endPoint: Value(uri),
         header: Value(jsonEncode(response.headers)),
@@ -39,28 +42,33 @@ class DataSyncRepo {
         _cacheResponseWeb(uri, cacheData);
       }
 
-      if(!kIsWeb && _isAppCachesActive()) {
+      if (!kIsWeb && _isAppCachesActive()) {
         await DbHelper.insertOrUpdate(id: uri, data: cacheData);
       }
     }
 
     // Prepare the cache data
 
-
     return ApiResponseModel.withSuccess(response as T);
   }
 
-  Future<Response> _fetchResponseFromClient (String uri,{dynamic body, ApiMethodType method = ApiMethodType.get}){
-    if(method == ApiMethodType.get){
+  Future<Response> _fetchResponseFromClient(String uri,
+      {dynamic body, ApiMethodType method = ApiMethodType.get}) {
+    if (method == ApiMethodType.get) {
       return apiClient.getData(uri);
-    }else{
+    } else {
       return apiClient.postData(uri, body);
     }
   }
 
-  bool _isWebCachesActive()=> (AppConstants.cachesType == LocalCachesTypeEnum.all || AppConstants.cachesType == LocalCachesTypeEnum.web);
-  bool _isAppCachesActive()=> (AppConstants.cachesType == LocalCachesTypeEnum.all || AppConstants.cachesType == LocalCachesTypeEnum.app);
-  bool _isACachesDisable() => AppConstants.cachesType == LocalCachesTypeEnum.none;
+  bool _isWebCachesActive() =>
+      (AppConstants.cachesType == LocalCachesTypeEnum.all ||
+          AppConstants.cachesType == LocalCachesTypeEnum.web);
+  bool _isAppCachesActive() =>
+      (AppConstants.cachesType == LocalCachesTypeEnum.all ||
+          AppConstants.cachesType == LocalCachesTypeEnum.app);
+  bool _isACachesDisable() =>
+      AppConstants.cachesType == LocalCachesTypeEnum.none;
 
   void _cacheResponseWeb(String uri, CacheResponseCompanion cacheData) {
     final cacheJson = CacheResponseData(

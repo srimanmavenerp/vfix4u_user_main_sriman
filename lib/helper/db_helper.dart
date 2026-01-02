@@ -1,17 +1,15 @@
+import 'package:Vfix4u/api/local/cache_response.dart';
+import 'package:Vfix4u/helper/get_di.dart';
 
-import 'package:demandium/api/local/cache_response.dart';
-import 'package:demandium/helper/get_di.dart';
-
-class DbHelper{
-  static insertOrUpdate({required String id, required CacheResponseCompanion data}) async {
+class DbHelper {
+  static insertOrUpdate(
+      {required String id, required CacheResponseCompanion data}) async {
     final response = await database.getCacheResponseById(id);
 
-    if(response != null){
+    if (response != null) {
       await database.updateCacheResponse(id, data);
-    }else{
+    } else {
       await database.insertCacheResponse(data);
     }
   }
-
-
 }

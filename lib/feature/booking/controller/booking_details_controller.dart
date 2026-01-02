@@ -1,7 +1,7 @@
-import 'package:demandium/common/models/popup_menu_model.dart';
-import 'package:demandium/feature/checkout/widget/payment_section/incomplete_offline_payment_dialog.dart';
-import 'package:demandium/feature/home/widget/referal_welcome_dialog.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/common/models/popup_menu_model.dart';
+import 'package:Vfix4u/feature/checkout/widget/payment_section/incomplete_offline_payment_dialog.dart';
+import 'package:Vfix4u/feature/home/widget/referal_welcome_dialog.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 import 'package:get/get.dart';
 import 'package:universal_html/html.dart' as html;
 import 'dart:convert';

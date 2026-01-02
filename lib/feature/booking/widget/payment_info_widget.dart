@@ -1,9 +1,9 @@
 ////chages by saif
 
-import 'package:demandium/feature/booking/widget/custom_booking_details_expansion_tile.dart';
-import 'package:demandium/feature/booking/widget/repeat/make_repeat_booking_payment.dart';
-import 'package:demandium/feature/checkout/widget/payment_section/payment_dialog.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/feature/booking/widget/custom_booking_details_expansion_tile.dart';
+import 'package:Vfix4u/feature/booking/widget/repeat/make_repeat_booking_payment.dart';
+import 'package:Vfix4u/feature/checkout/widget/payment_section/payment_dialog.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 import 'package:get/get.dart';
 
 class PaymentView extends StatelessWidget {

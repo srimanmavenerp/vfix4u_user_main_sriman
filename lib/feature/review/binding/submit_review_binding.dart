@@ -1,11 +1,12 @@
 import 'package:get/get.dart';
-import 'package:demandium/feature/review/controller/submit_review_controller.dart';
-import 'package:demandium/feature/review/repo/submit_review_repo.dart';
+import 'package:Vfix4u/feature/review/controller/submit_review_controller.dart';
+import 'package:Vfix4u/feature/review/repo/submit_review_repo.dart';
 
-class SubmitReviewBinding extends Bindings{
+class SubmitReviewBinding extends Bindings {
   @override
   void dependencies() async {
-    Get.lazyPut(() => SubmitReviewController(submitReviewRepo: SubmitReviewRepo(apiClient: Get.find(), sharedPreferences: Get.find())));
+    Get.lazyPut(() => SubmitReviewController(
+        submitReviewRepo: SubmitReviewRepo(
+            apiClient: Get.find(), sharedPreferences: Get.find())));
   }
-
 }

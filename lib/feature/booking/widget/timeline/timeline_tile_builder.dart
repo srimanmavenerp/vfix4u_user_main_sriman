@@ -1,18 +1,20 @@
-import 'package:demandium/feature/booking/widget/timeline/connectors.dart';
-import 'package:demandium/feature/booking/widget/timeline/indicators.dart';
-import 'package:demandium/feature/booking/widget/timeline/timeline_node.dart';
-import 'package:demandium/feature/booking/widget/timeline/timeline_theme.dart';
-import 'package:demandium/feature/booking/widget/timeline/timeline_tile.dart';
+import 'package:Vfix4u/feature/booking/widget/timeline/connectors.dart';
+import 'package:Vfix4u/feature/booking/widget/timeline/indicators.dart';
+import 'package:Vfix4u/feature/booking/widget/timeline/timeline_node.dart';
+import 'package:Vfix4u/feature/booking/widget/timeline/timeline_theme.dart';
+import 'package:Vfix4u/feature/booking/widget/timeline/timeline_tile.dart';
 import 'package:flutter/material.dart';
-
 
 enum ContentsAlign {
   basic,
   reverse,
   alternating,
 }
+
 enum ConnectionDirection { before, after }
+
 enum ConnectorType { start, end }
+
 enum IndicatorStyle {
   dot,
   outlined,
@@ -32,7 +34,6 @@ typedef ConnectedConnectorBuilder = Widget? Function(
 typedef IndexedValueBuilder<T> = T Function(BuildContext context, int index);
 
 class TimelineTileBuilder {
-
   factory TimelineTileBuilder.connected({
     required int itemCount,
     ContentsAlign contentsAlign = ContentsAlign.basic,
@@ -287,7 +288,7 @@ class TimelineTileBuilder {
         case ContentsAlign.reverse:
           return oppositeContentsBuilder?.call(context, index);
         case ContentsAlign.basic:
-        return contentsBuilder?.call(context, index);
+          return contentsBuilder?.call(context, index);
       }
     };
   }
@@ -325,7 +326,6 @@ class TimelineTileBuilder {
 
 int _kDefaultSemanticIndexCallback(Widget _, int localIndex) => localIndex;
 
-
 class TimelineTileBuilderDelegate extends SliverChildBuilderDelegate {
   TimelineTileBuilderDelegate(
     super.builder, {
@@ -334,8 +334,7 @@ class TimelineTileBuilderDelegate extends SliverChildBuilderDelegate {
     super.addAutomaticKeepAlives,
     super.addRepaintBoundaries,
     super.addSemanticIndexes,
-    super.semanticIndexCallback =
-        _kDefaultSemanticIndexCallback,
+    super.semanticIndexCallback = _kDefaultSemanticIndexCallback,
     super.semanticIndexOffset,
   });
 }

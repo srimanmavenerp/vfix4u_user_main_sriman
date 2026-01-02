@@ -1,4 +1,4 @@
-// import 'package:demandium/utils/core_export.dart';
+// import 'package:Vfix4u/utils/core_export.dart';
 //
 // class DiscountTagWidget extends StatelessWidget {
 //   final double? discountAmount;
@@ -23,11 +23,10 @@
 //   }
 // }
 
+import 'package:Vfix4u/utils/core_export.dart';
 
-
-import 'package:demandium/utils/core_export.dart';
-
-class DiscountTagWidget extends StatelessWidget {  /////////Rani
+class DiscountTagWidget extends StatelessWidget {
+  /////////Rani
   final double? discountAmount;
   final String? discountAmountType;
 
@@ -39,7 +38,8 @@ class DiscountTagWidget extends StatelessWidget {  /////////Rani
 
   @override
   Widget build(BuildContext context) {
-    if (discountAmount == null || discountAmount == 0) {  ///////////discount
+    if (discountAmount == null || discountAmount == 0) {
+      ///////////discount
       return const SizedBox();
     }
 

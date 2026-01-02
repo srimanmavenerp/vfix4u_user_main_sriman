@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:demandium/feature/profile/model/profile_cart_item_model.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/feature/profile/model/profile_cart_item_model.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});

@@ -1,9 +1,9 @@
 import 'dart:convert';
-import 'package:demandium/common/models/popup_menu_model.dart';
-import 'package:demandium/feature/booking/view/web_booking_details_screen.dart';
-import 'package:demandium/feature/checkout/model/payment_response_model.dart';
+import 'package:Vfix4u/common/models/popup_menu_model.dart';
+import 'package:Vfix4u/feature/booking/view/web_booking_details_screen.dart';
+import 'package:Vfix4u/feature/checkout/model/payment_response_model.dart';
 import 'package:get/get.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 
 class BookingDetailsScreen extends StatefulWidget {
   final String? bookingID;

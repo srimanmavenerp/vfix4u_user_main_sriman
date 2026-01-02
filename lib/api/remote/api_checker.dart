@@ -1,4 +1,4 @@
-// import 'package:demandium/utils/core_export.dart';
+// import 'package:Vfix4u/utils/core_export.dart';
 // import 'package:get/get.dart';
 //
 //
@@ -29,8 +29,8 @@
 
 ////changes by saif
 
-import 'package:demandium/common/widgets/custom_app_bar.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/common/widgets/custom_app_bar.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 import 'package:get/get.dart';
 
 class ApiChecker {

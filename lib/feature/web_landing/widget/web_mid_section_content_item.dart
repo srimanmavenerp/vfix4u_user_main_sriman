@@ -1,5 +1,5 @@
-import 'package:demandium/utils/dimensions.dart';
-import 'package:demandium/utils/styles.dart';
+import 'package:Vfix4u/utils/dimensions.dart';
+import 'package:Vfix4u/utils/styles.dart';
 import 'package:flutter/material.dart';
 
 class WebMidSectionContentItem extends StatelessWidget {

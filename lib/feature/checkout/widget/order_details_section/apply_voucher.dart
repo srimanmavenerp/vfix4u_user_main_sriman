@@ -1,6 +1,6 @@
-import 'package:demandium/feature/checkout/widget/coupon_bottom_sheet_widget.dart';
+import 'package:Vfix4u/feature/checkout/widget/coupon_bottom_sheet_widget.dart';
 import 'package:get/get.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 
 class ApplyVoucher extends StatelessWidget {
   const ApplyVoucher({super.key});
@@ -42,32 +42,39 @@ class ApplyVoucher extends StatelessWidget {
                               const CouponBottomSheetWidget(orderAmount: 100));
                     }
                   },
-                 child: Row(
-  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  children: [
-    RichText(
-      text: TextSpan(
-        style: robotoMedium.copyWith(color: Theme.of(context).textTheme.bodyLarge!.color),
-        children: [
-          TextSpan(text: '${'add_coupon'.tr} '),
-          TextSpan(
-            text: '($couponCount ${'available'.tr})',
-            style: TextStyle(color: const Color.fromARGB(255, 43, 202, 49)), // Green for count
-          ),
-        ],
-      ),
-    ),
-    Text(
-      'add_plus'.tr,
-      style: robotoBold.copyWith(
-        color: Get.isDarkMode
-            ? Theme.of(context).textTheme.bodyLarge!.color!.withOpacity(0.6)
-            : Theme.of(context).primaryColor,
-      ),
-    ),
-  ],
-)
-)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      RichText(
+                        text: TextSpan(
+                          style: robotoMedium.copyWith(
+                              color:
+                                  Theme.of(context).textTheme.bodyLarge!.color),
+                          children: [
+                            TextSpan(text: '${'add_coupon'.tr} '),
+                            TextSpan(
+                              text: '($couponCount ${'available'.tr})',
+                              style: TextStyle(
+                                  color: const Color.fromARGB(
+                                      255, 43, 202, 49)), // Green for count
+                            ),
+                          ],
+                        ),
+                      ),
+                      Text(
+                        'add_plus'.tr,
+                        style: robotoBold.copyWith(
+                          color: Get.isDarkMode
+                              ? Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge!
+                                  .color!
+                                  .withOpacity(0.6)
+                              : Theme.of(context).primaryColor,
+                        ),
+                      ),
+                    ],
+                  ))),
         );
       },
     );

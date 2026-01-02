@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 import 'package:universal_html/html.dart' as html;
 import 'dart:convert';
 

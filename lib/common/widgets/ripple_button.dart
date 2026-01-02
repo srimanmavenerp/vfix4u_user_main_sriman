@@ -1,4 +1,4 @@
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 
 class RippleButton extends StatelessWidget {
   const RippleButton({super.key, required this.onTap, this.borderRadius = 5});

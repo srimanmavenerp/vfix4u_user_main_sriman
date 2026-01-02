@@ -1,6 +1,6 @@
 // import 'package:flutter_slidable/flutter_slidable.dart';
 // import 'package:get/get.dart';
-// import 'package:demandium/utils/core_export.dart';
+// import 'package:Vfix4u/utils/core_export.dart';
 //
 // class CartServiceWidget extends StatelessWidget {
 //   final CartModel cart;
@@ -186,17 +186,13 @@
 // }
 ////old code
 
-
-
-
-
 //////functinality completed(1st change)
 
 //////(after change dynamic)
 
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 
 class CartServiceWidget extends StatelessWidget {
   final CartModel cart;
@@ -243,25 +239,34 @@ class CartServiceWidget extends StatelessWidget {
                 extentRatio: 0.3,
                 children: [
                   CustomSlidableAction(
-                    padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeDefault),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: Dimensions.paddingSizeDefault),
                     flex: 1,
                     onPressed: (context) async {
                       //Slidable.of(context)?.close();
-                      Get.dialog(const CustomLoader(), barrierDismissible: false);
-                      await Get.find<CartController>().removeCartFromServer(cart);
+                      Get.dialog(const CustomLoader(),
+                          barrierDismissible: false);
+                      await Get.find<CartController>()
+                          .removeCartFromServer(cart);
                       Get.back();
                     },
-                    backgroundColor: Theme.of(context).colorScheme.error.withValues(alpha: 0.12),
+                    backgroundColor: Theme.of(context)
+                        .colorScheme
+                        .error
+                        .withValues(alpha: 0.12),
                     foregroundColor: Colors.white,
                     borderRadius: const BorderRadius.only(
                       topRight: Radius.circular(Dimensions.radiusSmall),
                       bottomRight: Radius.circular(Dimensions.radiusSmall),
                     ),
                     child: Container(
-                      padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
+                      padding:
+                          const EdgeInsets.all(Dimensions.paddingSizeSmall),
                       decoration: BoxDecoration(
-                        color: Theme.of(context).cardColor.withValues(alpha: 0.8),
-                        borderRadius: BorderRadius.circular(Dimensions.paddingSizeDefault),
+                        color:
+                            Theme.of(context).cardColor.withValues(alpha: 0.8),
+                        borderRadius: BorderRadius.circular(
+                            Dimensions.paddingSizeDefault),
                       ),
                       child: Image.asset(
                         Images.cartDeleteVariation,
@@ -279,17 +284,18 @@ class CartServiceWidget extends StatelessWidget {
                 ),
                 decoration: BoxDecoration(
                   color: Theme.of(context).cardColor,
-                  border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
+                  border:
+                      Border.all(color: Colors.white.withValues(alpha: 0.2)),
                   borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
                   boxShadow: Get.isDarkMode
                       ? null
                       : [
-                    BoxShadow(
-                      color: Colors.grey[Get.isDarkMode ? 800 : 200]!,
-                      blurRadius: 5,
-                      spreadRadius: 1,
-                    ),
-                  ],
+                          BoxShadow(
+                            color: Colors.grey[Get.isDarkMode ? 800 : 200]!,
+                            blurRadius: 5,
+                            spreadRadius: 1,
+                          ),
+                        ],
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -298,15 +304,20 @@ class CartServiceWidget extends StatelessWidget {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          Get.toNamed(RouteHelper.getServiceRoute(cart.serviceId));
+                          Get.toNamed(
+                              RouteHelper.getServiceRoute(cart.serviceId));
                         },
                         child: SizedBox(
-                          width: ResponsiveHelper.isMobile(context) ? Get.width / 1.8 : Get.width / 4,
+                          width: ResponsiveHelper.isMobile(context)
+                              ? Get.width / 1.8
+                              : Get.width / 4,
                           child: Row(
                             children: [
-                              const SizedBox(width: Dimensions.paddingSizeSmall),
+                              const SizedBox(
+                                  width: Dimensions.paddingSizeSmall),
                               ClipRRect(
-                                borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
+                                borderRadius: BorderRadius.circular(
+                                    Dimensions.radiusSmall),
                                 child: CustomImage(
                                   image: '${cart.service!.thumbnailFullPath}',
                                   height: 65,
@@ -314,7 +325,8 @@ class CartServiceWidget extends StatelessWidget {
                                   fit: BoxFit.cover,
                                 ),
                               ),
-                              const SizedBox(width: Dimensions.paddingSizeSmall),
+                              const SizedBox(
+                                  width: Dimensions.paddingSizeSmall),
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -322,17 +334,24 @@ class CartServiceWidget extends StatelessWidget {
                                   children: [
                                     Text(
                                       cart.service!.name!,
-                                      style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeDefault),
+                                      style: robotoMedium.copyWith(
+                                          fontSize: Dimensions.fontSizeDefault),
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                     ),
-                                    const SizedBox(height: Dimensions.paddingSizeExtraSmall),
+                                    const SizedBox(
+                                        height:
+                                            Dimensions.paddingSizeExtraSmall),
                                     SizedBox(
                                       width: Get.width * 0.4,
                                       child: Text(
                                         cart.variantKey,
                                         style: robotoMedium.copyWith(
-                                          color: Theme.of(context).textTheme.bodyLarge!.color!.withValues(alpha: 0.6),
+                                          color: Theme.of(context)
+                                              .textTheme
+                                              .bodyLarge!
+                                              .color!
+                                              .withValues(alpha: 0.6),
                                           fontSize: Dimensions.fontSizeDefault,
                                         ),
                                         maxLines: 1,
@@ -371,10 +390,15 @@ class CartServiceWidget extends StatelessWidget {
                                     Directionality(
                                       textDirection: TextDirection.ltr,
                                       child: Text(
-                                        PriceConverter.convertPrice(cart.itemPrice.toDouble()),
+                                        PriceConverter.convertPrice(
+                                            cart.itemPrice.toDouble()),
                                         style: robotoMedium.copyWith(
                                           fontSize: Dimensions.fontSizeDefault,
-                                          color: Theme.of(context).textTheme.bodyLarge!.color!.withOpacity(0.6),
+                                          color: Theme.of(context)
+                                              .textTheme
+                                              .bodyLarge!
+                                              .color!
+                                              .withOpacity(0.6),
                                         ),
                                       ),
                                     ),
@@ -393,43 +417,58 @@ class CartServiceWidget extends StatelessWidget {
                           if (cart.quantity > 1)
                             QuantityButton(
                               onTap: () {
-                                print('Item price (decrement): ${PriceConverter.convertPrice(itemPrice)}');
-                                Get.find<CartController>().updateCartQuantityToApi(cart.id, cart.quantity - 1, isIncrement: true);
+                                print(
+                                    'Item price (decrement): ${PriceConverter.convertPrice(itemPrice)}');
+                                Get.find<CartController>()
+                                    .updateCartQuantityToApi(
+                                        cart.id, cart.quantity - 1,
+                                        isIncrement: true);
                               },
                               isIncrement: false,
                             ),
                           if (cart.quantity == 1)
                             InkWell(
                               onTap: () {
-                                Get.dialog(ConfirmationDialog(
-                                  icon: Images.deleteProfile,
-                                  description: 'are_you_sure_to_delete_this_service'.tr,
-                                  onYesPressed: () async {
-                                    Get.back();
-                                    Get.dialog(const CustomLoader(), barrierDismissible: false);
+                                Get.dialog(
+                                    ConfirmationDialog(
+                                      icon: Images.deleteProfile,
+                                      description:
+                                          'are_you_sure_to_delete_this_service'
+                                              .tr,
+                                      onYesPressed: () async {
+                                        Get.back();
+                                        Get.dialog(const CustomLoader(),
+                                            barrierDismissible: false);
 
-                                    await Get.find<CartController>().removeCartFromServer(cart);
+                                        await Get.find<CartController>()
+                                            .removeCartFromServer(cart);
 
-                                    Get.back();
-                                  },
-                                ), useSafeArea: false);
-
+                                        Get.back();
+                                      },
+                                    ),
+                                    useSafeArea: false);
                               },
                               child: Container(
                                 height: 22,
                                 width: 22,
-                                margin: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall),
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: Dimensions.paddingSizeSmall),
                                 child: Image.asset(Images.cartDeleteVariation),
                               ),
                             ),
                           Text(
                             cart.quantity.toString(),
-                            style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeExtraLarge),
+                            style: robotoMedium.copyWith(
+                                fontSize: Dimensions.fontSizeExtraLarge),
                           ),
                           QuantityButton(
                             onTap: () {
-                              print('Item price (increment): ${PriceConverter.convertPrice(itemPrice)}');
-                              Get.find<CartController>().updateCartQuantityToApi(cart.id, cart.quantity + 1,isIncrement: true);
+                              print(
+                                  'Item price (increment): ${PriceConverter.convertPrice(itemPrice)}');
+                              Get.find<CartController>()
+                                  .updateCartQuantityToApi(
+                                      cart.id, cart.quantity + 1,
+                                      isIncrement: true);
                             },
                             isIncrement: true,
                           ),
@@ -446,6 +485,3 @@ class CartServiceWidget extends StatelessWidget {
     );
   }
 }
-
-
-

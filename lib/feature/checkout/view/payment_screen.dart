@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 
 class PaymentScreen extends StatefulWidget {
   final String url;

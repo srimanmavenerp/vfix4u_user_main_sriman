@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'package:demandium/common/widgets/confirmation_widget.dart';
-import 'package:demandium/feature/checkout/model/payment_response_model.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/common/widgets/confirmation_widget.dart';
+import 'package:Vfix4u/feature/checkout/model/payment_response_model.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 import 'package:get/get.dart';
 
 enum PageState { orderDetails, payment, complete }

@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:demandium/feature/language/controller/localization_controller.dart';
+import 'package:Vfix4u/feature/language/controller/localization_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -26,7 +26,8 @@ class LDashedLinePainter extends CustomPainter {
       path.lineTo(size.width, size.height * 1); // Horizontal line to the right
     } else {
       // For RTL (Right-to-Left)
-      path.moveTo(size.width * 0.9, 0); // Start at the middle top on the right side
+      path.moveTo(
+          size.width * 0.9, 0); // Start at the middle top on the right side
       path.lineTo(size.width * 0.9, size.height * 0.7); // Vertical line down
       path.arcToPoint(
         Offset(size.width * 0.8, size.height * 1), // Curve to the left
@@ -59,5 +60,3 @@ class LDashedLinePainter extends CustomPainter {
     return false;
   }
 }
-
-

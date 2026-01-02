@@ -1,27 +1,40 @@
 import 'package:get/get.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 
 class NotificationItem extends StatelessWidget {
   final NotificationData notificationData;
-  const NotificationItem({super.key, required this.notificationData}) ;
+  const NotificationItem({super.key, required this.notificationData});
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: (){
+      onTap: () {
         Get.bottomSheet(Dialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Dimensions.radiusSmall)),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(Dimensions.radiusSmall)),
           insetPadding: const EdgeInsets.all(30),
           clipBehavior: Clip.antiAliasWithSaveLayer,
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall, vertical: Dimensions.paddingSizeSmall,),
+            padding: const EdgeInsets.symmetric(
+              horizontal: Dimensions.paddingSizeSmall,
+              vertical: Dimensions.paddingSizeSmall,
+            ),
             height: 500.0,
             width: Get.width,
             child: Column(
               children: [
-                Text(notificationData.title!,style: robotoBold.copyWith(fontSize: Dimensions.fontSizeSmall)),
+                Text(notificationData.title!,
+                    style: robotoBold.copyWith(
+                        fontSize: Dimensions.fontSizeSmall)),
                 Gaps.verticalGapOf(3),
-                Text(notificationData.description!,style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeExtraSmall),),
-                CustomImage(fit: BoxFit.cover, height: 250, width: Get.width,
+                Text(
+                  notificationData.description!,
+                  style: robotoRegular.copyWith(
+                      fontSize: Dimensions.fontSizeExtraSmall),
+                ),
+                CustomImage(
+                  fit: BoxFit.cover,
+                  height: 250,
+                  width: Get.width,
                   image: notificationData.coverImageFullPath ?? "",
                 ),
               ],
@@ -39,17 +52,26 @@ class NotificationItem extends StatelessWidget {
                 SizedBox(
                   height: 30,
                   width: 30,
-                  child: Image(image: AssetImage(Images.notificationSmall),),
+                  child: Image(
+                    image: AssetImage(Images.notificationSmall),
+                  ),
                 ),
                 Gaps.horizontalGapOf(10),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(notificationData.title!,style: robotoBold.copyWith(fontSize: Dimensions.fontSizeSmall)),
+                      Text(notificationData.title!,
+                          style: robotoBold.copyWith(
+                              fontSize: Dimensions.fontSizeSmall)),
                       Gaps.verticalGapOf(3),
-                      Text(notificationData.description!,style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeExtraSmall),)
-                    ],),
+                      Text(
+                        notificationData.description!,
+                        style: robotoRegular.copyWith(
+                            fontSize: Dimensions.fontSizeExtraSmall),
+                      )
+                    ],
+                  ),
                 ),
                 // Text(DateConverter.dateMonthYearTime(DateConverter.isoStringToLocalDate(notificationData.createdAt!).toString()),
                 //   style: ubuntuRegular.copyWith(

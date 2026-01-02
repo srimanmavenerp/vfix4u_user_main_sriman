@@ -1,5 +1,5 @@
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 import 'package:get/get.dart';
 
 const kLogTag = "[demandium]";
@@ -14,12 +14,13 @@ printLog(dynamic data) {
   }
 }
 
-bool isRedundentClick(DateTime currentTime){
-  if(loginClickTime==null){
+bool isRedundentClick(DateTime currentTime) {
+  if (loginClickTime == null) {
     loginClickTime = currentTime;
     return false;
   }
-  if(currentTime.difference(loginClickTime!).inSeconds<3){//set this difference time in seconds
+  if (currentTime.difference(loginClickTime!).inSeconds < 3) {
+    //set this difference time in seconds
     return true;
   }
 
@@ -27,18 +28,18 @@ bool isRedundentClick(DateTime currentTime){
   return false;
 }
 
-
-AlignmentGeometry favButtonAlignment(){
-  return Get.find<LocalizationController>().isLtr ? Alignment.topRight : Alignment.topLeft;
+AlignmentGeometry favButtonAlignment() {
+  return Get.find<LocalizationController>().isLtr
+      ? Alignment.topRight
+      : Alignment.topLeft;
 }
 
-onDemandToast(String message,Color color){
-  return  Fluttertoast.showToast(
+onDemandToast(String message, Color color) {
+  return Fluttertoast.showToast(
       msg: message,
       toastLength: Toast.LENGTH_SHORT,
       timeInSecForIosWeb: 1,
       backgroundColor: Colors.purple,
       textColor: color,
-      fontSize: 16.0
-  );
+      fontSize: 16.0);
 }

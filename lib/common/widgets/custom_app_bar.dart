@@ -2,7 +2,7 @@
 // import 'dart:html' as html;
 // import 'package:flutter/material.dart';
 // import 'package:get/get.dart';
-// import 'package:demandium/utils/core_export.dart';
+// import 'package:Vfix4u/utils/core_export.dart';
 
 // class rxboolController extends GetxController {
 //   RxBool isTrue = true.obs;
@@ -352,7 +352,7 @@
 // --------------------------------------------------
 
 import 'package:get/get.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 
 // Web-only helpers
 String getCurrentUrl() {

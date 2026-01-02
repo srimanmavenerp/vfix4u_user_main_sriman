@@ -1,5 +1,5 @@
 // import 'package:get/get.dart';
-// import 'package:demandium/utils/core_export.dart';
+// import 'package:Vfix4u/utils/core_export.dart';
 // import 'package:intl/intl.dart';
 //
 // enum ScheduleType { asap, schedule }
@@ -595,7 +595,7 @@
 /// ////new code
 
 import 'package:get/get.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 import 'package:intl/intl.dart';
 
 enum ScheduleType { asap, schedule }

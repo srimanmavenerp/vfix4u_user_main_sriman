@@ -1,9 +1,7 @@
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 import 'package:get/get.dart';
 
-
-
-class MyFavoriteController extends GetxController implements GetxService{
+class MyFavoriteController extends GetxController implements GetxService {
   final MyFavoriteRepo myFavoriteRepo;
   MyFavoriteController({required this.myFavoriteRepo});
 
@@ -14,27 +12,29 @@ class MyFavoriteController extends GetxController implements GetxService{
   ProviderModel? get providerModel => _providerModel;
 
   List<Service>? _favoriteServiceList;
-  List<Service>? get favoriteServiceList => _favoriteServiceList ;
+  List<Service>? get favoriteServiceList => _favoriteServiceList;
 
   List<ProviderData>? _providerList;
-  List<ProviderData>? get  providerList=> _providerList;
+  List<ProviderData>? get providerList => _providerList;
 
-  Future<void> getFavoriteServiceList(int offset, bool reload ) async {
-    if(offset != 1 || _favoriteServiceList == null || reload){
-      if(reload){
+  Future<void> getFavoriteServiceList(int offset, bool reload) async {
+    if (offset != 1 || _favoriteServiceList == null || reload) {
+      if (reload) {
         _favoriteServiceList = null;
       }
       Response response = await myFavoriteRepo.getFavoriteServiceList(offset);
       if (response.statusCode == 200) {
-        if(reload){
+        if (reload) {
           _favoriteServiceList = [];
         }
         _serviceContent = ServiceModel.fromJson(response.body).content;
-        if(_favoriteServiceList != null && offset != 1){
-          _favoriteServiceList!.addAll(ServiceModel.fromJson(response.body).content!.serviceList!);
-        }else{
+        if (_favoriteServiceList != null && offset != 1) {
+          _favoriteServiceList!.addAll(
+              ServiceModel.fromJson(response.body).content!.serviceList!);
+        } else {
           _favoriteServiceList = [];
-          _favoriteServiceList!.addAll(ServiceModel.fromJson(response.body).content!.serviceList!);
+          _favoriteServiceList!.addAll(
+              ServiceModel.fromJson(response.body).content!.serviceList!);
         }
         update();
       } else {
@@ -44,37 +44,38 @@ class MyFavoriteController extends GetxController implements GetxService{
   }
 
   Future<void> getProviderList(int offset, bool reload) async {
-
-    if(offset != 1 || _providerModel == null || reload){
-      if(reload){
+    if (offset != 1 || _providerModel == null || reload) {
+      if (reload) {
         _providerModel = null;
       }
 
       Response response = await myFavoriteRepo.getFavoriteProviderList(offset);
       if (response.statusCode == 200) {
-        if(reload){
+        if (reload) {
           _providerList = [];
         }
         _providerModel = ProviderModel.fromJson(response.body);
-        if(_providerModel != null && offset != 1){
-          _providerList!.addAll(ProviderModel.fromJson(response.body).content?.data??[]);
-        }else{
+        if (_providerModel != null && offset != 1) {
+          _providerList!.addAll(
+              ProviderModel.fromJson(response.body).content?.data ?? []);
+        } else {
           _providerList = [];
-          _providerList!.addAll(ProviderModel.fromJson(response.body).content?.data??[]);
+          _providerList!.addAll(
+              ProviderModel.fromJson(response.body).content?.data ?? []);
         }
         update();
       } else {
-         ApiChecker.checkApi(response);
+        ApiChecker.checkApi(response);
       }
     }
   }
 
-
   Future<void> removeFavoriteService(String serviceId) async {
     Response response = await myFavoriteRepo.removeFavoriteService(serviceId);
-    if(response.statusCode == 200){
+    if (response.statusCode == 200) {
       _favoriteServiceList?.removeWhere((element) => element.id == serviceId);
-      Get.find<ServiceController>().updateIsFavoriteValue(0, serviceId, shouldUpdate: true);
+      Get.find<ServiceController>()
+          .updateIsFavoriteValue(0, serviceId, shouldUpdate: true);
     }
     update();
   }
@@ -82,13 +83,12 @@ class MyFavoriteController extends GetxController implements GetxService{
   Future<void> removeFavoriteProvider(String providerId) async {
     Response response = await myFavoriteRepo.removeFavoriteProvider(providerId);
 
-    if(response.statusCode == 200 && response.body['response_code'] == "default_delete_200"){
+    if (response.statusCode == 200 &&
+        response.body['response_code'] == "default_delete_200") {
       _providerList?.removeWhere((element) => element.id == providerId);
-      Get.find<ProviderBookingController>().updateProviderIsFavoriteValue(0, providerId, shouldUpdate: true);
+      Get.find<ProviderBookingController>()
+          .updateProviderIsFavoriteValue(0, providerId, shouldUpdate: true);
     }
     update();
   }
-
-
 }
-

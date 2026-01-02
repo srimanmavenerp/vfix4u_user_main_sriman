@@ -1,6 +1,6 @@
-import 'package:demandium/popupbanneradds.dart';
+import 'package:Vfix4u/popupbanneradds.dart';
 import 'package:get/get.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 
 class SplashScreen extends StatefulWidget {
   final NotificationBody? body;

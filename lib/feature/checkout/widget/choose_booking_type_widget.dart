@@ -1,5 +1,5 @@
-import 'package:demandium/common/widgets/custom_tooltip_widget.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/common/widgets/custom_tooltip_widget.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 import 'package:get/get.dart';
 
 class ChooseBookingTypeWidget extends StatelessWidget {

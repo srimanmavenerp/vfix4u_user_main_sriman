@@ -1,4 +1,4 @@
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 class ProviderWebView extends StatefulWidget {
@@ -31,19 +31,19 @@ class _ProviderWebViewState extends State<ProviderWebView> {
     pullToRefreshController = kIsWeb
         ? null
         : PullToRefreshController(
-      settings: PullToRefreshSettings(
-        color: Colors.blue,
-      ),
-      onRefresh: () async {
-        if (defaultTargetPlatform == TargetPlatform.android) {
-          webViewController?.reload();
-        } else if (defaultTargetPlatform == TargetPlatform.iOS) {
-          webViewController?.loadUrl(
-              urlRequest:
-              URLRequest(url: await webViewController?.getUrl()));
-        }
-      },
-    );
+            settings: PullToRefreshSettings(
+              color: Colors.blue,
+            ),
+            onRefresh: () async {
+              if (defaultTargetPlatform == TargetPlatform.android) {
+                webViewController?.reload();
+              } else if (defaultTargetPlatform == TargetPlatform.iOS) {
+                webViewController?.loadUrl(
+                    urlRequest:
+                        URLRequest(url: await webViewController?.getUrl()));
+              }
+            },
+          );
   }
 
   @override
@@ -57,7 +57,9 @@ class _ProviderWebViewState extends State<ProviderWebView> {
             children: [
               InAppWebView(
                 key: webViewKey,
-                initialUrlRequest: URLRequest(url: WebUri("${AppConstants.baseUrl}/provider/auth/sign-up")),
+                initialUrlRequest: URLRequest(
+                    url: WebUri(
+                        "${AppConstants.baseUrl}/provider/auth/sign-up")),
                 initialSettings: settings,
                 pullToRefreshController: pullToRefreshController,
                 onWebViewCreated: (controller) {
@@ -128,7 +130,8 @@ class _ProviderWebViewState extends State<ProviderWebView> {
                   }
                 },
               ),
-              p < 0.5 ? const Center(child: CircularProgressIndicator())
+              p < 0.5
+                  ? const Center(child: CircularProgressIndicator())
                   : Container(),
             ],
           ),

@@ -1,10 +1,9 @@
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 
 class PostModel {
   String? responseCode;
   String? message;
   PostContent? content;
-
 
   PostModel({this.responseCode, this.message, this.content});
 
@@ -12,7 +11,7 @@ class PostModel {
     responseCode = json['response_code'];
     message = json['message'];
     content =
-    json['content'] != null ? PostContent.fromJson(json['content']) : null;
+        json['content'] != null ? PostContent.fromJson(json['content']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -41,15 +40,15 @@ class PostContent {
 
   PostContent(
       {this.currentPage,
-        this.data,
-        this.firstPageUrl,
-        this.from,
-        this.lastPage,
-        this.lastPageUrl,
-        this.path,
-        this.perPage,
-        this.to,
-        this.total});
+      this.data,
+      this.firstPageUrl,
+      this.from,
+      this.lastPage,
+      this.lastPageUrl,
+      this.path,
+      this.perPage,
+      this.to,
+      this.total});
 
   PostContent.fromJson(Map<String, dynamic> json) {
     currentPage = json['current_page'];
@@ -107,23 +106,22 @@ class MyPostData {
 
   MyPostData(
       {this.id,
-        this.serviceDescription,
-        this.bookingSchedule,
-        this.isBooked,
-        this.customerUserId,
-        this.serviceId,
-        this.categoryId,
-        this.subCategoryId,
-        this.serviceAddressId,
-        this.createdAt,
-        this.updatedAt,
-        this.bidsCount,
-        this.additionInstructions,
-        this.service,
-        this.category,
-        this.subCategory,
-        this.booking
-      });
+      this.serviceDescription,
+      this.bookingSchedule,
+      this.isBooked,
+      this.customerUserId,
+      this.serviceId,
+      this.categoryId,
+      this.subCategoryId,
+      this.serviceAddressId,
+      this.createdAt,
+      this.updatedAt,
+      this.bidsCount,
+      this.additionInstructions,
+      this.service,
+      this.category,
+      this.subCategory,
+      this.booking});
 
   MyPostData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -145,7 +143,7 @@ class MyPostData {
       });
     }
     service =
-    json['service'] != null ? Service.fromJson(json['service']) : null;
+        json['service'] != null ? Service.fromJson(json['service']) : null;
     category = json['category'] != null
         ? CategoryModel.fromJson(json['category'])
         : null;
@@ -153,9 +151,8 @@ class MyPostData {
         ? SubCategory.fromJson(json['sub_category'])
         : null;
 
-    booking= json['booking'] != null
-        ? BookingModel.fromJson(json['booking'])
-        : null;
+    booking =
+        json['booking'] != null ? BookingModel.fromJson(json['booking']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -220,4 +217,3 @@ class AdditionInstructions {
     return data;
   }
 }
-

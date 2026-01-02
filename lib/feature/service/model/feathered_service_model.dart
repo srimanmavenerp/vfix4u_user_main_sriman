@@ -1,5 +1,4 @@
-import 'package:demandium/feature/service/model/service_model.dart';
-
+import 'package:Vfix4u/feature/service/model/service_model.dart';
 
 class FeatheredCategoryModel {
   String? responseCode;
@@ -11,7 +10,9 @@ class FeatheredCategoryModel {
   FeatheredCategoryModel.fromJson(Map<String, dynamic> json) {
     responseCode = json['response_code'];
     message = json['message'];
-    content = json['content'] != null ? FeatheredCategoryContent.fromJson(json['content']) : null;
+    content = json['content'] != null
+        ? FeatheredCategoryContent.fromJson(json['content'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -37,13 +38,13 @@ class FeatheredCategoryContent {
 
   FeatheredCategoryContent(
       {this.currentPage,
-        this.categoryList,
-        this.firstPageUrl,
-        this.from,
-        this.lastPage,
-        this.path,
-        this.to,
-        this.total});
+      this.categoryList,
+      this.firstPageUrl,
+      this.from,
+      this.lastPage,
+      this.path,
+      this.to,
+      this.total});
 
   FeatheredCategoryContent.fromJson(Map<String, dynamic> json) {
     currentPage = json['current_page'];
@@ -96,19 +97,19 @@ class CategoryData {
 
   CategoryData(
       {this.id,
-        this.parentId,
-        this.name,
-        this.image,
-        this.imageFullPath,
-        this.position,
-        this.description,
-        this.isActive,
-        this.isFeatured,
-        this.createdAt,
-        this.updatedAt,
-        this.servicesByCategory,
-        this.categoryDiscount,
-        this.campaignDiscount});
+      this.parentId,
+      this.name,
+      this.image,
+      this.imageFullPath,
+      this.position,
+      this.description,
+      this.isActive,
+      this.isFeatured,
+      this.createdAt,
+      this.updatedAt,
+      this.servicesByCategory,
+      this.categoryDiscount,
+      this.campaignDiscount});
 
   CategoryData.fromJson(Map<String, dynamic> json) {
     id = json['id'];

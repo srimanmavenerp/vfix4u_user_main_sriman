@@ -1,7 +1,7 @@
-// import 'package:demandium/common/widgets/custom_date_range_picker.dart';
-// import 'package:demandium/common/widgets/custom_time_picker.dart';
-// import 'package:demandium/common/widgets/custom_tooltip_widget.dart';
-// import 'package:demandium/utils/core_export.dart';
+// import 'package:Vfix4u/common/widgets/custom_date_range_picker.dart';
+// import 'package:Vfix4u/common/widgets/custom_time_picker.dart';
+// import 'package:Vfix4u/common/widgets/custom_tooltip_widget.dart';
+// import 'package:Vfix4u/utils/core_export.dart';
 // import 'package:get/get.dart';
 //
 //
@@ -109,23 +109,25 @@
 //     });
 //   }
 // }
-import 'package:demandium/common/widgets/custom_date_range_picker.dart';
-import 'package:demandium/common/widgets/custom_time_picker.dart';
-import 'package:demandium/common/widgets/custom_tooltip_widget.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/common/widgets/custom_date_range_picker.dart';
+import 'package:Vfix4u/common/widgets/custom_time_picker.dart';
+import 'package:Vfix4u/common/widgets/custom_tooltip_widget.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 import 'package:get/get.dart';
-
 
 class DailyRepeatBookingSchedule extends StatelessWidget {
   const DailyRepeatBookingSchedule({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<CartController>(builder: (cartController){
-      return GetBuilder<ScheduleController>(builder: (scheduleController){
-
-        int scheduleDays =  CheckoutHelper.calculateDaysCountBetweenDateRange(scheduleController.pickedDailyRepeatBookingDateRange) ;
-        int? applicableCouponCount = CheckoutHelper.getNumberOfDaysForApplicableCoupon(pickedScheduleDays: scheduleDays, );
+    return GetBuilder<CartController>(builder: (cartController) {
+      return GetBuilder<ScheduleController>(builder: (scheduleController) {
+        int scheduleDays = CheckoutHelper.calculateDaysCountBetweenDateRange(
+            scheduleController.pickedDailyRepeatBookingDateRange);
+        int? applicableCouponCount =
+            CheckoutHelper.getNumberOfDaysForApplicableCoupon(
+          pickedScheduleDays: scheduleDays,
+        );
 
         return Container(
           decoration: BoxDecoration(
@@ -133,17 +135,24 @@ class DailyRepeatBookingSchedule extends StatelessWidget {
             color: Theme.of(context).hintColor.withValues(alpha: 0.05),
           ),
           padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text("select_time_and_date".tr, style: robotoMedium),
-            const SizedBox(height: Dimensions.paddingSizeExtraSmall,),
-
+            const SizedBox(
+              height: Dimensions.paddingSizeExtraSmall,
+            ),
             Text("daily_select_time_and_date_hint".tr, style: robotoLight),
-            const SizedBox(height: Dimensions.paddingSizeDefault,),
-
+            const SizedBox(
+              height: Dimensions.paddingSizeDefault,
+            ),
             Row(children: [
-              Text("date_range".tr, style: robotoMedium,),
-              const SizedBox(width: Dimensions.paddingSizeExtraSmall,),
+              Text(
+                "date_range".tr,
+                style: robotoMedium,
+              ),
+              const SizedBox(
+                width: Dimensions.paddingSizeExtraSmall,
+              ),
               CustomToolTip(
                 message: "daily_select_time_and_date_hint".tr,
                 iconColor: Theme.of(context).colorScheme.primary,
@@ -151,24 +160,35 @@ class DailyRepeatBookingSchedule extends StatelessWidget {
                 size: 16,
               ),
             ]),
-            const SizedBox(height: Dimensions.paddingSizeSmall,),
-
-
+            const SizedBox(
+              height: Dimensions.paddingSizeSmall,
+            ),
             CustomDateRangePicker(
-              onTimeChanged: (DateTimeRange? dateRange){
-                scheduleController.updateDailyRepeatBookingDateRange = dateRange;
-                scheduleController.calculateScheduleCountDays(repeatBookingType: RepeatBookingType.daily);
+              onTimeChanged: (DateTimeRange? dateRange) {
+                scheduleController.updateDailyRepeatBookingDateRange =
+                    dateRange;
+                scheduleController.calculateScheduleCountDays(
+                    repeatBookingType: RepeatBookingType.daily);
                 scheduleController.update();
               },
-              dateTimeRange: scheduleController.pickedDailyRepeatBookingDateRange == null ? null :
-              DateConverter.convertDateTimeRangeToString(scheduleController.pickedDailyRepeatBookingDateRange!),
+              dateTimeRange: scheduleController
+                          .pickedDailyRepeatBookingDateRange ==
+                      null
+                  ? null
+                  : DateConverter.convertDateTimeRangeToString(
+                      scheduleController.pickedDailyRepeatBookingDateRange!),
               icon: Images.calendar2,
             ),
-            const SizedBox(height: Dimensions.paddingSizeLarge,),
-
-
-            Text("arrival_time".tr, style: robotoMedium,),
-            const SizedBox(height: Dimensions.paddingSizeSmall,),
+            const SizedBox(
+              height: Dimensions.paddingSizeLarge,
+            ),
+            Text(
+              "arrival_time".tr,
+              style: robotoMedium,
+            ),
+            const SizedBox(
+              height: Dimensions.paddingSizeSmall,
+            ),
             CustomTimePicker(
               onTimeChanged: (TimeOfDay? time) {
                 scheduleController.updatePickedDailyRepeatTime = time;
@@ -176,44 +196,55 @@ class DailyRepeatBookingSchedule extends StatelessWidget {
               },
               time: scheduleController.pickedDailyRepeatTime,
             ),
-
-            if(scheduleController.pickedDailyRepeatBookingDateRange !=null) Padding(
-              padding: const EdgeInsets.only(top: Dimensions.paddingSizeDefault, bottom: Dimensions.paddingSizeExtraSmall),
-              child: Center(
-                child: RichText(
-                  textAlign: TextAlign.center,
-                  text: TextSpan(
-                    style: DefaultTextStyle.of(context).style,
-                    children: [
-                      TextSpan(text: 'you_will_receive_this_services_total'.tr, style: robotoLight),
-                      TextSpan(text: " $scheduleDays ${'times'.tr}", style: robotoBold.copyWith(
-                        color: Theme.of(context).colorScheme.primary,)
-                      ),
-                    ],
+            if (scheduleController.pickedDailyRepeatBookingDateRange != null)
+              Padding(
+                padding: const EdgeInsets.only(
+                    top: Dimensions.paddingSizeDefault,
+                    bottom: Dimensions.paddingSizeExtraSmall),
+                child: Center(
+                  child: RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      style: DefaultTextStyle.of(context).style,
+                      children: [
+                        TextSpan(
+                            text: 'you_will_receive_this_services_total'.tr,
+                            style: robotoLight),
+                        TextSpan(
+                            text: " $scheduleDays ${'times'.tr}",
+                            style: robotoBold.copyWith(
+                              color: Theme.of(context).colorScheme.primary,
+                            )),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-
-            if(scheduleController.pickedDailyRepeatBookingDateRange !=null && applicableCouponCount != null) Padding(
-              padding: const EdgeInsets.only( bottom: Dimensions.paddingSizeExtraSmall),
-              child: Center(
-                child: RichText(
-                  textAlign: TextAlign.center,
-                  text: TextSpan(
-                    style: DefaultTextStyle.of(context).style,
-                    children: [
-                      TextSpan(text: 'coupon_will_be_applied_first'.tr, style: robotoLight),
-                      TextSpan(text: " $applicableCouponCount ", style: robotoBold.copyWith(
-                        color: Theme.of(context).colorScheme.primary,)
-                      ),
-                      TextSpan(text: 'services'.tr, style: robotoLight),
-                    ],
+            if (scheduleController.pickedDailyRepeatBookingDateRange != null &&
+                applicableCouponCount != null)
+              Padding(
+                padding: const EdgeInsets.only(
+                    bottom: Dimensions.paddingSizeExtraSmall),
+                child: Center(
+                  child: RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      style: DefaultTextStyle.of(context).style,
+                      children: [
+                        TextSpan(
+                            text: 'coupon_will_be_applied_first'.tr,
+                            style: robotoLight),
+                        TextSpan(
+                            text: " $applicableCouponCount ",
+                            style: robotoBold.copyWith(
+                              color: Theme.of(context).colorScheme.primary,
+                            )),
+                        TextSpan(text: 'services'.tr, style: robotoLight),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-
           ]),
         );
       });

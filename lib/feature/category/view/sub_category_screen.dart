@@ -1,4 +1,4 @@
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 import 'package:get/get.dart';
 
 class SubCategoryScreen extends StatefulWidget {
@@ -10,14 +10,13 @@ class SubCategoryScreen extends StatefulWidget {
     this.categoryTitle,
     this.categoryID,
     this.subCategoryIndex,
-  }) ;
+  });
 
   @override
   State<SubCategoryScreen> createState() => _SubCategoryScreenState();
 }
 
 class _SubCategoryScreenState extends State<SubCategoryScreen> {
-
   @override
   void initState() {
     super.initState();
@@ -26,17 +25,19 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        endDrawer:ResponsiveHelper.isDesktop(context) ? const MenuDrawer():null,
-        appBar: CustomAppBar(title: widget.categoryTitle,),
-      body: GetBuilder<CategoryController>(
-        initState: (state){
-          Get.find<CategoryController>().getSubCategoryList(widget.categoryID ?? "",shouldUpdate: false); //banner id is category here
-
-        },
-        builder: (categoryController){
-
+        endDrawer:
+            ResponsiveHelper.isDesktop(context) ? const MenuDrawer() : null,
+        appBar: CustomAppBar(
+          title: widget.categoryTitle,
+        ),
+        body: GetBuilder<CategoryController>(initState: (state) {
+          Get.find<CategoryController>().getSubCategoryList(
+              widget.categoryID ?? "",
+              shouldUpdate: false); //banner id is category here
+        }, builder: (categoryController) {
           return FooterBaseView(
-            isCenter: (categoryController.subCategoryList != null &&  categoryController.subCategoryList!.isEmpty),
+            isCenter: (categoryController.subCategoryList != null &&
+                categoryController.subCategoryList!.isEmpty),
             child: SizedBox(
               width: Dimensions.webMaxWidth,
               child: CustomScrollView(
@@ -44,17 +45,19 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
                 physics: const NeverScrollableScrollPhysics(),
                 slivers: [
                   SliverToBoxAdapter(
-                    child: SizedBox(height:
-                    ResponsiveHelper.isDesktop(context)?Dimensions.paddingSizeExtraLarge:0,
+                    child: SizedBox(
+                      height: ResponsiveHelper.isDesktop(context)
+                          ? Dimensions.paddingSizeExtraLarge
+                          : 0,
                     ),
                   ),
-                  const SubCategoryView(isScrollable: true,),
+                  const SubCategoryView(
+                    isScrollable: true,
+                  ),
                 ],
               ),
             ),
           );
-        }
-      )
-    );
+        }));
   }
 }

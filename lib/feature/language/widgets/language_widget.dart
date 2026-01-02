@@ -1,9 +1,9 @@
-import 'package:demandium/common/models/language_model.dart';
-import 'package:demandium/common/widgets/ripple_button.dart';
-import 'package:demandium/feature/language/controller/localization_controller.dart';
-import 'package:demandium/feature/splash/controller/theme_controller.dart';
-import 'package:demandium/utils/dimensions.dart';
-import 'package:demandium/utils/styles.dart';
+import 'package:Vfix4u/common/models/language_model.dart';
+import 'package:Vfix4u/common/widgets/ripple_button.dart';
+import 'package:Vfix4u/feature/language/controller/localization_controller.dart';
+import 'package:Vfix4u/feature/splash/controller/theme_controller.dart';
+import 'package:Vfix4u/utils/dimensions.dart';
+import 'package:Vfix4u/utils/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

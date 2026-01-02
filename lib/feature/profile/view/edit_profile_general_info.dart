@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 
 class EditProfileGeneralInfo extends StatefulWidget {
   final JustTheController tooltipController;
-  const EditProfileGeneralInfo({super.key, required this.tooltipController}) ;
+  const EditProfileGeneralInfo({super.key, required this.tooltipController});
 
   @override
   State<EditProfileGeneralInfo> createState() => _EditProfileGeneralInfoState();
@@ -27,12 +27,11 @@ class _EditProfileGeneralInfoState extends State<EditProfileGeneralInfo> {
     super.initState();
     _setControllerValue();
   }
-  
+
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<AuthController>(builder: (authController){
-      return GetBuilder<UserController>(builder: (userController){
-
+    return GetBuilder<AuthController>(builder: (authController) {
+      return GetBuilder<UserController>(builder: (userController) {
         var userInfo = userController.userInfoModel;
         var config = Get.find<SplashController>().configModel.content;
 
@@ -42,15 +41,18 @@ class _EditProfileGeneralInfoState extends State<EditProfileGeneralInfo> {
               child: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: Dimensions.paddingSizeDefault),
                   child: Form(
                     key: updateProfileKey,
                     child: Column(
                       children: [
-                        SizedBox(height: ResponsiveHelper.isDesktop(context) ? Dimensions.paddingSizeLarge  : 0 ),
+                        SizedBox(
+                            height: ResponsiveHelper.isDesktop(context)
+                                ? Dimensions.paddingSizeLarge
+                                : 0),
                         _profileImageSection(),
                         const SizedBox(height: Dimensions.paddingSizeDefault),
-
                         CustomTextField(
                           title: 'first_name'.tr,
                           hintText: 'first_name'.tr,
@@ -59,12 +61,12 @@ class _EditProfileGeneralInfoState extends State<EditProfileGeneralInfo> {
                           focusNode: _firstName,
                           nextFocus: _lastName,
                           capitalization: TextCapitalization.words,
-                          onValidate: (String? value){
+                          onValidate: (String? value) {
                             return FormValidation().isValidFirstName(value!);
                           },
                         ),
-
-                        const SizedBox(height: Dimensions.paddingSizeTextFieldGap),
+                        const SizedBox(
+                            height: Dimensions.paddingSizeTextFieldGap),
                         CustomTextField(
                           title: 'last_name'.tr,
                           hintText: 'last_name'.tr,
@@ -74,17 +76,20 @@ class _EditProfileGeneralInfoState extends State<EditProfileGeneralInfo> {
                           controller: lastNameController,
                           inputType: TextInputType.name,
                           capitalization: TextCapitalization.words,
-                          onValidate: (String? value){
+                          onValidate: (String? value) {
                             return FormValidation().isValidLastName(value!);
                           },
                         ),
-
-                        const SizedBox(height: Dimensions.paddingSizeTextFieldGap),
-
+                        const SizedBox(
+                            height: Dimensions.paddingSizeTextFieldGap),
                         Tooltip(
                           preferBelow: false,
                           triggerMode: TooltipTriggerMode.manual,
-                          message: config?.emailVerification == 1 ? userInfo?.isEmailVerified == 1 ? "email_is_verified".tr : 'email_not_verified'.tr : "",
+                          message: config?.emailVerification == 1
+                              ? userInfo?.isEmailVerified == 1
+                                  ? "email_is_verified".tr
+                                  : 'email_not_verified'.tr
+                              : "",
                           child: CustomTextField(
                             title: 'email'.tr,
                             hintText: 'email'.tr,
@@ -92,97 +97,154 @@ class _EditProfileGeneralInfoState extends State<EditProfileGeneralInfo> {
                             controller: emailController,
                             inputType: TextInputType.name,
                             capitalization: TextCapitalization.words,
-                            suffixIconUrl:  emailController.text != "" ? userInfo?.isEmailVerified == 1 ? Images.verified : config?.emailVerification == 1 ? Images.error : null : null,
-                            onSuffixTap: userInfo?.isEmailVerified == 0 && config?.emailVerification == 1 ? () async {
-                              SendOtpType  type = SendOtpType.verification ;
-                              Get.dialog(const CustomLoader(), barrierDismissible: false);
-                              await authController.sendVerificationCode(identity: emailController.text, identityType: "email", type: type).then((status){
-                                Get.back();
-                                if(status != null){
-                                  if(status.isSuccess!){
-                                    Get.toNamed(RouteHelper.getVerificationRoute(
-                                      identity: emailController.text,identityType: "email",
-                                      fromPage: "profile",
-                                      firebaseSession: type == SendOtpType.firebase ? status.message : null,
-                                    ));
-                                  }else{
-                                    customSnackBar(status.message.toString().capitalizeFirst ?? "" );
+                            suffixIconUrl: emailController.text != ""
+                                ? userInfo?.isEmailVerified == 1
+                                    ? Images.verified
+                                    : config?.emailVerification == 1
+                                        ? Images.error
+                                        : null
+                                : null,
+                            onSuffixTap: userInfo?.isEmailVerified == 0 &&
+                                    config?.emailVerification == 1
+                                ? () async {
+                                    SendOtpType type = SendOtpType.verification;
+                                    Get.dialog(const CustomLoader(),
+                                        barrierDismissible: false);
+                                    await authController
+                                        .sendVerificationCode(
+                                            identity: emailController.text,
+                                            identityType: "email",
+                                            type: type)
+                                        .then((status) {
+                                      Get.back();
+                                      if (status != null) {
+                                        if (status.isSuccess!) {
+                                          Get.toNamed(
+                                              RouteHelper.getVerificationRoute(
+                                            identity: emailController.text,
+                                            identityType: "email",
+                                            fromPage: "profile",
+                                            firebaseSession:
+                                                type == SendOtpType.firebase
+                                                    ? status.message
+                                                    : null,
+                                          ));
+                                        } else {
+                                          customSnackBar(status.message
+                                                  .toString()
+                                                  .capitalizeFirst ??
+                                              "");
+                                        }
+                                      }
+                                    });
                                   }
-                                }
-                              });
-                            } : null ,
-                            onValidate: (String? value){
+                                : null,
+                            onValidate: (String? value) {
                               return FormValidation().isValidEmail(value);
                             },
                           ),
                         ),
-                        const SizedBox(height: Dimensions.paddingSizeExtraLarge),
-
+                        const SizedBox(
+                            height: Dimensions.paddingSizeExtraLarge),
                         Tooltip(
                           preferBelow: false,
                           triggerMode: TooltipTriggerMode.manual,
-                          message: config?.phoneVerification == 1 ? userInfo?.isPhoneVerified == 1 ? 'cant_update_phone_number'.tr : 'phone_number_not_verified'.tr : "",
+                          message: config?.phoneVerification == 1
+                              ? userInfo?.isPhoneVerified == 1
+                                  ? 'cant_update_phone_number'.tr
+                                  : 'phone_number_not_verified'.tr
+                              : "",
                           child: Container(
                             decoration: BoxDecoration(
-                              color: userInfo?.isPhoneVerified == 1 ? Theme.of(context).primaryColor.withValues(alpha: 0.05) : null,
+                              color: userInfo?.isPhoneVerified == 1
+                                  ? Theme.of(context)
+                                      .primaryColor
+                                      .withValues(alpha: 0.05)
+                                  : null,
                             ),
                             child: CustomTextField(
                               onCountryChanged: (CountryCode countryCode) {
-                                userController.countryDialCode = countryCode.dialCode!;
+                                userController.countryDialCode =
+                                    countryCode.dialCode!;
                               },
                               countryDialCode: userController.countryDialCode,
                               title: 'phone'.tr,
                               hintText: 'enter_phone_number'.tr,
-                              isEnabled: userInfo?.isPhoneVerified == 1 ? false : true,
+                              isEnabled:
+                                  userInfo?.isPhoneVerified == 1 ? false : true,
                               inputType: TextInputType.phone,
                               focusNode: _phoneWithCountry,
                               controller: phoneController,
-                              suffixIconUrl: userInfo?.isPhoneVerified == 1 ? Images.verified : config?.phoneVerification == 1 ? Images.error : null,
-
-                              onSuffixTap: userInfo?.isPhoneVerified == 0 && config?.phoneVerification == 1 ? () async {
-                                Get.dialog(const CustomLoader(), barrierDismissible: false);
-                                SendOtpType  type = config?.firebaseOtpVerification == 1 ? SendOtpType.firebase :  SendOtpType.verification ;
-                                await authController.sendVerificationCode(identity: userController.countryDialCode + phoneController.text, identityType: "phone", type: type, fromPage: "profile").then((status){
-
-                                  if(status != null){
-                                    Get.back();
-                                    if(status.isSuccess!){
-                                      Get.toNamed(RouteHelper.getVerificationRoute(
-                                        identity: userController.countryDialCode + phoneController.text,identityType: "phone",
-                                        fromPage: "profile",
-                                        firebaseSession: type == SendOtpType.firebase ? status.message : null,
-                                      ));
-                                    }else{
-                                      customSnackBar(status.message.toString().capitalizeFirst ?? "" );
+                              suffixIconUrl: userInfo?.isPhoneVerified == 1
+                                  ? Images.verified
+                                  : config?.phoneVerification == 1
+                                      ? Images.error
+                                      : null,
+                              onSuffixTap: userInfo?.isPhoneVerified == 0 &&
+                                      config?.phoneVerification == 1
+                                  ? () async {
+                                      Get.dialog(const CustomLoader(),
+                                          barrierDismissible: false);
+                                      SendOtpType type =
+                                          config?.firebaseOtpVerification == 1
+                                              ? SendOtpType.firebase
+                                              : SendOtpType.verification;
+                                      await authController
+                                          .sendVerificationCode(
+                                              identity: userController
+                                                      .countryDialCode +
+                                                  phoneController.text,
+                                              identityType: "phone",
+                                              type: type,
+                                              fromPage: "profile")
+                                          .then((status) {
+                                        if (status != null) {
+                                          Get.back();
+                                          if (status.isSuccess!) {
+                                            Get.toNamed(RouteHelper
+                                                .getVerificationRoute(
+                                              identity: userController
+                                                      .countryDialCode +
+                                                  phoneController.text,
+                                              identityType: "phone",
+                                              fromPage: "profile",
+                                              firebaseSession:
+                                                  type == SendOtpType.firebase
+                                                      ? status.message
+                                                      : null,
+                                            ));
+                                          } else {
+                                            customSnackBar(status.message
+                                                    .toString()
+                                                    .capitalizeFirst ??
+                                                "");
+                                          }
+                                        }
+                                      });
                                     }
-                                  }
-                                });
-
-
-                              } : null ,
-
+                                  : null,
                               onValidate: (String? value) {
-                                if(value == null || value.isEmpty){
+                                if (value == null || value.isEmpty) {
                                   return 'enter_phone_number'.tr;
-                                }else{
-                                  return FormValidation().isValidPhone(userController.countryDialCode+value,fromAuthPage: true
-                                  );
+                                } else {
+                                  return FormValidation().isValidPhone(
+                                      userController.countryDialCode + value,
+                                      fromAuthPage: true);
                                 }
                               },
                             ),
                           ),
                         ),
-
-
-                        const SizedBox(height: Dimensions.paddingSizeExtraLarge),
+                        const SizedBox(
+                            height: Dimensions.paddingSizeExtraLarge),
                       ],
                     ),
                   ),
                 ),
               ),
             ),
-
-            Padding(padding: const EdgeInsets.all(52.0),
+            Padding(
+              padding: const EdgeInsets.all(52.0),
               child: CustomButton(
                 isLoading: userController.isLoading,
                 fontSize: Dimensions.fontSizeDefault,
@@ -195,9 +257,11 @@ class _EditProfileGeneralInfoState extends State<EditProfileGeneralInfo> {
                       fName: firstNameController.text.trim(),
                       lName: lastNameController.text.trim(),
                       email: emailController.text.trim(),
-                      phone: userController.countryDialCode + phoneController.value.text.trim(),
+                      phone: userController.countryDialCode +
+                          phoneController.value.text.trim(),
                     );
-                    userController.updateUserProfile(userInfoModel: userInfoModel);
+                    userController.updateUserProfile(
+                        userInfoModel: userInfoModel);
                   }
                 },
               ),
@@ -209,11 +273,12 @@ class _EditProfileGeneralInfoState extends State<EditProfileGeneralInfo> {
   }
 
   Widget _profileImageSection() {
-    return GetBuilder<UserController>(builder: (editProfileTabController){
+    return GetBuilder<UserController>(builder: (editProfileTabController) {
       return Container(
         height: 120,
         width: Get.width,
-        margin: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeSmall),
+        margin:
+            const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeSmall),
         child: Center(
           child: Stack(
             alignment: AlignmentDirectional.center,
@@ -234,16 +299,23 @@ class _EditProfileGeneralInfoState extends State<EditProfileGeneralInfo> {
                 child: ClipOval(
                   child: editProfileTabController.pickedProfileImageFile == null
                       ? CustomImage(
-                      placeholder: Images.placeholder,
-                      height: 100,
-                      width: 100,
-                      fit: BoxFit.cover,
-                      image: Get.find<UserController>().userInfoModel?.imageFullPath ?? "")
+                          placeholder: Images.placeholder,
+                          height: 100,
+                          width: 100,
+                          fit: BoxFit.cover,
+                          image: Get.find<UserController>()
+                                  .userInfoModel
+                                  ?.imageFullPath ??
+                              "")
                       : kIsWeb
-                      ? Image.network(editProfileTabController.pickedProfileImageFile!.path,
-                      height: 100.0, width: 100.0, fit: BoxFit.cover)
-                      : Image.file(
-                      File(editProfileTabController.pickedProfileImageFile!.path)),
+                          ? Image.network(
+                              editProfileTabController
+                                  .pickedProfileImageFile!.path,
+                              height: 100.0,
+                              width: 100.0,
+                              fit: BoxFit.cover)
+                          : Image.file(File(editProfileTabController
+                              .pickedProfileImageFile!.path)),
                 ),
               ),
               InkWell(
@@ -253,8 +325,7 @@ class _EditProfileGeneralInfoState extends State<EditProfileGeneralInfo> {
                 ),
                 onTap: () {
                   Get.find<UserController>().pickProfileImage();
-
-                  },
+                },
               )
             ],
           ),
@@ -263,13 +334,15 @@ class _EditProfileGeneralInfoState extends State<EditProfileGeneralInfo> {
     });
   }
 
-  _setControllerValue(){
+  _setControllerValue() {
     UserController userController = Get.find<UserController>();
     firstNameController.text = userController.userInfoModel?.fName ?? "";
     lastNameController.text = userController.userInfoModel?.lName ?? "";
     emailController.text = userController.userInfoModel?.email ?? "";
-    phoneController.text = PhoneVerificationHelper.updateCountryAndNumberInEditProfilePage(
-        userController.userInfoModel?.phone != null ? Get.find<UserController>().userInfoModel!.phone! :'');
+    phoneController.text =
+        PhoneVerificationHelper.updateCountryAndNumberInEditProfilePage(
+            userController.userInfoModel?.phone != null
+                ? Get.find<UserController>().userInfoModel!.phone!
+                : '');
   }
 }
-

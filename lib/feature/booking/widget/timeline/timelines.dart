@@ -1,4 +1,4 @@
-import 'package:demandium/feature/booking/widget/timeline/timeline_tile_builder.dart';
+import 'package:Vfix4u/feature/booking/widget/timeline/timeline_tile_builder.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -26,7 +26,7 @@ class Timeline extends BoxScrollView {
   }) {
     assert(builder.itemCount >= 0);
     assert(
-    semanticChildCount == null || semanticChildCount <= builder.itemCount);
+        semanticChildCount == null || semanticChildCount <= builder.itemCount);
     return Timeline.custom(
       key: key,
       childrenDelegate: SliverChildBuilderDelegate(
@@ -72,17 +72,17 @@ class Timeline extends BoxScrollView {
     super.clipBehavior,
     this.theme,
   })  : childrenDelegate = SliverChildListDelegate(
-    children,
-    addAutomaticKeepAlives: addAutomaticKeepAlives,
-    addRepaintBoundaries: addRepaintBoundaries,
-    addSemanticIndexes: addSemanticIndexes,
-  ),
+          children,
+          addAutomaticKeepAlives: addAutomaticKeepAlives,
+          addRepaintBoundaries: addRepaintBoundaries,
+          addSemanticIndexes: addSemanticIndexes,
+        ),
         assert(scrollDirection == null || theme == null,
-        'Cannot provide both a scrollDirection and a theme.'),
+            'Cannot provide both a scrollDirection and a theme.'),
         super(
-        scrollDirection: scrollDirection ?? theme?.direction ?? Axis.vertical,
-        semanticChildCount: semanticChildCount ?? children.length,
-      );
+          scrollDirection: scrollDirection ?? theme?.direction ?? Axis.vertical,
+          semanticChildCount: semanticChildCount ?? children.length,
+        );
 
   Timeline.builder({
     super.key,
@@ -109,7 +109,7 @@ class Timeline extends BoxScrollView {
   })  : assert(itemCount >= 0),
         assert(semanticChildCount == null || semanticChildCount <= itemCount),
         assert(scrollDirection == null || theme == null,
-        'Cannot provide both a scrollDirection and a theme.'),
+            'Cannot provide both a scrollDirection and a theme.'),
         childrenDelegate = SliverChildBuilderDelegate(
           itemBuilder,
           childCount: itemCount,
@@ -118,9 +118,9 @@ class Timeline extends BoxScrollView {
           addSemanticIndexes: addSemanticIndexes,
         ),
         super(
-        scrollDirection: scrollDirection ?? theme?.direction ?? Axis.vertical,
-        semanticChildCount: semanticChildCount ?? itemCount,
-      );
+          scrollDirection: scrollDirection ?? theme?.direction ?? Axis.vertical,
+          semanticChildCount: semanticChildCount ?? itemCount,
+        );
 
   Timeline.custom({
     super.key,
@@ -141,10 +141,10 @@ class Timeline extends BoxScrollView {
     super.clipBehavior,
     this.theme,
   })  : assert(scrollDirection == null || theme == null,
-  'Cannot provide both a scrollDirection and a theme.'),
+            'Cannot provide both a scrollDirection and a theme.'),
         super(
-        scrollDirection: scrollDirection ?? theme?.direction ?? Axis.vertical,
-      );
+          scrollDirection: scrollDirection ?? theme?.direction ?? Axis.vertical,
+        );
 
   final double? itemExtent;
   final SliverChildDelegate childrenDelegate;
@@ -216,8 +216,8 @@ class FixedTimeline extends StatelessWidget {
     this.verticalDirection = VerticalDirection.down,
     this.clipBehavior = Clip.none,
     this.children = const [],
-  })  : assert(direction == null || theme == null,
-  'Cannot provide both a direction and a theme.');
+  }) : assert(direction == null || theme == null,
+            'Cannot provide both a direction and a theme.');
 
   final TimelineThemeData? theme;
   final Axis? direction;

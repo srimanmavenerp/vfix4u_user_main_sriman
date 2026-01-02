@@ -1,5 +1,4 @@
-
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 
 const Duration _kExpand = Duration(milliseconds: 200);
 
@@ -31,12 +30,12 @@ class CustomBookingDetailsExpansionTile extends StatefulWidget {
     this.iconColor,
     this.collapsedIconColor,
     this.controlAffinity,
-  }) : assert(!initiallyExpanded),
+  })  : assert(!initiallyExpanded),
         assert(!maintainState),
         assert(
-        expandedCrossAxisAlignment != CrossAxisAlignment.baseline,
-        'CrossAxisAlignment.baseline is not supported since the expanded children '
-            'are aligned in a column, not a row. Try to use another constant.',
+          expandedCrossAxisAlignment != CrossAxisAlignment.baseline,
+          'CrossAxisAlignment.baseline is not supported since the expanded children '
+          'are aligned in a column, not a row. Try to use another constant.',
         );
 
   final Widget? leading;
@@ -66,12 +65,17 @@ class CustomBookingDetailsExpansionTile extends StatefulWidget {
   final ListTileControlAffinity? controlAffinity;
 
   @override
-  State<CustomBookingDetailsExpansionTile> createState() => _CustomBookingDetailsExpansionTileState();
+  State<CustomBookingDetailsExpansionTile> createState() =>
+      _CustomBookingDetailsExpansionTileState();
 }
 
-class _CustomBookingDetailsExpansionTileState extends State<CustomBookingDetailsExpansionTile> with SingleTickerProviderStateMixin {
-  static final Animatable<double> _easeOutTween = CurveTween(curve: Curves.easeOut);
-  static final Animatable<double> _easeInTween = CurveTween(curve: Curves.easeIn);
+class _CustomBookingDetailsExpansionTileState
+    extends State<CustomBookingDetailsExpansionTile>
+    with SingleTickerProviderStateMixin {
+  static final Animatable<double> _easeOutTween =
+      CurveTween(curve: Curves.easeOut);
+  static final Animatable<double> _easeInTween =
+      CurveTween(curve: Curves.easeIn);
 
   final ColorTween _borderColorTween = ColorTween();
   final ColorTween _headerColorTween = ColorTween();
@@ -95,9 +99,11 @@ class _CustomBookingDetailsExpansionTileState extends State<CustomBookingDetails
     _heightFactor = _controller.drive(_easeInTween);
     _headerColor = _controller.drive(_headerColorTween.chain(_easeInTween));
     _iconColor = _controller.drive(_iconColorTween.chain(_easeInTween));
-    _backgroundColor = _controller.drive(_backgroundColorTween.chain(_easeOutTween));
+    _backgroundColor =
+        _controller.drive(_backgroundColorTween.chain(_easeOutTween));
 
-    _isExpanded = PageStorage.of(context).readState(context) as bool? ?? widget.initiallyExpanded;
+    _isExpanded = PageStorage.of(context).readState(context) as bool? ??
+        widget.initiallyExpanded;
     if (_isExpanded) {
       _controller.value = 1.0;
     }
@@ -124,8 +130,7 @@ class _CustomBookingDetailsExpansionTileState extends State<CustomBookingDetails
           if (!mounted) {
             return;
           }
-          setState(() {
-          });
+          setState(() {});
         });
       }
       PageStorage.of(context).writeState(context, _isExpanded);
@@ -133,67 +138,84 @@ class _CustomBookingDetailsExpansionTileState extends State<CustomBookingDetails
     widget.onExpansionChanged?.call(_isExpanded);
   }
 
-
   Widget _buildChildren(BuildContext context, Widget? child) {
-    final ExpansionTileThemeData expansionTileTheme = ExpansionTileTheme.of(context);
+    final ExpansionTileThemeData expansionTileTheme =
+        ExpansionTileTheme.of(context);
 
     return Container(
       decoration: BoxDecoration(
         color: widget.backgroundColor ?? Colors.transparent,
       ),
-      child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-        ListTileTheme.merge(
-          iconColor: _iconColor.value ?? expansionTileTheme.iconColor,
-          textColor: _headerColor.value,
-          minVerticalPadding: -10,
-          contentPadding: EdgeInsets.zero,
-          visualDensity: VisualDensity.compact,
-          child: ListTile(
-            onTap: _handleTap,
-            leading: widget.leading,
-            dense: true,
-            contentPadding: widget.tilePadding ?? expansionTileTheme.tilePadding,
-            title: Row(children: [
-              Expanded(
-                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                  Row(
-                    children: [
-                      Text(widget.bookingTitle,
-                          style: robotoRegular.copyWith(
-                              fontSize: Dimensions.fontSizeDefault + 1,
-                              color: widget.bookingTitleColor ??
-                                  Theme.of(context).textTheme.bodySmall?.color?.withValues(alpha:0.6))
-                      ),
-
-                      widget.isShowExpandIcon ? Icon( _isExpanded == true ?
-                      Icons.keyboard_arrow_up :
-                      Icons.keyboard_arrow_down_rounded,
-                          color: Theme.of(context).hintColor): const SizedBox(),
-                    ],
-                  ),
-                  Text(
-                    widget.bookingType ?? "",
-                    style: robotoMedium.copyWith(
-                      fontSize: Dimensions.fontSizeDefault + 1,
-                      color: Theme.of(context).primaryColor,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          ListTileTheme.merge(
+            iconColor: _iconColor.value ?? expansionTileTheme.iconColor,
+            textColor: _headerColor.value,
+            minVerticalPadding: -10,
+            contentPadding: EdgeInsets.zero,
+            visualDensity: VisualDensity.compact,
+            child: ListTile(
+              onTap: _handleTap,
+              leading: widget.leading,
+              dense: true,
+              contentPadding:
+                  widget.tilePadding ?? expansionTileTheme.tilePadding,
+              title: Row(
+                children: [
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Text(widget.bookingTitle,
+                                style: robotoRegular.copyWith(
+                                    fontSize: Dimensions.fontSizeDefault + 1,
+                                    color: widget.bookingTitleColor ??
+                                        Theme.of(context)
+                                            .textTheme
+                                            .bodySmall
+                                            ?.color
+                                            ?.withValues(alpha: 0.6))),
+                            widget.isShowExpandIcon
+                                ? Icon(
+                                    _isExpanded == true
+                                        ? Icons.keyboard_arrow_up
+                                        : Icons.keyboard_arrow_down_rounded,
+                                    color: Theme.of(context).hintColor)
+                                : const SizedBox(),
+                          ],
+                        ),
+                        Text(
+                          widget.bookingType ?? "",
+                          style: robotoMedium.copyWith(
+                            fontSize: Dimensions.fontSizeDefault + 1,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ],),
+                ],
               ),
-            ],),
-            //title: widget.title,
-            subtitle: widget.subtitle,
-            trailing:  widget.isShowTrailingExpandIcon == true ? Icon( _isExpanded == true ?
-            Icons.keyboard_arrow_up :
-            Icons.keyboard_arrow_down_rounded,
-                size: widget.trailingIconSize ?? Dimensions.paddingSizeLarge,
-                color: Theme.of(context).hintColor.withValues(alpha:0.6)): null,
+              //title: widget.title,
+              subtitle: widget.subtitle,
+              trailing: widget.isShowTrailingExpandIcon == true
+                  ? Icon(
+                      _isExpanded == true
+                          ? Icons.keyboard_arrow_up
+                          : Icons.keyboard_arrow_down_rounded,
+                      size: widget.trailingIconSize ??
+                          Dimensions.paddingSizeLarge,
+                      color: Theme.of(context).hintColor.withValues(alpha: 0.6))
+                  : null,
+            ),
           ),
-        ),
-        ClipRect(
-          child: child,
-        ),
-      ],
+          ClipRect(
+            child: child,
+          ),
+        ],
       ),
     );
   }
@@ -201,21 +223,27 @@ class _CustomBookingDetailsExpansionTileState extends State<CustomBookingDetails
   @override
   void didChangeDependencies() {
     final ThemeData theme = Theme.of(context);
-    final ExpansionTileThemeData expansionTileTheme = ExpansionTileTheme.of(context);
+    final ExpansionTileThemeData expansionTileTheme =
+        ExpansionTileTheme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
     _borderColorTween.end = theme.dividerColor;
     _headerColorTween
-      ..begin = widget.collapsedTextColor
-          ?? expansionTileTheme.collapsedTextColor
-          ?? theme.textTheme.titleMedium!.color
-      ..end = widget.textColor ?? expansionTileTheme.textColor ?? colorScheme.primary;
+      ..begin = widget.collapsedTextColor ??
+          expansionTileTheme.collapsedTextColor ??
+          theme.textTheme.titleMedium!.color
+      ..end = widget.textColor ??
+          expansionTileTheme.textColor ??
+          colorScheme.primary;
     _iconColorTween
-      ..begin = widget.collapsedIconColor
-          ?? expansionTileTheme.collapsedIconColor
-          ?? theme.unselectedWidgetColor
-      ..end = widget.iconColor ?? expansionTileTheme.iconColor ?? colorScheme.primary;
+      ..begin = widget.collapsedIconColor ??
+          expansionTileTheme.collapsedIconColor ??
+          theme.unselectedWidgetColor
+      ..end = widget.iconColor ??
+          expansionTileTheme.iconColor ??
+          colorScheme.primary;
     _backgroundColorTween
-      ..begin = widget.collapsedBackgroundColor ?? expansionTileTheme.collapsedBackgroundColor
+      ..begin = widget.collapsedBackgroundColor ??
+          expansionTileTheme.collapsedBackgroundColor
       ..end = widget.backgroundColor ?? expansionTileTheme.backgroundColor;
 
     super.didChangeDependencies();
@@ -223,7 +251,8 @@ class _CustomBookingDetailsExpansionTileState extends State<CustomBookingDetails
 
   @override
   Widget build(BuildContext context) {
-    final ExpansionTileThemeData expansionTileTheme = ExpansionTileTheme.of(context);
+    final ExpansionTileThemeData expansionTileTheme =
+        ExpansionTileTheme.of(context);
     final bool closed = !_isExpanded && _controller.isDismissed;
     final bool shouldRemoveChildren = closed && !widget.maintainState;
 
@@ -232,9 +261,12 @@ class _CustomBookingDetailsExpansionTileState extends State<CustomBookingDetails
       child: TickerMode(
         enabled: !closed,
         child: Padding(
-          padding: widget.childrenPadding ?? expansionTileTheme.childrenPadding ?? EdgeInsets.zero,
+          padding: widget.childrenPadding ??
+              expansionTileTheme.childrenPadding ??
+              EdgeInsets.zero,
           child: Column(
-            crossAxisAlignment: widget.expandedCrossAxisAlignment ?? CrossAxisAlignment.center,
+            crossAxisAlignment:
+                widget.expandedCrossAxisAlignment ?? CrossAxisAlignment.center,
             children: widget.children,
           ),
         ),

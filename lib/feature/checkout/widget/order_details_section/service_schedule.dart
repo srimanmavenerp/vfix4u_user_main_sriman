@@ -1,6 +1,6 @@
-import 'package:demandium/feature/create_post/widget/custom_date_time_picker.dart';
+import 'package:Vfix4u/feature/create_post/widget/custom_date_time_picker.dart';
 import 'package:get/get.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 
 class ServiceSchedule extends StatefulWidget {
   const ServiceSchedule({super.key});
@@ -39,7 +39,7 @@ class _ServiceScheduleState extends State<ServiceSchedule> {
                           isScrollControlled: true,
                           context: context,
                           builder: (BuildContext context) {
-                            return  CustomDateTimePicker();
+                            return CustomDateTimePicker();
                           });
                     }
                   },
@@ -114,5 +114,3 @@ class _ServiceScheduleState extends State<ServiceSchedule> {
     });
   }
 }
-
-

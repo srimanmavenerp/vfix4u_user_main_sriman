@@ -1,6 +1,6 @@
-import 'package:demandium/feature/onboarding/controller/on_board_pager_controller.dart';
+import 'package:Vfix4u/feature/onboarding/controller/on_board_pager_controller.dart';
 import 'package:get/get.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 
 class PagerContent extends StatelessWidget {
   const PagerContent(

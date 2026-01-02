@@ -3,11 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:demandium/api/local/cache_response.dart';
-import 'package:demandium/common/repo/data_sync_repo.dart';
-import 'package:demandium/utils/core_export.dart';
+import 'package:Vfix4u/api/local/cache_response.dart';
+import 'package:Vfix4u/common/repo/data_sync_repo.dart';
+import 'package:Vfix4u/utils/core_export.dart';
 
-import 'package:demandium/feature/review/repo/submit_review_repo.dart';
+import 'package:Vfix4u/feature/review/repo/submit_review_repo.dart';
 
 import '../feature/review/repo/submit_review_repo.dart';
 import '../feature/review/view/new_rate_card.dart';
